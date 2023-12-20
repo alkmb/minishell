@@ -1,14 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   kamboufeo.c                                        :+:      :+:    :+:   */
+/*   ft_isdigit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gprada-t <gprada-t@student.42barcel>       +#+  +:+       +#+        */
+/*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/20 22:26:01 by gprada-t          #+#    #+#             */
-/*   Updated: 2023/12/20 22:26:30 by gprada-t         ###   ########.fr       */
+/*   Created: 2023/09/11 22:15:52 by akambou           #+#    #+#             */
+/*   Updated: 2023/11/22 23:21:25 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../includes/libft.h"
 
-#include "tu_culo_huele_a.h"
+int	ft_isdigit(int c)
+{
+	return (c > 47 && c < 58);
+}
