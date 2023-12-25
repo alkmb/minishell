@@ -1,0 +1,63 @@
+char	*readline(const char *prompt);
+
+-   will read a line from the terminal and return it, using prompt as
+    a promt. If prompt is NULL or the empty string. no prompt is issued. 
+    The line returned is allocated with malloc(3), the caller MUST FREE it 
+    when finished.
+-   Returns the text of the line, if EOF & empty string returns NULL, otherwise
+    EOF is treated as a \n.
+
+
+void	rl_clear_history(void);
+
+-   Clear the history list by deleting all of the entries. It frees private
+    data Readline saves in the history list.
+
+
+int	rl_on_new_line(void);
+
+-   Tell the update functions that we have moved onto a new (empty)line, usally
+    after outputting a newline.
+
+
+void	rl_replace_line(const char *text, int clear_undo);
+
+-   Replace the contents of rl_line_buffer with text. Thhe point and mark are
+    preserved, if possible. If clear_undo is non-zero, the undo list associated
+    with the current line is cleared.
+
+
+void	rl_redisplay(void);
+
+-   Change what's displayed on the screen to reflect the current content of
+    rl_line_buffer.
+
+
+void	add_history(const char *string);
+
+-   Place string at the end of the history list. The associated data field (if
+    any) is set to NULL.
+
+
+int	access(const char *pathname, int mode);
+
+-   Checks whether the calling process can access the file pathname. If it is a
+    symbolic link, it is dereferenced.
+-   The mode specifies the accessibility check(s) to be performed, andis either
+    the value, or mask consisting of the bitwise OR of one or more tests for
+    the existing file.
+-   Check is done using the calling process's real UID nad GID,rather than the
+    effective ID as is done when actually attempting an operation (ex:open(2))
+    on this file.
+
+
+pid_t	fork(void);
+
+-   Creates a new process by duplicating the calling process. The new process
+    is referred to as the child process.
+-   On success, returns de PID of the child process in the parent and 0 is
+    returned in the child. On failure, -1 is returned in the parent and no
+    child process is created, and errno is set to indicate the error.
+
+
+
