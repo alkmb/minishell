@@ -1,8 +1,0 @@
-{
-	"files.associations": {
-		"minishell.h": "c",
-		"chrono": "c",
-		"variant": "c",
-		"wait.h": "c"
-	}
-}
