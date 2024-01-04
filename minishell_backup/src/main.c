@@ -6,7 +6,7 @@
 /*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 23:23:40 by kmb               #+#    #+#             */
-/*   Updated: 2024/01/04 22:58:48 by kmb              ###   ########.fr       */
+/*   Updated: 2024/01/05 00:03:14 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ int	main(int argc, char **argv, char **envp)
 {
 	char	*input = NULL;
 	char	**args;
+	CommandHistory* history = create_history();
+
 
 	if (argc != 1)
 	{
@@ -60,7 +62,7 @@ int	main(int argc, char **argv, char **envp)
 	}
 	while (1)
 	{
-		ft_printf("%s@->$ ", getenv("USER"));
+		ft_printf("%s@minimalianteo$ ", getenv("USER"));
 		input = get_next_line(STDIN_FILENO);
 		if (input == NULL)
 		{
@@ -68,9 +70,11 @@ int	main(int argc, char **argv, char **envp)
 			exit(EXIT_FAILURE);
 		}
 		args = split_string(input, DELIMITERS);
-		execute_command(args, envp);
+		add_to_history(history, args[0]);
+		execute_command(args, envp, history);
 		free(input);
 		free(args);
 	}
+	free(history);
 	return (0);
 }
