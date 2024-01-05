@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 22:20:09 by akambou           #+#    #+#             */
-/*   Updated: 2023/12/21 03:04:15 by kmb              ###   ########.fr       */
+/*   Updated: 2023/11/23 00:05:10 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ char	*ft_substr(char *s, unsigned int start, size_t len);
 char	*ft_strjoin(char *s1, char *s2);
 char	*ft_strtrim(char *s1, char *set);
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
-char	**ft_split(char *str, char c);
+char	**ft_split(char *s, char c);
 /*-------------------------------FILES------------------------------------*/
 void	ft_putstr_fd(char *s, int fd);
 void	ft_putendl_fd(char *s, int fd);

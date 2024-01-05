@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 22:17:41 by akambou           #+#    #+#             */
-/*   Updated: 2023/12/21 02:25:51 by kmb              ###   ########.fr       */
+/*   Updated: 2023/11/22 23:35:32 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ char	*ft_strjoin(char *s1, char *s2)
 	char	*str;
 	size_t	i;
 	size_t	j;
-	int     s1_allocated = 0;
 
 	if (!s1)
 	{
@@ -25,15 +24,10 @@ char	*ft_strjoin(char *s1, char *s2)
 		if (!s1)
 			return (NULL);
 		s1[0] = '\0';
-		s1_allocated = 1;
 	}
 	str = (char *)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
 	if (!str)
-	{
-		if (s1_allocated)
-			free(s1);
-		return NULL;
-	}
+		return (free(s1), NULL);
 	i = -1;
 	while (s1[++i])
 		str[i] = s1[i];
@@ -41,7 +35,6 @@ char	*ft_strjoin(char *s1, char *s2)
 	while (s2[j])
 		str[i++] = s2[j++];
 	str[i] = '\0';
-	if (s1_allocated)
-		free(s1);
+	free(s1);
 	return (str);
 }
