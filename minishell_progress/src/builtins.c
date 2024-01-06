@@ -6,7 +6,7 @@
 /*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 23:12:49 by kmb               #+#    #+#             */
-/*   Updated: 2024/01/05 19:40:47 by kmb              ###   ########.fr       */
+/*   Updated: 2024/01/06 09:41:32 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ void cmd_echo(char **args)
 
 void cmd_pwd()
 {
-
 	char cwd[1024];
 	if (getcwd(cwd, sizeof(cwd)) != NULL)
 	{
@@ -49,7 +48,6 @@ void cmd_pwd()
 
 void cmd_unset(char **args)
 {
-
 	if (args[1] != NULL)
 		unsetenv(args[1]);
 	else
@@ -58,17 +56,13 @@ void cmd_unset(char **args)
 
 void cmd_cd(char **args)
 {
-
 	if (args[1] == NULL || args[2] != NULL)
 	{
 		ft_printf("Usage: cd directory\n");
 		return;
 	}
-
 	if (chdir(args[1]) != 0)
-	{
 		perror(args[1]);
-	}
 }
 
 void cmd_env(char **environ)
@@ -83,7 +77,6 @@ void cmd_env(char **environ)
 
 void cmd_export(char **args)
 {
-
 	if (args[1] != NULL && args[2] != NULL)
 		setenv(args[1], args[2], 1);
 	else
