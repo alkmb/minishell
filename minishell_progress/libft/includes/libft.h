@@ -6,7 +6,7 @@
 /*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 22:20:09 by akambou           #+#    #+#             */
-/*   Updated: 2024/01/06 09:56:50 by kmb              ###   ########.fr       */
+/*   Updated: 2024/01/06 16:00:24 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,11 @@ void	*ft_memmove(void *dst, const void *src, size_t len);
 void	*ft_memchr(const void *s, int c, size_t n);
 void	*ft_memset(void *b, int c, size_t len);
 /*-------------------------------STRINGS----------------------------------*/
-size_t	ft_strlen(char *str);
+size_t	ft_strlen(const char *str);
 size_t	ft_strlcpy(char *dest, const char *src, size_t len);
 size_t	ft_strlcat(char *dest, const char *src, size_t size);
+size_t  ft_strspn(char *str, const char *str2);
+size_t  ft_strcspn(char *str, const char *str2);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 int		ft_strcmp(const char *s1, const char *s2);
 void	ft_striteri(char *s, void (*f)(unsigned int, char*));
@@ -74,7 +76,10 @@ char	*ft_substr(char *s, unsigned int start, size_t len);
 char	*ft_strjoin(char *s1, char *s2);
 char	*ft_strtrim(char *s1, char *set);
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
-char	**ft_split(char *s, char c);
+char	**ft_split(const char *s, char c);
+char	*ft_strtok(char *str, const char *delim);
+char	*ft_strtok_r(char *str, const char *delim, char **saveptr);
+char	*ft_strpbrk(const char *str, const char *accept);
 /*-------------------------------FILES------------------------------------*/
 void	ft_putstr_fd(char *s, int fd);
 void	ft_putendl_fd(char *s, int fd);

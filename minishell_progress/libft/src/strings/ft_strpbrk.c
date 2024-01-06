@@ -1,25 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_strpbrk.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/11 22:18:23 by akambou           #+#    #+#             */
-/*   Updated: 2024/01/06 15:30:14 by kmb              ###   ########.fr       */
+/*   Created: 2024/01/06 14:12:07 by kmb               #+#    #+#             */
+/*   Updated: 2024/01/06 15:15:55 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/libft.h"
 
-size_t	ft_strlen(const char *str)
-{
-	size_t	i;
-
-	i = 0;
-	if (!str)
-		return (0);
-	while (str[i] != '\0')
-		i++;
-	return (i);
+char *ft_strpbrk(const char *str, const char *accept) {
+	while (*str) {
+		const char *a = accept;
+		while (*a) {
+			if (*a++ == *str)
+				return (char *)str;
+		}
+		str++;
+	}
+	return NULL;
 }

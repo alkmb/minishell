@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -fsanitize=address -I includes
+CFLAGS = -Wall -Wextra -Werror -fsanitize=address -lreadline -I includes
 RM = rm -rf
 
 SRCS = $(wildcard src/*.c)

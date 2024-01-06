@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/06 10:57:21 by kmb               #+#    #+#             */
-/*   Updated: 2024/01/06 12:59:05 by kmb              ###   ########.fr       */
+/*   Created: 2024/01/06 16:58:05 by kmb               #+#    #+#             */
+/*   Updated: 2024/01/06 16:58:08 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,49 +15,17 @@
 void parse_command(char *input)
 {
 	int i = 0;
-	int j = 0;
-
 	char *commands[7];
 
-	commands[i] = strtok(input, "|");
+	commands[i] = ft_strtok(input, "|");
 	while (commands[i] != NULL)
 	{
 		i++;
-		commands[i] = strtok(NULL, "|");
+		commands[i] = ft_strtok(NULL, "|");
 	}
-	char *arg = NULL;
-	char *command = commands[j];
-	while ( j < i)
-	{
-		arg = strtok(command, " ");
-		if (strcmp(arg, "echo") == 0)
-		{
-			char *message = strtok(NULL, "");
-			if (message != NULL)
-				ft_printf("%s", message);
-		}
-		else if (strcmp(arg, "exit") == 0)
-			exit(0);
-		else
-		{
-			if (strcmp(arg, "cd") == 0)
-			{
-				char *path = strtok(NULL, "");
-				if (path != NULL) {
-					if (chdir(path) != 0)
-						perror("cd");
-				}
-				else
-				{
-					fprintf(stderr, "cd: expected argument\n");
-				}
-			}
-		}
-		j++;
-	}
-	arg = strtok(command, " ");
 	chose_command(commands, i - 1);
 }
+
 void chose_command(char *commands[], int n)
 {
 	if (n < 0)
@@ -66,10 +34,10 @@ void chose_command(char *commands[], int n)
 	{
 		char *args[MAX_ARGS];
 		int i = 0;
-		args[i] = strtok(commands[n], " ");
+		args[i] = ft_strtok(commands[n], " ");
 		while (args[i] != NULL) {
 			i++;
-			args[i] = strtok(NULL, " ");
+			args[i] = ft_strtok(NULL, " ");
 		}
 		execute_builtin_commandenv(args, environ);
 		execute_builtin_command(args);
@@ -86,11 +54,12 @@ void handle_pipes(char *commands[], int n)
 	pid_t pid1, pid2;
 
 	int i = 0;
-	args[i] = strtok(commands[n], " ");
+	char *saveptr;
+	args[i] = ft_strtok_r(commands[n], " ", &saveptr);
 	while (args[i] != NULL)
 	{
 		i++;
-		args[i] = strtok(NULL, " ");
+		args[i] = ft_strtok(NULL, " ");
 	}
 	if (pipe(fd) == -1) {
 		perror("Error creating pipe");

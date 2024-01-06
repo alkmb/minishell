@@ -6,7 +6,7 @@
 /*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 09:43:22 by kmb               #+#    #+#             */
-/*   Updated: 2024/01/06 13:13:38 by kmb              ###   ########.fr       */
+/*   Updated: 2024/01/06 16:09:23 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,4 +40,20 @@ void execute_builtin_commandenv(char **args, char **environ)
 		}
 		i++;
 	}
+}
+
+void cmd_env(char **environ)
+{
+	char *env_var = *environ;
+	while (env_var != NULL)
+	{
+		ft_printf("%s\n", env_var);
+		env_var = *(environ++);
+	}
+}
+
+void handle_sigint(int sig)
+{
+	ft_printf("%s@minimalianteo$ ", getenv("USER"));
+	ft_printf("%d\n", sig);
 }

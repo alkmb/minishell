@@ -6,13 +6,15 @@
 /*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 09:43:14 by kmb               #+#    #+#             */
-/*   Updated: 2024/01/06 12:26:34 by kmb              ###   ########.fr       */
+/*   Updated: 2024/01/06 17:05:02 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 Command commands[] = {
+	{"echo", cmd_echo},
+	{"cd", cmd_cd},
 	{"pwd", cmd_pwd},
 	{"unset", cmd_unset},
 	{"export", cmd_export},
@@ -24,42 +26,44 @@ Commandenv commandsenv[] = {
 	{NULL, NULL}
 };
 
-void handle_sigint(int sig)
+void print_header(void)
 {
-	printf("%d\n", sig);
-	printf("%s@minimalianteo$ ", getenv("USER"));
-	fflush(stdout);
+		char *header = "  ####       ####\n\
+ #####     ######   ##             ##\n\
+ ##  ###  ###  ##\n\
+ ##    ###     ##   ##   ########  ##   @   @   ###\
+    #    !   ###   @#  $   ===   @##   #$$#\n\
+ ##            ##   ##   ##    ##  ##   # v #   @ #\
+    #    !   ! #   # # #    !    @     #  #\n\
+ ##            ##   ##   ##    ##  ##   $ ! #   #=@\
+    #    !   #=@   !  !#    !    @=    #  #\n\
+ ##            ##   ##   ##    ##  ##   #   #   # #\
+    ##   !   # #   #   #    !    @##   ###$";
+	ft_printf("%s\n", header);
 }
-
 int main(void)
 {
-	signal(SIGINT, handle_sigint);
+	print_header();
+	char *input;
 
-	char *input = NULL;
-	size_t len = 0;
-	ssize_t read;
+	signal(SIGINT, handle_sigint);
 
 	while (1)
 	{
-		printf("%s@minimalianteo$ ", getenv("USER"));
-		read = getline(&input, &len, stdin);
-		if (read == -1)
+		char *username = getenv("USER");
+		char *prompt = malloc(ft_strlen(username) + ft_strlen("@minimalianteo$ ") + 1);
+		ft_strlcpy(prompt, username, ft_strlen(username)+ 1);
+		ft_strlcat(prompt, "@minimalianteo$ ", ft_strlen(username) \
+		+ ft_strlen("@minimalianteo$ ") + 1);
+		input = readline(prompt);
+		free(prompt);
+		if (input == NULL)
 		{
-			if (feof(stdin))
-			{
-				printf("\n");
-				exit(0);
-			}
-			else
-				perror("Error reading input");
-			free(input);
-			break;
+			ft_printf("\n");
+			exit(0);
 		}
-		if (input[read - 1] == '\n')
-			input[read - 1] = '\0';
 		parse_command(input);
 		free(input);
-		input = NULL;
 	}
 	return 0;
 }

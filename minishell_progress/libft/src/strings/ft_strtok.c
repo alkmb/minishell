@@ -1,25 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_strtok.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/11 22:18:23 by akambou           #+#    #+#             */
-/*   Updated: 2024/01/06 15:30:14 by kmb              ###   ########.fr       */
+/*   Created: 2024/01/06 14:09:29 by kmb               #+#    #+#             */
+/*   Updated: 2024/01/06 15:42:58 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/libft.h"
 
-size_t	ft_strlen(const char *str)
+char *ft_strtok(char *str, const char *delim)
 {
-	size_t	i;
+	static char *src = NULL;
+	char *p, *ret = 0;
 
-	i = 0;
-	if (!str)
-		return (0);
-	while (str[i] != '\0')
-		i++;
-	return (i);
+	if(str != NULL)
+		src = str;
+
+	if(src == NULL)
+		return NULL;
+
+	if((p = ft_strpbrk(src, delim)) != NULL) {
+		*p  = 0;
+		ret = src;
+		src = ++p;
+	}
+	else if(*src) {
+		ret = src;
+		src = NULL;
+	}
+
+	return ret;
 }
