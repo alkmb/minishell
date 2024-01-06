@@ -6,7 +6,7 @@
 /*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 23:12:49 by kmb               #+#    #+#             */
-/*   Updated: 2024/01/06 09:41:32 by kmb              ###   ########.fr       */
+/*   Updated: 2024/01/06 11:20:53 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,13 @@
 void cmd_echo(char **args)
 {
 	int i = 1;
+	int n_flag = 0;
 
-	if (args[i] != NULL && ft_strncmp(args[i], "-n", 2) == 0)
-		i++;
-	else
+	if (args[1] != NULL && strcmp(args[1], "-n") == 0)
 	{
-		ft_printf("Usage: echo -n [string...]\n");
-		return;
+		n_flag = 1;
+		i++;
 	}
-
 	while (args[i] != NULL)
 	{
 		ft_printf("%s", args[i]);
@@ -31,6 +29,8 @@ void cmd_echo(char **args)
 			ft_printf(" ");
 		i++;
 	}
+	if (n_flag == 0)
+		ft_printf("\n");
 }
 
 void cmd_pwd()
@@ -52,17 +52,6 @@ void cmd_unset(char **args)
 		unsetenv(args[1]);
 	else
 		fprintf(stderr, "Usage: unset variable_name\n");
-}
-
-void cmd_cd(char **args)
-{
-	if (args[1] == NULL || args[2] != NULL)
-	{
-		ft_printf("Usage: cd directory\n");
-		return;
-	}
-	if (chdir(args[1]) != 0)
-		perror(args[1]);
 }
 
 void cmd_env(char **environ)

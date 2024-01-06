@@ -6,7 +6,7 @@
 /*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 21:26:12 by kmb               #+#    #+#             */
-/*   Updated: 2024/01/05 19:41:16 by kmb              ###   ########.fr       */
+/*   Updated: 2024/01/06 12:55:23 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 #include "../libft/includes/libft.h"
 
+/*-----------------------------------------INCLUDES--------------------------------*/
 # include <fcntl.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -23,20 +24,19 @@
 # include <unistd.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+# include <signal.h>
+# include <errno.h>
+/*---------------------------------------------------------------------------------*/
 
-extern char	**environ;
 
+/*-----------------------------------------DEFINES--------------------------------*/
 # define MAX_INPUT_SIZE 1024
 # define MAX_HISTORY 100
 # define MAX_ARGS 64
-# define READ_END 0
-# define WRITE_END 1
-# define FILE1 1
-# define CMD1 2
-# define CMD2 3
-# define FILE2 4
 # define DELIMITERS " \t\r\n\a"
+/*---------------------------------------------------------------------------------*/
 
+/*-----------------------------------------STRUCTURES-----------------------------*/
 typedef struct CommandHistory
 {
 	char *commands[MAX_HISTORY];
@@ -52,34 +52,28 @@ typedef struct {
 	char *name;
 	void (*func)(char **);
 } Command;
+/*---------------------------------------------------------------------------------*/
 
-extern Command commands[];
-extern Commandenv commandsenv[];
-/*---------------UTILS------------------------------------------------------------*/
-char			**split_string(char *str, char *delimiters);
 /*---------------BUILTINS----------------------------------------------------------*/
-void cmd_echo(char **args);
-void cmd_pwd();
-void cmd_unset(char **args);
-void cmd_cd(char **args);
-void cmd_env(char **environ);
-void cmd_export(char **args);
-void execute_command(char *commands[], int i);
-
+extern				Command commands[];
+extern				Commandenv commandsenv[];
+extern char			**environ;
+void				cmd_pwd();
+void				cmd_unset(char **args);
+void				cmd_env(char **environ);
+void				cmd_export(char **args);
 /*---------------HISTORY-----------------------------------------------------------*/
-void			add_to_history(CommandHistory* history, char *command);
-char			*get_from_history(CommandHistory* history, int index);
-CommandHistory*	create_history(void);
-void destroy_history(CommandHistory* history);
-/*---------------PIPES---------------------------------------------------------*/
-void	execute_first_command(int *fd, char **argv, char **envp);
-void	execute_second_command(int *fd, char **argv, char **envp);
-void	execute_mid_command(int *fd_old, int *fd_new, char *argv, char **envp);
-void	execute_last_command(int *fd_old, int argc, char **argv, char **envp);
-void	chose_command(int *fd_old, int argc, char **argv, char **envp);
-void	exec_cmd(char *cmd, char **envp);
-void	free_array(char **array);
-char	*get_path(char *cmd, char **envp);
-char	*get_envp(char *name, char **envp);
+void				add_to_history(CommandHistory* history, char *command);
+char				*get_from_history(CommandHistory* history, int index);
+void				destroy_history(CommandHistory* history);
+CommandHistory*		create_history(void);
+/*---------------EXEC--------------------------------------------------------------*/
+void				execute_builtin_command(char **args);
+void				execute_builtin_commandenv(char **args, char **environ);
+/*---------------PARSER------------------------------------------------------------*/
+void				parse_command(char *input);
+void				chose_command(char *commands[], int n);
+void				handle_pipes(char *commands[], int n);
+
 
 #endif
