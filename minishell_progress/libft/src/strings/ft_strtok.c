@@ -6,13 +6,13 @@
 /*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 14:09:29 by kmb               #+#    #+#             */
-/*   Updated: 2024/01/06 14:14:35 by kmb              ###   ########.fr       */
+/*   Updated: 2024/01/06 15:42:58 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/libft.h"
 
-char *ft_strtok(char *str, char *delim)
+char *ft_strtok(char *str, const char *delim)
 {
 	static char *src = NULL;
 	char *p, *ret = 0;

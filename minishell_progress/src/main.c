@@ -6,13 +6,15 @@
 /*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 09:43:14 by kmb               #+#    #+#             */
-/*   Updated: 2024/01/06 13:44:22 by kmb              ###   ########.fr       */
+/*   Updated: 2024/01/06 17:05:02 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 Command commands[] = {
+	{"echo", cmd_echo},
+	{"cd", cmd_cd},
 	{"pwd", cmd_pwd},
 	{"unset", cmd_unset},
 	{"export", cmd_export},
@@ -24,11 +26,28 @@ Commandenv commandsenv[] = {
 	{NULL, NULL}
 };
 
+void print_header(void)
+{
+		char *header = "  ####       ####\n\
+ #####     ######   ##             ##\n\
+ ##  ###  ###  ##\n\
+ ##    ###     ##   ##   ########  ##   @   @   ###\
+    #    !   ###   @#  $   ===   @##   #$$#\n\
+ ##            ##   ##   ##    ##  ##   # v #   @ #\
+    #    !   ! #   # # #    !    @     #  #\n\
+ ##            ##   ##   ##    ##  ##   $ ! #   #=@\
+    #    !   #=@   !  !#    !    @=    #  #\n\
+ ##            ##   ##   ##    ##  ##   #   #   # #\
+    ##   !   # #   #   #    !    @##   ###$";
+	ft_printf("%s\n", header);
+}
 int main(void)
 {
+	print_header();
 	char *input;
 
 	signal(SIGINT, handle_sigint);
+
 	while (1)
 	{
 		char *username = getenv("USER");

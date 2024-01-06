@@ -6,11 +6,35 @@
 /*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 23:12:49 by kmb               #+#    #+#             */
-/*   Updated: 2024/01/06 13:41:02 by kmb              ###   ########.fr       */
+/*   Updated: 2024/01/06 16:30:46 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+void cmd_echo(char **args)
+{
+	int i = 1;
+	while (args[i] != NULL)
+	{
+		ft_printf("%s ", args[i]);
+		i++;
+	}
+	ft_printf("\n");
+}
+
+void cmd_cd(char **args)
+{
+	if (args[1] != NULL)
+	{
+		if (chdir(args[1]) != 0)
+		{
+			perror(args[1]);
+		}
+	}
+	else
+		chdir(getenv("HOME"));
+}
 
 void cmd_pwd(void)
 {
@@ -24,31 +48,36 @@ void cmd_pwd(void)
 void cmd_unset(char **args)
 {
 	if (args[1] != NULL)
-		unsetenv(args[1]);
+	{
+		int i = 0;
+		while (environ[i])
+		{
+			if (ft_strncmp(environ[i], args[1], ft_strlen(args[1])) == 0 \
+				&& environ[i][ft_strlen(args[1])] == '=')
+			{
+				while (environ[i])
+				{
+					environ[i] = environ[i + 1];
+					i++;
+				}
+				break;
+			}
+			i++;
+		}
+	}
 	else
 		ft_printf("Usage: unset variable_name\n");
 }
 
-void cmd_env(char **environ)
-{
-	char *env_var = *environ;
-	while (env_var != NULL)
-	{
-		ft_printf("%s\n", env_var);
-		env_var = *(environ++);
-	}
-}
-
 void cmd_export(char **args)
 {
-	if (args[1] != NULL && args[2] != NULL)
-		setenv(args[1], args[2], 1);
-	else
-		ft_printf("Usage: export variable_name value\n");
-}
-
-void handle_sigint(int sig)
-{
-	ft_printf("%s@minimalianteo$ ", getenv("USER"));
-	ft_printf("%d\n", sig);
+	if (args[1] == NULL)
+	{
+		char **env = environ;
+		while(*env != NULL)
+		{
+			ft_printf("declare -x %s\n", *env);
+			env++;
+		}
+	}
 }
