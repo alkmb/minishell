@@ -1,18 +1,19 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -fsanitize=address -lreadline -I includes
+CFLAGS = -Wall -Wextra -Werror -I includes #-fsanitize=address
 RM = rm -rf
 
 SRCS = $(wildcard src/*.c)
 OBJS = $(patsubst src/%.c,src/%.o,$(SRCS))
 NAME = minimalianteo
 HEADER = includes/*.h
-
+READLINE = -lreadline -lhistory -L$(shell brew --prefix readline)/lib
+	
 all: $(NAME)
 
 $(NAME): $(OBJS) $(HEADER) Makefile
 	@make -C libft > /dev/null
 	@echo "🔨 Building $(NAME)..."
-	@$(CC) $(CFLAGS) $(OBJS) libft/libft.a -o $(NAME) > /dev/null
+	@$(CC) $(CFLAGS) $(OBJS) $(READLINE) libft/libft.a -o $(NAME) > /dev/null
 	@echo "✅ Done building $(NAME)!"
 
 fclean: clean
