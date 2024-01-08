@@ -6,7 +6,7 @@
 /*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 09:43:22 by kmb               #+#    #+#             */
-/*   Updated: 2024/01/07 17:27:24 by kmb              ###   ########.fr       */
+/*   Updated: 2024/01/08 08:30:18 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,10 @@ void execute_builtin_command(char **args)
 		}
 		i++;
 	}
+	// SI NO ES DE LOS BUILTINS PROGRAMADOS SE EJECTUTA DESDE EL ENV
+	if (execvp(args[0], args) == -1)
+		perror("minishell");
+	exit(EXIT_FAILURE);
 }
 
 // EJECUTA EL COMANDO ENV

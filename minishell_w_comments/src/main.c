@@ -6,7 +6,7 @@
 /*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 09:43:14 by kmb               #+#    #+#             */
-/*   Updated: 2024/01/07 17:41:19 by kmb              ###   ########.fr       */
+/*   Updated: 2024/01/08 08:31:07 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 // ASIGNANDO LAS FUNCIONES DE CADA COMANDO A SUS RESPECTIVO NOMBRES
 Command commands[] = {
 	{"echo", cmd_echo},
-	{"rev", cmd_rev},
-	{"ls", cmd_ls},
 	{"cd", cmd_cd},
 	{"pwd", cmd_pwd},
 	{"unset", cmd_unset},
