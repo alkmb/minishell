@@ -3,53 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 23:12:49 by kmb               #+#    #+#             */
-/*   Updated: 2024/01/07 16:46:39 by kmb              ###   ########.fr       */
+/*   Updated: 2024/01/09 13:56:23 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void cmd_rev(char **args)
-{
-	if (args[1] != NULL)
-	{
-		char *str = args[1];
-		int len = strlen(str);
-		for (int i = len - 1; i >= 0; i--)
-			printf("%c", str[i]);
-		printf("\n");
-	}
-	else
-	{
-		char buffer[1024];
-		while (fgets(buffer, sizeof(buffer), stdin) != NULL)
-		{
-			int len = strlen(buffer);
-			for (int i = len - 1; i >= 0; i--)
-				printf("%c", buffer[i]);
-			printf("\n");
-		}
-	}
-}
-#include <dirent.h>
-
-void cmd_ls()
-{
-	DIR *d;
-	struct dirent *dir;
-	d = opendir(".");
-	if (d)
-	{
-		while ((dir = readdir(d)) != NULL)
-		{
-			printf("%s\n", dir->d_name);
-		}
-		closedir(d);
-	}
-}
 void cmd_echo(char **args)
 {
 	int i = 1;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 09:43:14 by kmb               #+#    #+#             */
-/*   Updated: 2024/01/07 17:40:54 by kmb              ###   ########.fr       */
+/*   Updated: 2024/01/09 13:57:16 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 Command commands[] = {
 	{"echo", cmd_echo},
-	{"rev", cmd_rev},
-	{"ls", cmd_ls},
 	{"cd", cmd_cd},
 	{"pwd", cmd_pwd},
 	{"unset", cmd_unset},

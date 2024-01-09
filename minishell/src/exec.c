@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 09:43:22 by kmb               #+#    #+#             */
-/*   Updated: 2024/01/07 16:54:24 by kmb              ###   ########.fr       */
+/*   Updated: 2024/01/09 13:56:37 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,18 @@ void execute_builtin_command(char **args)
 		}
 		i++;
 	}
+	if (execvp(args[0], args) == -1)
+		perror("minishell");
+	exit(EXIT_FAILURE);
 }
 
 void execute_builtin_commandenv(char **args, char **environ)
 {
 	int i = 0;
 
-	while ( commandsenv[i].name != NULL)
+	while (commandsenv[i].name != NULL)
 	{
-		if (ft_strcmp(args[0], commandsenv[i].name) == 0)
+		if (args[0] != NULL && ft_strcmp(args[0], commandsenv[i].name) == 0)
 		{
 			commandsenv[i].func(environ);
 			return;

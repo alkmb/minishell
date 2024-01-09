@@ -6,51 +6,12 @@
 /*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 23:12:49 by kmb               #+#    #+#             */
-/*   Updated: 2024/01/07 17:31:33 by kmb              ###   ########.fr       */
+/*   Updated: 2024/01/08 08:30:08 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-// NI PUTO CASO ESTO SE VA FUERA ERA PARA PROBAR LAS PIPES
-void cmd_rev(char **args)
-{
-	if (args[1] != NULL)
-	{
-		char *str = args[1];
-		int len = strlen(str);
-		for (int i = len - 1; i >= 0; i--)
-			printf("%c", str[i]);
-		printf("\n");
-	}
-	else
-	{
-		char buffer[1024];
-		while (fgets(buffer, sizeof(buffer), stdin) != NULL)
-		{
-			int len = strlen(buffer);
-			for (int i = len - 1; i >= 0; i--)
-				printf("%c", buffer[i]);
-			printf("\n");
-		}
-	}
-}
-#include <dirent.h>
-// NI PUTO CASO ESTO SE VA FUERA ERA PARA PROBAR LAS PIPES
-void cmd_ls()
-{
-	DIR *d;
-	struct dirent *dir;
-	d = opendir(".");
-	if (d)
-	{
-		while ((dir = readdir(d)) != NULL)
-		{
-			printf("%s\n", dir->d_name);
-		}
-		closedir(d);
-	}
-}
 // COMANDO ECHO QUE IMPRIME LO QUE LE PASES
 void cmd_echo(char **args)
 {
