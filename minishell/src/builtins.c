@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 23:12:49 by kmb               #+#    #+#             */
-/*   Updated: 2024/01/09 13:56:23 by akambou          ###   ########.fr       */
+/*   Updated: 2024/01/18 02:32:40 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,24 @@
 void cmd_echo(char **args)
 {
 	int i = 1;
-	while (args[i] != NULL)
+	int newline = 0;
+
+	if (args[i] != NULL && strcmp(args[i], "-n") == 0)
 	{
-		ft_printf("%s ", args[i]);
+		newline = 1;
 		i++;
 	}
-	ft_printf("\n");
+
+	while (args[i] != NULL)
+	{
+		ft_printf("%s", args[i]);
+		if (args[i + 1] != NULL)
+			ft_printf(" ");
+		i++;
+	}
+
+	if (newline)
+		ft_printf("\n");
 }
 
 void cmd_cd(char **args)

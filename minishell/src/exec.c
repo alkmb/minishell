@@ -3,14 +3,64 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 09:43:22 by kmb               #+#    #+#             */
-/*   Updated: 2024/01/09 13:56:37 by akambou          ###   ########.fr       */
+/*   Updated: 2024/01/18 07:56:59 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+char *find_command(char *command)
+{
+	char *path = getenv("PATH");
+	char *path_copy = strdup(path);
+	char *dir = strtok(path_copy, ":");
+	char *cmd_path = malloc(strlen(dir) + strlen(command) + 2);
+
+	while (dir != NULL)
+	{
+		sprintf(cmd_path, "%s/%s", dir, command);
+		if (access(cmd_path, X_OK) == 0)
+		{
+			free(path_copy);
+			return cmd_path;
+		}
+		dir = strtok(NULL, ":");
+	}
+
+	free(path_copy);
+	free(cmd_path);
+	return NULL;
+}
+
+int execute_external_command(char **args)
+{
+	char *cmd_path = find_command(args[0]);
+	if (cmd_path != NULL)
+	{
+		pid_t pid = fork();
+		if (pid == -1)
+			return 0;
+		else if (pid > 0)
+		{
+			int status;
+			waitpid(pid, &status, 0);
+		}
+		else
+		{
+			if (execve(cmd_path, args, environ) == -1)
+			{
+				return 0;
+				perror("minishell");
+			}
+			exit(EXIT_FAILURE);
+		}
+		free(cmd_path);
+	}
+	return 1;
+}
 
 void execute_builtin_command(char **args)
 {
@@ -25,9 +75,8 @@ void execute_builtin_command(char **args)
 		}
 		i++;
 	}
-	if (execvp(args[0], args) == -1)
-		perror("minishell");
-	exit(EXIT_FAILURE);
+	if (execute_external_command(args) == 0)
+		fprintf(stderr, "%s: command not found\n", args[0]);
 }
 
 void execute_builtin_commandenv(char **args, char **environ)
@@ -41,6 +90,8 @@ void execute_builtin_commandenv(char **args, char **environ)
 			commandsenv[i].func(environ);
 			return;
 		}
+		else if (ft_strcmp(args[0], "exit") == 0)
+			exit(0);
 		i++;
 	}
 }
@@ -53,10 +104,4 @@ void cmd_env(char **environ)
 		ft_printf("%s\n", env_var);
 		env_var = *(environ++);
 	}
-}
-
-void handle_sigint(int sig)
-{
-	ft_printf("%s@minimalianteo$ ", getenv("USER"));
-	ft_printf("%d\n", sig);
 }
