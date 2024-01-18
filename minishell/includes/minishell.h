@@ -6,7 +6,7 @@
 /*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 21:26:12 by kmb               #+#    #+#             */
-/*   Updated: 2024/01/18 08:05:02 by kmb              ###   ########.fr       */
+/*   Updated: 2024/01/18 08:56:36 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ typedef struct {
 	char *name;
 	void (*func)(char **);
 } Command;
+
 /*---------------------------------------------------------------------------------*/
 extern char			**environ;
 extern				Command commands[];
@@ -83,6 +84,5 @@ void				chose_pipe(char *commands[], int n);
 /*---------------TOKENIZATION---------------------------------------------------*/
 char				**token_pipe_cmd(char *command[], int n);
 char				**token_single_cmd(char *command[], int n);
-
 
 #endif

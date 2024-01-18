@@ -6,7 +6,7 @@
 /*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 09:43:22 by kmb               #+#    #+#             */
-/*   Updated: 2024/01/18 07:56:59 by kmb              ###   ########.fr       */
+/*   Updated: 2024/01/18 16:26:28 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,16 @@ char *find_command(char *command)
 	char *path = getenv("PATH");
 	char *path_copy = strdup(path);
 	char *dir = strtok(path_copy, ":");
-	char *cmd_path = malloc(strlen(dir) + strlen(command) + 2);
+
+	// Calculate the maximum possible length for cmd_path
+	int max_length = strlen(path) + 2 * strlen(command) + 2;
+	char *cmd_path = malloc(max_length);
 
 	while (dir != NULL)
 	{
-		sprintf(cmd_path, "%s/%s", dir, command);
+		strlcpy(cmd_path, dir, strlen(dir) + 1);
+		strcat(cmd_path, "/");
+		strlcat(cmd_path, command, max_length);
 		if (access(cmd_path, X_OK) == 0)
 		{
 			free(path_copy);
@@ -76,7 +81,9 @@ void execute_builtin_command(char **args)
 		i++;
 	}
 	if (execute_external_command(args) == 0)
-		fprintf(stderr, "%s: command not found\n", args[0]);
+	{
+		ft_printf("minishell: command not found: %s\n", args[0]);
+	}
 }
 
 void execute_builtin_commandenv(char **args, char **environ)

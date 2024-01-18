@@ -6,7 +6,7 @@
 /*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 16:58:05 by kmb               #+#    #+#             */
-/*   Updated: 2024/01/18 08:06:15 by kmb              ###   ########.fr       */
+/*   Updated: 2024/01/18 16:51:01 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,114 @@ void parse_command(char *input, CommandHistory* history)
 
 	int i = 0;
 	char *commands[7];
+	int is_malloced[7] = {0};
 
 	commands[i] = ft_strtok(input, "|");
 	while (commands[i] != NULL)
 	{
+		int j = 0;
+		while (commands[i][j] != '\0')
+		{
+			if (commands[i][j] == '$')
+			{
+				char var_name[20];
+				int var_name_len = 0;
+				j++;
+				while (isalnum(commands[i][j]) || commands[i][j] == '_') {
+					var_name[var_name_len++] = commands[i][j++];
+				}
+				var_name[var_name_len] = '\0';
+				char *var_value = getenv(var_name);
+				if (var_value != NULL) {
+					char *new_command = malloc(strlen(commands[i]) - var_name_len + strlen(var_value) + 1);
+					strncpy(new_command, commands[i], j - var_name_len - 1);
+					strcpy(new_command + j - var_name_len - 1, var_value);
+					strcpy(new_command + j - var_name_len - 1 + strlen(var_value), commands[i] + j);
+					if (is_malloced[i]) {
+						free(commands[i]);
+					}
+					commands[i] = new_command;
+					is_malloced[i] = 1;
+				}
+			}
+			else
+				j++;
+		}
 		i++;
 		commands[i] = ft_strtok(NULL, "|");
 	}
 	chose_command(commands, i - 1);
+	int j = 0;
+	while (j <= i)
+	{
+		if (is_malloced[j])
+			free(commands[j]);
+		j++;
+	}
+}
+
+void handle_here_document(char *delimiter)
+{
+	char *line;
+	while ((line = readline("")) != NULL) {
+		if (strcmp(line, delimiter) == 0) {
+			free(line);
+			break;
+		}
+		free(line);
+	}
+}
+
+char **handle_redirection(char **args, int *orig_stdin, int *orig_stdout)
+{
+	int i = 0;
+	*orig_stdin = dup(STDIN_FILENO);
+	*orig_stdout = dup(STDOUT_FILENO);
+
+	while (args[i] != NULL) {
+		if (strcmp(args[i], ">") == 0 || strcmp(args[i], "<") == 0 || strcmp(args[i], ">>") == 0 || strcmp(args[i], "<<") == 0) {
+			int fd;
+			if (strcmp(args[i], ">") == 0)
+			{
+				fd = open(args[i+1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+				dup2(fd, STDOUT_FILENO);
+			}
+			else if (strcmp(args[i], "<") == 0)
+			{
+				fd = open(args[i+1], O_RDONLY);
+				dup2(fd, STDIN_FILENO);
+			}
+			else if (strcmp(args[i], ">>") == 0)
+			{
+				fd = open(args[i+1], O_WRONLY | O_CREAT | O_APPEND, 0644);
+				dup2(fd, STDOUT_FILENO);
+			}
+			else if (strcmp(args[i], "<<") == 0)
+			{
+				handle_here_document(args[i+1]);
+			}
+			if (fd != -1) {
+				close(fd);
+			}
+			int j = i;
+			while (args[j] != NULL)
+			{
+				args[j] = args[j + 2];
+				j++;
+			}
+		} else
+			i++;
+	}
+
+	return args;
+}
+
+void restore_io(int orig_stdin, int orig_stdout)
+{
+	dup2(orig_stdin, STDIN_FILENO);
+	dup2(orig_stdout, STDOUT_FILENO);
+	close(orig_stdin);
+	close(orig_stdout);
 }
 
 void chose_command(char *commands[], int n)
@@ -34,10 +134,14 @@ void chose_command(char *commands[], int n)
 		return;
 	if (n == 0 && commands[1] != NULL)
 	{
+		int orig_stdin;
+		int orig_stdout;
 		char **args;
 		args = token_single_cmd(commands, 0);
+		args = handle_redirection(args, &orig_stdin, &orig_stdout);
 		execute_builtin_commandenv(args, environ);
 		execute_builtin_command(args);
+		restore_io(STDIN_FILENO, STDOUT_FILENO);
 		return;
 	}
 	else
@@ -45,10 +149,14 @@ void chose_command(char *commands[], int n)
 }
 void	execute_pipe(int fd[2], char **args)
 {
+			int orig_stdin;
+			int orig_stdout;
+			args = handle_redirection(args, &orig_stdin, &orig_stdout);
 			close(fd[0]);
 			close(fd[1]);
 			execute_builtin_commandenv(args, environ);
 			execute_builtin_command(args);
+			restore_io(STDIN_FILENO, STDOUT_FILENO);
 			exit(EXIT_SUCCESS);
 }
 
