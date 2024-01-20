@@ -6,15 +6,15 @@
 /*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 22:18:23 by akambou           #+#    #+#             */
-/*   Updated: 2024/01/06 15:30:14 by kmb              ###   ########.fr       */
+/*   Updated: 2024/01/20 21:48:47 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/libft.h"
 
-size_t	ft_strlen(const char *str)
+int	ft_strlen(const char *str)
 {
-	size_t	i;
+	int	i;
 
 	i = 0;
 	if (!str)

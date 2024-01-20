@@ -6,39 +6,110 @@
 /*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 07:25:30 by kmb               #+#    #+#             */
-/*   Updated: 2024/01/18 14:04:17 by kmb              ###   ########.fr       */
+/*   Updated: 2024/01/20 22:20:07 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	**token_single_cmd(char *commands[], int n)
-{
+char **token_single_cmd(char *commands[], int n) {
 	int i = 0;
-	char **args =(char **)malloc(MAX_ARGS * sizeof(char*));
+	char **args = (char **)malloc(MAX_ARGS * sizeof(char*));
+	char *command = commands[n];
+	char *current_token = malloc(1000 * sizeof(char));
+	int is_single_quote = 0;
+	int is_double_quote = 0;
+	int char_index = 0;
 
-	args[i] = ft_strtok(commands[n], " ");
-	while (args[i] != NULL)
-	{
-		i++;
-		args[i] = ft_strtok(NULL, " ");
+	for (int j = 0; j < ft_strlen(command); j++) {
+		char character = command[j];
+		if (character == '\'') {
+			is_single_quote = !is_single_quote;
+			if (!is_single_quote && char_index != 0) {
+				current_token[char_index] = '\0';
+				args[i++] = strdup(current_token);
+				char_index = 0;
+			}
+		} else if (character == '\"') {
+			is_double_quote = !is_double_quote;
+			if (!is_double_quote && char_index != 0) {
+				current_token[char_index] = '\0';
+				args[i++] = strdup(current_token);
+				char_index = 0;
+			}
+		} else if ((character == ' ' || character == '\t') && !is_single_quote && !is_double_quote) {
+			if (char_index != 0) {
+				current_token[char_index] = '\0';
+				args[i++] = strdup(current_token);
+				char_index = 0;
+			}
+		} else {
+			if (character == '$' && !is_single_quote && is_double_quote) {
+				// Handle variable substitution
+				// You need to implement this part based on your shell's environment variables
+			} else {
+				current_token[char_index++] = character;
+			}
+		}
 	}
+
+	if (char_index != 0) {
+		current_token[char_index] = '\0';
+		args[i++] = strdup(current_token);
+	}
+
 	args[i] = NULL;
+	free(current_token);
 	return args;
 }
-char	**token_pipe_cmd(char *commands[], int n)
-{
 
+char **token_pipe_cmd(char *commands[], int n) {
 	int i = 0;
-	char **args =(char **)malloc(MAX_ARGS * sizeof(char*));
-	char *saveptr;
+	char **args = (char **)malloc(MAX_ARGS * sizeof(char*));
+	char *command = commands[n];
+	char *current_token = malloc(1000 * sizeof(char));
+	int is_single_quote = 0;
+	int is_double_quote = 0;
+	int char_index = 0;
 
-	args[i] = ft_strtok_r(commands[n], " ", &saveptr);
-	while (args[i] != NULL)
-	{
-		i++;
-		args[i] = ft_strtok_r(NULL, " ", &saveptr);
+	for (int j = 0; j < ft_strlen(command); j++) {
+		char character = command[j];
+		if (character == '\'') {
+			is_single_quote = !is_single_quote;
+			if (!is_single_quote && char_index != 0) {
+				current_token[char_index] = '\0';
+				args[i++] = strdup(current_token);
+				char_index = 0;
+			}
+		} else if (character == '\"') {
+			is_double_quote = !is_double_quote;
+			if (!is_double_quote && char_index != 0) {
+				current_token[char_index] = '\0';
+				args[i++] = strdup(current_token);
+				char_index = 0;
+			}
+		} else if ((character == ' ' || character == '\t') && !is_single_quote && !is_double_quote) {
+			if (char_index != 0) {
+				current_token[char_index] = '\0';
+				args[i++] = strdup(current_token);
+				char_index = 0;
+			}
+		} else {
+			if (character == '$' && !is_single_quote && is_double_quote) {
+				// Handle variable substitution
+				// You need to implement this part based on your shell's environment variables
+			} else {
+				current_token[char_index++] = character;
+			}
+		}
 	}
+
+	if (char_index != 0) {
+		current_token[char_index] = '\0';
+		args[i++] = strdup(current_token);
+	}
+
 	args[i] = NULL;
+	free(current_token);
 	return args;
 }

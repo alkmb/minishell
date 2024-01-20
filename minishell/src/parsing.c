@@ -6,11 +6,27 @@
 /*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 16:58:05 by kmb               #+#    #+#             */
-/*   Updated: 2024/01/18 16:51:01 by kmb              ###   ########.fr       */
+/*   Updated: 2024/01/20 22:31:18 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+int		is_single_quote(char *str, int index)
+{
+	int i = 0;
+	int count = 0;
+	while (i < index)
+	{
+		if (str[i] == '\'')
+			count++;
+		i++;
+	}
+	if (count % 2 == 0)
+		return (0);
+	else
+		return (1);
+}
 
 void parse_command(char *input, CommandHistory* history)
 {
@@ -26,7 +42,7 @@ void parse_command(char *input, CommandHistory* history)
 		int j = 0;
 		while (commands[i][j] != '\0')
 		{
-			if (commands[i][j] == '$')
+			if (commands[i][j] == '$' && (is_single_quote(commands[i], j)== 0))
 			{
 				char var_name[20];
 				int var_name_len = 0;
@@ -197,7 +213,10 @@ void chose_pipe(char *commands[], int n)
 				close(fd[1]);
 			}
 		}
-		free(args);
+		for (int i = 0; args[i] != NULL; i++) {
+        	free(args[i]);
+    	}
+    	free(args);
 		i++;
 	}
 }
