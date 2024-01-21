@@ -6,7 +6,7 @@
 /*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 09:43:22 by kmb               #+#    #+#             */
-/*   Updated: 2024/01/18 16:26:28 by kmb              ###   ########.fr       */
+/*   Updated: 2024/01/21 05:08:21 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ char *find_command(char *command)
 	char *path_copy = strdup(path);
 	char *dir = strtok(path_copy, ":");
 
-	// Calculate the maximum possible length for cmd_path
 	int max_length = strlen(path) + 2 * strlen(command) + 2;
 	char *cmd_path = malloc(max_length);
 

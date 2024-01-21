@@ -6,7 +6,7 @@
 /*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 09:43:14 by kmb               #+#    #+#             */
-/*   Updated: 2024/01/18 16:12:09 by kmb              ###   ########.fr       */
+/*   Updated: 2024/01/21 06:05:57 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,11 @@ int main(void)
 		{
 			printf("%s", cmd_history(history));
 			continue;
+		}
+		if (ft_strcmp(input, "exit") == 0)
+		{
+			free(input);
+			exit(EXIT_SUCCESS);
 		}
 		parse_command(input, history);
 		free(input);

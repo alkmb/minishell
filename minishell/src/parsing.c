@@ -6,7 +6,7 @@
 /*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 16:58:05 by kmb               #+#    #+#             */
-/*   Updated: 2024/01/20 22:31:18 by kmb              ###   ########.fr       */
+/*   Updated: 2024/01/21 06:07:13 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,15 +82,37 @@ void parse_command(char *input, CommandHistory* history)
 
 void handle_here_document(char *delimiter)
 {
-	char *line;
-	while ((line = readline("")) != NULL) {
-		if (strcmp(line, delimiter) == 0) {
-			free(line);
-			break;
-		}
-		free(line);
-	}
+    char *line;
+    char *input_buffer = NULL;
+    size_t buffer_size = 0;
+
+    printf("heredoc> ");
+    while (getline(&line, &buffer_size, stdin) != -1) {
+        line[strcspn(line, "\n")] = '\0';
+
+        if (strcmp(line, delimiter) == 0) {
+            free(line);
+            break;
+        }
+
+        if (input_buffer == NULL) {
+            input_buffer = strdup(line);
+        } else {
+            size_t current_len = strlen(input_buffer);
+            size_t new_len = current_len + strlen(line) + 2;
+            input_buffer = realloc(input_buffer, new_len);
+            strcat(input_buffer, "\n");
+            strcat(input_buffer, line);
+        }
+
+        printf("heredoc> ");
+    }
+    if (input_buffer != NULL) {
+        printf("Here document content:\n%s\n", input_buffer);
+        free(input_buffer);
+    }
 }
+
 
 char **handle_redirection(char **args, int *orig_stdin, int *orig_stdout)
 {
@@ -119,6 +141,7 @@ char **handle_redirection(char **args, int *orig_stdin, int *orig_stdout)
 			else if (strcmp(args[i], "<<") == 0)
 			{
 				handle_here_document(args[i+1]);
+				exit(EXIT_SUCCESS);
 			}
 			if (fd != -1) {
 				close(fd);

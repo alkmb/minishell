@@ -6,7 +6,7 @@
 /*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 07:25:30 by kmb               #+#    #+#             */
-/*   Updated: 2024/01/20 22:20:07 by kmb              ###   ########.fr       */
+/*   Updated: 2024/01/21 06:08:28 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,35 +27,29 @@ char **token_single_cmd(char *commands[], int n) {
 			is_single_quote = !is_single_quote;
 			if (!is_single_quote && char_index != 0) {
 				current_token[char_index] = '\0';
-				args[i++] = strdup(current_token);
+				args[i++] = ft_strdup(current_token);
 				char_index = 0;
 			}
 		} else if (character == '\"') {
 			is_double_quote = !is_double_quote;
 			if (!is_double_quote && char_index != 0) {
 				current_token[char_index] = '\0';
-				args[i++] = strdup(current_token);
+				args[i++] = ft_strdup(current_token);
 				char_index = 0;
 			}
 		} else if ((character == ' ' || character == '\t') && !is_single_quote && !is_double_quote) {
 			if (char_index != 0) {
 				current_token[char_index] = '\0';
-				args[i++] = strdup(current_token);
+				args[i++] = ft_strdup(current_token);
 				char_index = 0;
 			}
-		} else {
-			if (character == '$' && !is_single_quote && is_double_quote) {
-				// Handle variable substitution
-				// You need to implement this part based on your shell's environment variables
-			} else {
-				current_token[char_index++] = character;
-			}
 		}
+		else
+			current_token[char_index++] = character;
 	}
-
 	if (char_index != 0) {
 		current_token[char_index] = '\0';
-		args[i++] = strdup(current_token);
+		args[i++] = ft_strdup(current_token);
 	}
 
 	args[i] = NULL;
@@ -78,38 +72,33 @@ char **token_pipe_cmd(char *commands[], int n) {
 			is_single_quote = !is_single_quote;
 			if (!is_single_quote && char_index != 0) {
 				current_token[char_index] = '\0';
-				args[i++] = strdup(current_token);
+				args[i++] = ft_strdup(current_token);
 				char_index = 0;
 			}
 		} else if (character == '\"') {
 			is_double_quote = !is_double_quote;
 			if (!is_double_quote && char_index != 0) {
 				current_token[char_index] = '\0';
-				args[i++] = strdup(current_token);
+				args[i++] = ft_strdup(current_token);
 				char_index = 0;
 			}
 		} else if ((character == ' ' || character == '\t') && !is_single_quote && !is_double_quote) {
 			if (char_index != 0) {
 				current_token[char_index] = '\0';
-				args[i++] = strdup(current_token);
+				args[i++] = ft_strdup(current_token);
 				char_index = 0;
 			}
-		} else {
-			if (character == '$' && !is_single_quote && is_double_quote) {
-				// Handle variable substitution
-				// You need to implement this part based on your shell's environment variables
-			} else {
+		}
+		else
+		{
 				current_token[char_index++] = character;
-			}
 		}
 	}
-
-	if (char_index != 0) {
-		current_token[char_index] = '\0';
-		args[i++] = strdup(current_token);
-	}
-
-	args[i] = NULL;
+    if (char_index != 0) {
+        current_token[char_index] = '\0';
+        args[i++] = ft_strdup(current_token);
+    }
+    args[i] = NULL;
 	free(current_token);
-	return args;
+    return args;
 }
