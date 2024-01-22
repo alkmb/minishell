@@ -1,8 +1,0 @@
-{
-	"files.associations": {
-		"minishell.h": "c",
-		"cstdlib": "c",
-		"random": "c"
-	},
-	"C_Cpp.errorSquiggles": "disabled"
-}
