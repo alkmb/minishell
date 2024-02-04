@@ -6,12 +6,12 @@
 #    By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/18 07:48:42 by kmb               #+#    #+#              #
-#    Updated: 2024/01/18 07:48:43 by kmb              ###   ########.fr        #
+#    Updated: 2024/02/01 10:40:16 by gprada-t         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -fsanitize=address -lreadline -I includes
+CFLAGS = -fsanitize=address -I includes -lreadline#-Wall -Wextra -Werror -lreadline -I includes
 RM = rm -rf
 
 SRCS = $(wildcard src/*.c)

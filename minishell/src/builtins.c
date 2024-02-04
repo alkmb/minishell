@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 23:12:49 by kmb               #+#    #+#             */
-/*   Updated: 2024/01/22 03:16:00 by kmb              ###   ########.fr       */
+/*   Updated: 2024/02/04 04:00:18 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,17 +68,18 @@ int	cmd_pwd(void)
 int	cmd_unset(char **args)
 {
 	int	i;
+	int	j;
 
 	if (args[1] != NULL)
 	{
 		i = 0;
 		while (environ[i])
 		{
-			if (ft_strncmp(environ[i], args[1], ft_strlen(args[1])) == 0 \
-				&& environ[i][ft_strlen(args[1])] == '=')
+			if (ft_strcmp(environ[i], args[1]) == 0)
 			{
-				while (environ[++i])
-					environ[i] = environ[i + 1];
+				free(environ[i]);  // Free the memory for the variable
+				for (j = i; environ[j]; j++)
+					environ[j] = environ[j + 1];
 				break ;
 			}
 			i++;
@@ -95,6 +96,8 @@ int	cmd_unset(char **args)
 int	cmd_export(char **args)
 {
 	char	**env;
+	char	*name;
+	int	i;
 
 	env = environ;
 	if (args[1] == NULL)
@@ -107,5 +110,28 @@ int	cmd_export(char **args)
 		return (0);
 	}
 	else
-		return (127);
+	{
+		i = 1;
+		while (args[i] != NULL)
+		{
+			name = args[i];
+			int j;
+			j = 0;
+			while ( environ[j] != NULL)
+				j++;
+			char **new_environ = malloc((j + 2) * sizeof(char *));
+			int k = 0;
+			while ( k < j)
+			{
+				new_environ[k] = environ[k];
+				++k;
+			}
+			new_environ[j] = strdup(name);
+			new_environ[j + 1] = NULL;
+			free(environ);
+			environ = new_environ;
+			i++;
+		}
+	}
+	return (0);
 }
