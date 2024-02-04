@@ -6,7 +6,7 @@
 /*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 23:12:49 by kmb               #+#    #+#             */
-/*   Updated: 2024/02/04 04:00:18 by akambou          ###   ########.fr       */
+/*   Updated: 2024/02/05 00:08:00 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	cmd_echo(char **args)
 	}
 	while (args[i] != NULL)
 	{
-		ft_printf("%s", args[i]);
+		fprintf(stderr, "%s", args[i]);
 		if (args[i + 1] != NULL)
 			ft_printf(" ");
 		i++;
@@ -38,13 +38,31 @@ int	cmd_echo(char **args)
 
 int	cmd_cd(char **args)
 {
+	char *path;
+
 	if (args[1] != NULL)
 	{
-		if (chdir(args[1]) != 0)
+		if (args[1][0] == '~')
 		{
-			perror(args[1]);
+			path = malloc(strlen(getenv("HOME")) + strlen(args[1]));
+			strcpy(path, getenv("HOME"));
+			strcat(path, args[1] + 1); // +1 to skip the '~'
+		}
+		else
+		{
+			path = args[1];
+		}
+
+		if (chdir(path) != 0)
+		{
+			perror(path);
+			if (args[1][0] == '~')
+				free(path); // Free the allocated memory if we allocated any
 			return (127);
 		}
+
+		if (args[1][0] == '~')
+			free(path); // Free the allocated memory if we allocated any
 	}
 	else
 		chdir(getenv("HOME"));
@@ -69,25 +87,30 @@ int	cmd_unset(char **args)
 {
 	int	i;
 	int	j;
+	char *name;
+	char *env_var;
 
 	if (args[1] != NULL)
 	{
 		i = 0;
 		while (environ[i])
 		{
-			if (ft_strcmp(environ[i], args[1]) == 0)
+			env_var = strdup(environ[i]);
+			name = strtok(env_var, "=");
+			if (ft_strcmp(name, args[1]) == 0)
 			{
-				free(environ[i]);  // Free the memory for the variable
 				for (j = i; environ[j]; j++)
 					environ[j] = environ[j + 1];
+				free(env_var);
 				break ;
 			}
+			free(env_var);
 			i++;
 		}
 	}
 	else
 	{
-		ft_printf("Usage: unset variable_name\n");
+		fprintf(stderr, "unset: not enough arguments\n");
 		return (127);
 	}
 	return (0);
@@ -97,6 +120,7 @@ int	cmd_export(char **args)
 {
 	char	**env;
 	char	*name;
+	char    *value;
 	int	i;
 
 	env = environ;
@@ -114,7 +138,11 @@ int	cmd_export(char **args)
 		i = 1;
 		while (args[i] != NULL)
 		{
-			name = args[i];
+			name = strtok(args[i], "=");
+			value = strtok(NULL, "=");
+			if (value == NULL)
+				value = "";
+
 			int j;
 			j = 0;
 			while ( environ[j] != NULL)
@@ -126,7 +154,8 @@ int	cmd_export(char **args)
 				new_environ[k] = environ[k];
 				++k;
 			}
-			new_environ[j] = strdup(name);
+			new_environ[j] = malloc(strlen(name) + strlen(value) + 2);
+			sprintf(new_environ[j], "%s=%s", name, value);
 			new_environ[j + 1] = NULL;
 			free(environ);
 			environ = new_environ;

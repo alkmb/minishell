@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 09:57:37 by kmb               #+#    #+#             */
-/*   Updated: 2024/02/01 10:40:00 by gprada-t         ###   ########.fr       */
+/*   Updated: 2024/02/04 23:59:14 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	handle_sigint(int sig)
 	{
 		ft_printf("\n");
 		rl_on_new_line();
-		//rl_replace_line("", 0);
+		rl_replace_line("", 0);
 		rl_redisplay();
 	}
 }
@@ -77,6 +77,9 @@ int	chose_built_in(char **args, int *exit_status)
 	else if (ft_strcmp(args[0], "$?") == 0)
 		printf("%d\n", *exit_status);
 	else
+	{
+		*exit_status = 127;
 		return (127);
+	}
 	return (0);
 }

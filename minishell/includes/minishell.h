@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 21:26:12 by kmb               #+#    #+#             */
-/*   Updated: 2024/01/22 16:18:00 by gprada-t         ###   ########.fr       */
+/*   Updated: 2024/02/04 23:06:07 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ void				add_to_history(t_commandhistory *history, char *command);
 char				*get_from_history(t_commandhistory *history, int index);
 void				destroy_history(t_commandhistory *history);
 t_commandhistory	*create_history(void);
+void				free_history(t_commandhistory *history);
 /*---------------EXEC-----------------------------------------*/
 char				*find_command(char *command);
 void				execute_builtin_command(char **args, int *exit_status);
@@ -68,7 +69,7 @@ void				execute_builtin_commandenv(char **args, char **environ);
 void				parse_command(char *input, t_commandhistory *history);
 void				chose_command(char *commands[], int n);
 void				chose_pipe(char *commands[], int n);
-/*---------------TOKENIZATION---------------------------------*/
+/*---------------LEXER---------------------------------*/
 char				**token_pipe_cmd(char *command[], int n);
 /*---------------REDIRECTION---------------------------------*/
 void				handle_here_document(char *delimiter);
@@ -82,5 +83,8 @@ void				handle_sigint(int sig);
 void				print_header(void);
 void				free_malloced(char *commands[], int is_malloced[], int i);
 int					chose_built_in(char **args, int *exit_status);
+/*---------------VARIABLE EXPANSION---------------------------------*/
+void				handle_variable_expansion(char *commands[], int i, int *j, \
+					int *is_malloced, char var_name[]);
 
 #endif

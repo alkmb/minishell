@@ -3,14 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   history.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 09:43:26 by kmb               #+#    #+#             */
-/*   Updated: 2024/01/21 09:54:09 by kmb              ###   ########.fr       */
+/*   Updated: 2024/02/04 04:45:05 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+void free_history(t_commandhistory *history) {
+	int i;
+	for (i = 0; i < history->index; i++) {
+		free(history->commands[i % MAX_HISTORY]);
+	}
+	free(history);
+}
 
 t_commandhistory	*create_history(void)
 {
@@ -18,9 +26,9 @@ t_commandhistory	*create_history(void)
 	int					i;
 
 	i = 0;
-	history = malloc(sizeof(t_commandhistory));
+	history = malloc((sizeof(t_commandhistory) - 1));
 	history->index = 0;
-	while (i < MAX_HISTORY)
+	while (i < MAX_HISTORY - 1)
 	{
 		history->commands[i] = NULL;
 		i++;

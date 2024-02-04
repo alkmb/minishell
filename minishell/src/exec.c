@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 09:43:22 by kmb               #+#    #+#             */
-/*   Updated: 2024/01/22 03:14:05 by kmb              ###   ########.fr       */
+/*   Updated: 2024/02/05 00:01:52 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,15 @@ char	*find_command(char *command)
 	dir = ft_strtok(path_copy, ":");
 	max_length = ft_strlen(path) + 2 * ft_strlen(command) + 2;
 	cmd_path = malloc(max_length);
+	if (command[0] == '/' || command[0] == '.')
+	{
+		if (access(command, X_OK) == 0)
+		{
+			free(cmd_path);
+			free(path_copy);
+			return (ft_strdup(command));
+		}
+	}
 	while (dir != NULL)
 	{
 		ft_strlcpy(cmd_path, dir, strlen(dir) + 1);
@@ -65,6 +74,11 @@ int	execute_external_command(char **args)
 			}
 		}
 	}
+	else
+	{
+		free(cmd_path);
+		return (127);
+	}
 	return (127);
 }
 
@@ -75,7 +89,14 @@ void	execute_builtin_command(char **args, int *exit_status)
 		*exit_status = chose_built_in(args, exit_status);
 	}
 	if (*exit_status != 0)
+	{
 		*exit_status = execute_external_command(args);
+		if (*exit_status == 127)
+		{
+			ft_printf("minishell: %s: command not found\n", args[0]);
+		}
+		exit_status = 0;
+	}
 }
 
 void	execute_builtin_commandenv(char **args, char **environ)
@@ -89,11 +110,6 @@ void	execute_builtin_commandenv(char **args, char **environ)
 		{
 			cmd_env(environ);
 			return ;
-		}
-		else if (ft_strcmp(args[0], "exit") == 0)
-		{
-			ft_printf("exit\n");
-			exit(EXIT_SUCCESS);
 		}
 		i++;
 	}

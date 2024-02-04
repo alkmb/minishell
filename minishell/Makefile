@@ -16,7 +16,7 @@ RM = rm -rf
 
 SRCS = $(wildcard src/*.c)
 OBJS = $(patsubst src/%.c,obj/%.o,$(SRCS))
-NAME = MiniShell
+NAME = minishell
 HEADER = includes/*.h
 
 all: $(NAME)
