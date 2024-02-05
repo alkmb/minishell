@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 09:09:46 by kmb               #+#    #+#             */
-/*   Updated: 2024/01/22 03:42:26 by kmb              ###   ########.fr       */
+/*   Updated: 2024/02/05 04:32:17 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,9 @@ void	handle_here_document(char *delimiter)
 
 	input_buffer = NULL;
 	ft_printf("> ");
-	while ((line = readline("")) != NULL)
+	while (line != NULL)
 	{
+		line = readline("");
 		if (ft_strcmp(line, delimiter) == 0)
 		{
 			free(line);
@@ -101,6 +102,7 @@ char	**handle_redirection(char **args, int *orig_stdin, int *orig_stdout)
 			j = i;
 			while (args[j] != NULL)
 			{
+				free(args[j]);
 				args[j] = args[j + 2];
 				j++;
 			}

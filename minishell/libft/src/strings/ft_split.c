@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/16 14:23:50 by mgraaf            #+#    #+#             */
-/*   Updated: 2024/01/20 21:50:43 by kmb              ###   ########.fr       */
+/*   Updated: 2024/02/05 00:18:25 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	count_c(char const *s, char c)
 {
 	int	i;
-	int		c_count;
+	int	c_count;
 
 	i = 0;
 	c_count = 0;

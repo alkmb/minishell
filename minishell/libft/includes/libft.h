@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 22:20:09 by akambou           #+#    #+#             */
-/*   Updated: 2024/01/20 21:49:12 by kmb              ###   ########.fr       */
+/*   Updated: 2024/02/05 00:25:46 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@
 # include <limits.h>
 # include <fcntl.h>
 # include <stdarg.h>
-
 
 typedef struct s_list
 {
@@ -60,11 +59,11 @@ void	*ft_memmove(void *dst, const void *src, size_t len);
 void	*ft_memchr(const void *s, int c, size_t n);
 void	*ft_memset(void *b, int c, size_t len);
 /*-------------------------------STRINGS----------------------------------*/
-int	ft_strlen(const char *str);
+int		ft_strlen(const char *str);
 size_t	ft_strlcpy(char *dest, const char *src, size_t len);
 size_t	ft_strlcat(char *dest, const char *src, size_t size);
-size_t  ft_strspn(char *str, const char *str2);
-size_t  ft_strcspn(char *str, const char *str2);
+size_t	ft_strspn(char *str, const char *str2);
+size_t	ft_strcspn(char *str, const char *str2);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 int		ft_strcmp(const char *s1, const char *s2);
 void	ft_striteri(char *s, void (*f)(unsigned int, char*));

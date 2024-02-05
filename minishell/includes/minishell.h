@@ -6,7 +6,7 @@
 /*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 21:26:12 by kmb               #+#    #+#             */
-/*   Updated: 2024/02/04 23:06:07 by akambou          ###   ########.fr       */
+/*   Updated: 2024/02/05 03:52:28 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 /*------------------------------------------------------------------------*/
-# include <string.h>
 /*-----------------------------------------DEFINES-----------------------*/
 # define MAX_INPUT_SIZE 1024
 # define MAX_HISTORY 100
@@ -42,6 +41,14 @@ typedef struct CommandHistory
 	char	*commands[MAX_HISTORY];
 	int		index;
 }t_commandhistory;
+
+typedef struct ExpansionData
+{
+	char	**commands;
+	int		i;
+	int		*j;
+	int		*is_malloced;
+}t_expansiondata;
 
 /*-------------------------------------------------------------*/
 extern char			**environ;
@@ -61,14 +68,14 @@ t_commandhistory	*create_history(void);
 void				free_history(t_commandhistory *history);
 /*---------------EXEC-----------------------------------------*/
 char				*find_command(char *command);
+char				*find_command_in_path(char *command, char \
+					*path_copy, int max_length);
 void				execute_builtin_command(char **args, int *exit_status);
 int					execute_external_command(char **args);
-void				execute_pipe(int fd[2], char **args);
 void				execute_builtin_commandenv(char **args, char **environ);
 /*---------------PARSER--------------------------------------------*/
 void				parse_command(char *input, t_commandhistory *history);
 void				chose_command(char *commands[], int n);
-void				chose_pipe(char *commands[], int n);
 /*---------------LEXER---------------------------------*/
 char				**token_pipe_cmd(char *command[], int n);
 /*---------------REDIRECTION---------------------------------*/
@@ -81,10 +88,34 @@ int					is_single_quote(char *str, int index);
 void				restore_io(int orig_stdin, int orig_stdout);
 void				handle_sigint(int sig);
 void				print_header(void);
+void				execute_child_process(char *cmd_path, char **args);
 void				free_malloced(char *commands[], int is_malloced[], int i);
 int					chose_built_in(char **args, int *exit_status);
-/*---------------VARIABLE EXPANSION---------------------------------*/
-void				handle_variable_expansion(char *commands[], int i, int *j, \
-					int *is_malloced, char var_name[]);
+void				print_environment(char **env);
+void				add_to_environment(char **args);
+char				**create_new_environment(int j, char *name, char *value);
+int					find_env_var(char **args);
+void				unset_env_var(int index);
+void				chose_command(char *commands[], int n);
+void				initialize_expansion_data(t_expansiondata \
+					*expansionData, \
+					char **commands, int i, int *is_malloced);
+void				handle_commands(char **commands, t_expansiondata \
+					*expansionData, char *var_name);
+void				free_malloced_commands(char **commands, \
+					int *is_malloced, int i);
+void				handle_builtin_commands(char **args);
+void				initialize_variables(int *i, int *fd_in);
+void				free_args(char **args);
+void				free_environment(char **enviroment, int size);
 
+/*---------------PIPES---------------------------------*/
+void				handle_parent_process(int *fd_in, int *fd);
+void				handle_child_process(int fd_in, int i, int n, int *fd);
+void				chose_pipe(char *commands[], int n);
+void				execute_pipe(int fd[2], char **args);
+
+/*---------------VARIABLE EXPANSION---------------------------------*/
+void				handle_variable_expansion(char **commands, int i, int *j, \
+					int *is_malloced, char *var_name);
 #endif

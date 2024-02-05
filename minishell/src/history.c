@@ -6,19 +6,11 @@
 /*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 09:43:26 by kmb               #+#    #+#             */
-/*   Updated: 2024/02/04 04:45:05 by akambou          ###   ########.fr       */
+/*   Updated: 2024/02/05 00:59:54 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-void free_history(t_commandhistory *history) {
-	int i;
-	for (i = 0; i < history->index; i++) {
-		free(history->commands[i % MAX_HISTORY]);
-	}
-	free(history);
-}
 
 t_commandhistory	*create_history(void)
 {

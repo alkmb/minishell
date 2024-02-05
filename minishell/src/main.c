@@ -6,11 +6,23 @@
 /*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 09:43:14 by kmb               #+#    #+#             */
-/*   Updated: 2024/02/04 23:36:14 by akambou          ###   ########.fr       */
+/*   Updated: 2024/02/05 00:39:28 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+void	handle_sigint(int sig)
+{
+	ft_printf("%s@minimalianteo$ ", getenv("USER"));
+	if (sig == SIGINT)
+	{
+		ft_printf("\n");
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+	}
+}
 
 void	print_header(void)
 {
@@ -59,30 +71,6 @@ int	main(int argc, char **argv)
 	history = create_history();
 	print_header();
 	signal(SIGINT, handle_sigint);
-
-	/*
-	if (argc > 2 && strcmp(argv[1], "-c") == 0)
-	{
-		int totalLength = 0;
-		for (int i = 2; i < argc; i++) {
-			totalLength += strlen(argv[i]) + 1;
-		}
-
-		input = malloc(totalLength);
-		input[0] = '\0'; // make it an empty string
-
-		for (int i = 2; i < argc; i++) {
-			strcat(input, argv[i]);
-			if (i < argc - 1) {
-				strcat(input, " ");
-			}
-		}
-		parse_command(input, history);
-		exit(EXIT_SUCCESS);
-		free(input);
-	}
-	*/
-
 	while (1)
 	{
 		prompt = create_prompt();

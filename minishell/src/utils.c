@@ -6,21 +6,18 @@
 /*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 09:57:37 by kmb               #+#    #+#             */
-/*   Updated: 2024/02/04 23:59:14 by akambou          ###   ########.fr       */
+/*   Updated: 2024/02/05 02:09:13 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	handle_sigint(int sig)
+void	execute_child_process(char *cmd_path, char **args)
 {
-	ft_printf("%s@minimalianteo$ ", getenv("USER"));
-	if (sig == SIGINT)
+	if (execve(cmd_path, args, environ) == -1)
 	{
-		ft_printf("\n");
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
+		free(cmd_path);
+		exit(EXIT_FAILURE);
 	}
 }
 
@@ -76,6 +73,8 @@ int	chose_built_in(char **args, int *exit_status)
 		*exit_status = cmd_export(args);
 	else if (ft_strcmp(args[0], "$?") == 0)
 		printf("%d\n", *exit_status);
+	else if (ft_strcmp(args[0], "cd") == 0)
+		*exit_status = 0;
 	else
 	{
 		*exit_status = 127;
