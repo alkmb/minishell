@@ -6,7 +6,7 @@
 /*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 09:43:22 by kmb               #+#    #+#             */
-/*   Updated: 2024/02/05 02:51:52 by akambou          ###   ########.fr       */
+/*   Updated: 2024/02/15 05:46:22 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,26 @@ char	*find_command_in_path(char *command, char *path_copy, int max_length)
 	char	*cmd_path;
 
 	dir = ft_strtok(path_copy, ":");
-	cmd_path = malloc(max_length);
 	while (dir != NULL)
 	{
-		ft_strlcpy(cmd_path, dir, strlen(dir) + 1);
+		cmd_path = malloc(max_length);
+		if (cmd_path == NULL)
+		{
+			free(path_copy);
+			return (NULL);
+		}
+		ft_strlcpy(cmd_path, dir, max_length);
 		ft_strlcat(cmd_path, "/", max_length);
 		ft_strlcat(cmd_path, command, max_length);
 		if (access(cmd_path, X_OK) == 0)
-			return (free(path_copy), cmd_path);
+		{
+			free(path_copy);
+			return (cmd_path);
+		}
+		free(cmd_path);
 		dir = ft_strtok(NULL, ":");
 	}
 	free(path_copy);
-	free(cmd_path);
 	return (NULL);
 }
 
@@ -76,21 +84,21 @@ int	execute_external_command(char **args)
 	else
 	{
 		free(cmd_path);
-		return (127);
+		return (status);
 	}
-	return (127);
+	return (status);
 }
 
-void	execute_builtin_command(char **args, int *exit_status)
+void	execute_builtin_command(char **args, int exit_status)
 {
 	if (args[0] != NULL)
 	{
-		*exit_status = chose_built_in(args, exit_status);
+		chose_built_in(args, &exit_status);
 	}
-	if (*exit_status != 0)
+	if (exit_status != 0)
 	{
-		*exit_status = execute_external_command(args);
-		if (*exit_status == 127)
+		exit_status = execute_external_command(args);
+		if (exit_status != 0)
 			ft_printf("minishell: %s: command not found\n", args[0]);
 		exit_status = 0;
 	}

@@ -6,7 +6,7 @@
 /*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 23:12:49 by kmb               #+#    #+#             */
-/*   Updated: 2024/02/05 04:07:42 by akambou          ###   ########.fr       */
+/*   Updated: 2024/02/08 22:19:05 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	cmd_cd(char **args)
 	{
 		if (args[1][0] == '~')
 		{
-			path = malloc(strlen(getenv("HOME")) + strlen(args[1]));
+			path = malloc(ft_strlen(getenv("HOME")) + strlen(args[1]));
 			ft_strlcpy(path, getenv("HOME"), 5);
 			ft_strlcat(path, args[1] + 1, ft_strlen(getenv("HOME")) \
 			+ ft_strlen(args[1]) + 1);

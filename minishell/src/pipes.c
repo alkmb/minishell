@@ -6,7 +6,7 @@
 /*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 02:13:04 by akambou           #+#    #+#             */
-/*   Updated: 2024/02/05 04:21:01 by akambou          ###   ########.fr       */
+/*   Updated: 2024/02/15 05:31:35 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	execute_pipe(int fd[2], char **g_args)
 	close(fd[0]);
 	close(fd[1]);
 	execute_builtin_commandenv(g_args, environ);
-	execute_builtin_command(g_args, &exit_status);
+	execute_builtin_command(g_args, exit_status);
 	restore_io(STDIN_FILENO, STDOUT_FILENO);
 	exit(EXIT_SUCCESS);
 }

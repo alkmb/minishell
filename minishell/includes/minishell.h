@@ -6,7 +6,7 @@
 /*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 21:26:12 by kmb               #+#    #+#             */
-/*   Updated: 2024/02/05 03:52:28 by akambou          ###   ########.fr       */
+/*   Updated: 2024/02/15 05:45:28 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include <sys/wait.h>
 # include <signal.h>
 # include <errno.h>
+# include <string.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 /*------------------------------------------------------------------------*/
@@ -40,7 +41,7 @@ typedef struct CommandHistory
 {
 	char	*commands[MAX_HISTORY];
 	int		index;
-}t_commandhistory;
+}	t_commandhistory;
 
 typedef struct ExpansionData
 {
@@ -48,7 +49,7 @@ typedef struct ExpansionData
 	int		i;
 	int		*j;
 	int		*is_malloced;
-}t_expansiondata;
+}	t_expansiondata;
 
 /*-------------------------------------------------------------*/
 extern char			**environ;
@@ -70,7 +71,7 @@ void				free_history(t_commandhistory *history);
 char				*find_command(char *command);
 char				*find_command_in_path(char *command, char \
 					*path_copy, int max_length);
-void				execute_builtin_command(char **args, int *exit_status);
+void				execute_builtin_command(char **args, int exit_status);
 int					execute_external_command(char **args);
 void				execute_builtin_commandenv(char **args, char **environ);
 /*---------------PARSER--------------------------------------------*/

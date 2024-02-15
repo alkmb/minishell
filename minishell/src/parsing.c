@@ -6,7 +6,7 @@
 /*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 16:58:05 by kmb               #+#    #+#             */
-/*   Updated: 2024/02/05 03:42:37 by akambou          ###   ########.fr       */
+/*   Updated: 2024/02/15 05:05:33 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,5 +49,5 @@ void	parse_command(char *input, t_commandhistory *history)
 		commands[i] = ft_strtok(NULL, "|");
 	}
 	chose_command(commands, i - 1);
-	free_malloced_commands(commands, is_malloced, i);
+	free_malloced_commands(commands, is_malloced, 0);
 }
