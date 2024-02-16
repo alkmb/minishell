@@ -6,29 +6,39 @@
 /*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 21:51:32 by akambou           #+#    #+#             */
-/*   Updated: 2024/02/05 03:42:48 by akambou          ###   ########.fr       */
+/*   Updated: 2024/02/16 11:55:09 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	handle_variable_expansion(char **commands, int i, int *j, \
+char	*get_var_name_and_value(char **commands, int i, int *j, char *var_name)
+{
+	int	var_name_len;
+
+	var_name_len = 0;
+	while (ft_isalnum(commands[i][*j]) || commands[i][*j] == '_')
+		var_name[var_name_len++] = commands[i][(*j)++];
+	var_name[var_name_len] = '\0';
+	return (getenv(var_name));
+}
+
+void	handle_variable_expansion(char **commands, int *j, \
 	int *is_malloced, char *var_name)
 {
 	int		var_name_len;
 	char	*var_value;
+	int		i;
 	char	*new_command;
 
 	var_name_len = 0;
+	i = 0;
 	(*j)++;
-	while (ft_isalnum(commands[i][*j]) || commands[i][*j] == '_')
-		var_name[var_name_len++] = commands[i][(*j)++];
-	var_name[var_name_len] = '\0';
-	var_value = getenv(var_name);
+	var_value = get_var_name_and_value(commands, i, j, var_name);
 	if (var_value != NULL)
 	{
 		new_command = malloc((ft_strlen(commands[i]) - \
-		var_name_len + ft_strlen(var_value) + 2) * sizeof(int));
+		var_name_len + ft_strlen(var_value) + 2) * sizeof(char));
 		ft_strlcpy(new_command, commands[i], *j);
 		ft_strlcpy(new_command + *j - var_name_len - 1, \
 		var_value, ft_strlen(var_value) + 2);

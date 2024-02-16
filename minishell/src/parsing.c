@@ -6,7 +6,7 @@
 /*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 16:58:05 by kmb               #+#    #+#             */
-/*   Updated: 2024/02/15 05:05:33 by akambou          ###   ########.fr       */
+/*   Updated: 2024/02/16 11:45:34 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,13 @@ void	handle_commands(char **commands, t_expansiondata \
 	{
 		if (commands[expansionData->i][j] == '$'
 			&& (is_single_quote(commands[expansionData->i], j) == 0))
-			handle_variable_expansion(commands, expansionData->i, &j, \
+			handle_variable_expansion(commands, &j, \
 				expansionData->is_malloced, var_name);
 		else
 			j++;
 	}
+	free_malloced_commands(expansionData->commands, \
+		expansionData->is_malloced, expansionData->i);
 }
 
 void	parse_command(char *input, t_commandhistory *history)
@@ -49,5 +51,5 @@ void	parse_command(char *input, t_commandhistory *history)
 		commands[i] = ft_strtok(NULL, "|");
 	}
 	chose_command(commands, i - 1);
-	free_malloced_commands(commands, is_malloced, 0);
+	free_malloced_commands(commands, is_malloced, i);
 }

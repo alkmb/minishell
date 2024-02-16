@@ -6,7 +6,7 @@
 /*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 23:12:49 by kmb               #+#    #+#             */
-/*   Updated: 2024/02/08 22:19:05 by akambou          ###   ########.fr       */
+/*   Updated: 2024/02/16 09:38:54 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,12 +101,5 @@ int	cmd_unset(char **args)
 
 void	cmd_env(char **environ)
 {
-	char	*env_var;
-
-	env_var = *environ;
-	while (env_var != NULL)
-	{
-		ft_printf("%s\n", env_var);
-		env_var = *(environ++);
-	}
+	ft_printf("%s\n", environ[1]);
 }

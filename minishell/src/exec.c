@@ -6,7 +6,7 @@
 /*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 09:43:22 by kmb               #+#    #+#             */
-/*   Updated: 2024/02/15 05:46:22 by akambou          ###   ########.fr       */
+/*   Updated: 2024/02/16 10:53:00 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ int	execute_external_command(char **args)
 		free(cmd_path);
 		return (status);
 	}
+	free_args(args);
 	return (status);
 }
 

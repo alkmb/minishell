@@ -6,7 +6,7 @@
 /*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 01:20:03 by akambou           #+#    #+#             */
-/*   Updated: 2024/02/05 04:11:09 by akambou          ###   ########.fr       */
+/*   Updated: 2024/02/16 09:37:15 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,6 @@ void	unset_env_var(int index)
 	int	j;
 
 	j = index;
-	free(environ[j]);
 	while (environ[j])
 	{
 		environ[j] = environ[j + 1];

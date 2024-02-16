@@ -6,74 +6,77 @@
 /*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 07:25:30 by kmb               #+#    #+#             */
-/*   Updated: 2024/02/15 05:52:20 by akambou          ###   ########.fr       */
+/*   Updated: 2024/02/16 11:30:31 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	dup_str(char **args, int i, int char_index, char *current_token)
+t_parser	initialize_parser(char *commands[], int n)
 {
-	current_token[char_index] = '\0';
-	args[i++] = ft_strdup(current_token);
-	char_index = 0;
+	t_parser	parser;
+
+	parser.j = 0;
+	parser.i = 0;
+	parser.is_single_quote = 0;
+	parser.is_double_quote = 0;
+	parser.char_index = 0;
+	parser.args = (char **)malloc(MAX_ARGS * sizeof(char *));
+	parser.command = commands[n];
+	parser.current_token = malloc(1000 * sizeof(char));
+	return (parser);
+}
+
+void	handle_arg(t_parser *parser)
+{
+	if (!parser->is_double_quote && parser->char_index != 0)
+	{
+		parser->current_token[parser->char_index] = '\0';
+		parser->args[parser->i++] = ft_strdup(parser->current_token);
+		parser->char_index = 0;
+	}
+}
+
+void	process_command(t_parser *parser)
+{
+	while (parser->j < ft_strlen(parser->command))
+	{
+		parser->character = parser->command[parser->j];
+		if (parser->character == '\'')
+		{
+			parser->is_single_quote = !parser->is_single_quote;
+			handle_arg(parser);
+		}
+		else if (parser->character == '\"')
+		{
+			parser->is_double_quote = !parser->is_double_quote;
+			if (!parser->is_double_quote && parser->char_index != 0)
+				handle_arg(parser);
+		}
+		else if ((parser->character == ' ' || parser->character == '\t')
+			&& !parser->is_single_quote && !parser->is_double_quote)
+		{
+			if (parser->char_index != 0)
+				handle_arg(parser);
+		}
+		else
+			parser->current_token[parser->char_index++] = parser->character;
+		parser->j++;
+	}
 }
 
 char	**token_pipe_cmd(char *commands[], int n)
 {
-	int		j;
-	int		i;
-	int		is_single_quote;
-	int		is_double_quote;
-	int		char_index;
-	char	character;
-	char	**args;
-	char	*command;
-	char	*current_token;
+	t_parser	parser;
 
-	j = 0;
-	i = 0;
-	is_single_quote = 0;
-	is_double_quote = 0;
-	char_index = 0;
-	args = (char **)malloc(MAX_ARGS * sizeof(char *));
-	command = commands[n];
-	current_token = malloc(1000 * sizeof(char));
-	while (j < ft_strlen(command))
+	parser = initialize_parser(commands, n);
+	process_command(&parser);
+	if (parser.char_index != 0)
 	{
-		character = command[j];
-		if (character == '\'')
-		{
-			is_single_quote = !is_single_quote;
-			if (!is_double_quote && char_index != 0)
-				dup_str(args, i, char_index, current_token);
-		}
-		else if (character == '\"')
-		{
-			is_double_quote = !is_double_quote;
-			if (!is_double_quote && char_index != 0)
-				dup_str(args, i, char_index, current_token);
-		}
-		else if ((character == ' ' || character == '\t')
-			&& !is_single_quote && !is_double_quote)
-		{
-			if (char_index != 0)
-			{
-				current_token[char_index] = '\0';
-				args[i++] = ft_strdup(current_token);
-				char_index = 0;
-			}
-		}
-		else
-			current_token[char_index++] = character;
-		j++;
+		parser.current_token[parser.char_index] = '\0';
+		parser.args[parser.i++] = ft_strdup(parser.current_token);
 	}
-	if (char_index != 0)
-	{
-		current_token[char_index] = '\0';
-		args[i++] = ft_strdup(current_token);
-	}
-	args[i] = NULL;
-	free(current_token);
-	return (args);
+	parser.args[parser.i] = NULL;
+	free(parser.current_token);
+	return (parser.args);
 }

@@ -6,7 +6,7 @@
 /*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 02:14:07 by akambou           #+#    #+#             */
-/*   Updated: 2024/02/05 04:29:20 by akambou          ###   ########.fr       */
+/*   Updated: 2024/02/16 10:39:11 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,5 @@ void	free_args(char **args)
 	while (args[j] != NULL)
 		free(args[j++]);
 	free(args);
+	args = NULL;
 }

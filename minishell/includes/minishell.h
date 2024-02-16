@@ -6,7 +6,7 @@
 /*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 21:26:12 by kmb               #+#    #+#             */
-/*   Updated: 2024/02/15 05:45:28 by akambou          ###   ########.fr       */
+/*   Updated: 2024/02/16 12:02:15 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,19 +37,37 @@
 /*---------------------------------------------------------------*/
 
 /*-----------------------------------------STRUCTURES---------------*/
-typedef struct CommandHistory
+typedef struct s_commandhistory
 {
 	char	*commands[MAX_HISTORY];
 	int		index;
 }	t_commandhistory;
 
-typedef struct ExpansionData
+typedef struct s_expansionData
 {
 	char	**commands;
 	int		i;
 	int		*j;
 	int		*is_malloced;
 }	t_expansiondata;
+
+typedef struct s_parser {
+	int		j;
+	int		i;
+	int		is_single_quote;
+	int		is_double_quote;
+	int		char_index;
+	char	character;
+	char	**args;
+	char	*command;
+	char	*current_token;
+}	t_parser;
+
+typedef struct s_command_data {
+	char	*commands[7];
+	char	var_name[1000];
+	int		is_malloced[30];
+}	t_command_data;
 
 /*-------------------------------------------------------------*/
 extern char			**environ;
@@ -111,12 +129,12 @@ void				free_args(char **args);
 void				free_environment(char **enviroment, int size);
 
 /*---------------PIPES---------------------------------*/
-void				handle_parent_process(int *fd_in, int *fd);
-void				handle_child_process(int fd_in, int i, int n, int *fd);
+void				handle_child_process(int fd_in);
+void				handle_parent_process(int *fd_in, int fd[2]);
 void				chose_pipe(char *commands[], int n);
 void				execute_pipe(int fd[2], char **args);
 
 /*---------------VARIABLE EXPANSION---------------------------------*/
-void				handle_variable_expansion(char **commands, int i, int *j, \
+void				handle_variable_expansion(char **commands, int *j, \
 					int *is_malloced, char *var_name);
 #endif
