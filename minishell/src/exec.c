@@ -6,11 +6,13 @@
 /*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 09:43:22 by kmb               #+#    #+#             */
-/*   Updated: 2024/02/16 10:53:00 by akambou          ###   ########.fr       */
+/*   Updated: 2024/02/16 13:41:45 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+int	g_exit_status = 0;
 
 char	*find_command_in_path(char *command, char *path_copy, int max_length)
 {
@@ -63,7 +65,6 @@ char	*find_command(char *command)
 
 int	execute_external_command(char **args)
 {
-	int		status;
 	char	*cmd_path;
 	pid_t	pid;
 
@@ -75,48 +76,48 @@ int	execute_external_command(char **args)
 			return (free(cmd_path), 0);
 		else if (pid > 0)
 		{
-			waitpid(pid, &status, 0);
-			return (free(cmd_path), WEXITSTATUS(status));
+			waitpid(pid, &g_exit_status, 0);
+			if (WIFEXITED(g_exit_status))
+				g_exit_status = WEXITSTATUS(g_exit_status);
 		}
 		else
 			execute_child_process(cmd_path, args);
 	}
 	else
-	{
-		free(cmd_path);
-		return (status);
-	}
-	free_args(args);
-	return (status);
+		g_exit_status = 127;
+	free(cmd_path);
+	printf("status: %d\n", g_exit_status);
+	return (g_exit_status);
 }
 
-void	execute_builtin_command(char **args, int exit_status)
+void	execute_builtin_command(char **args)
 {
 	if (args[0] != NULL)
 	{
-		chose_built_in(args, &exit_status);
+		chose_built_in(args);
 	}
-	if (exit_status != 0)
+	if (g_exit_status != 0)
 	{
-		exit_status = execute_external_command(args);
-		if (exit_status != 0)
+		g_exit_status = execute_external_command(args);
+		if (g_exit_status != 0)
 			ft_printf("minishell: %s: command not found\n", args[0]);
-		exit_status = 0;
 	}
 }
 
-void	execute_builtin_commandenv(char **args, char **environ)
+int	chose_built_in(char **args)
 {
-	int	i;
-
-	i = 0;
-	while (args[i] != NULL)
+	if (ft_strcmp(args[0], "echo") == 0)
+		g_exit_status = cmd_echo(args);
+	else if (ft_strcmp(args[0], "pwd") == 0)
+		g_exit_status = cmd_pwd();
+	else if (ft_strcmp(args[0], "unset") == 0)
+		g_exit_status = cmd_unset(args);
+	else if (ft_strcmp(args[0], "export") == 0)
+		g_exit_status = cmd_export(args);
+	else
 	{
-		if (ft_strcmp(args[0], "env") == 0)
-		{
-			cmd_env(environ);
-			return ;
-		}
-		i++;
+		g_exit_status = 127;
+		return (127);
 	}
+	return (0);
 }

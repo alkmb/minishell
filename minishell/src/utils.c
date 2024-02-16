@@ -6,7 +6,7 @@
 /*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 09:57:37 by kmb               #+#    #+#             */
-/*   Updated: 2024/02/15 05:18:55 by akambou          ###   ########.fr       */
+/*   Updated: 2024/02/16 12:51:11 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,24 +61,18 @@ void	free_malloced(char *commands[], int is_malloced[], int i)
 	}
 }
 
-int	chose_built_in(char **args, int *exit_status)
+void	execute_builtin_commandenv(char **args, char **environ)
 {
-	if (ft_strcmp(args[0], "echo") == 0)
-		*exit_status = cmd_echo(args);
-	else if (ft_strcmp(args[0], "pwd") == 0)
-		*exit_status = cmd_pwd();
-	else if (ft_strcmp(args[0], "unset") == 0)
-		*exit_status = cmd_unset(args);
-	else if (ft_strcmp(args[0], "export") == 0)
-		*exit_status = cmd_export(args);
-	else if (ft_strcmp(args[0], "$?") == 0)
-		printf("%d\n", *exit_status);
-	else if (ft_strcmp(args[0], "cd") == 0)
-		*exit_status = 0;
-	else
+	int	i;
+
+	i = 0;
+	while (args[i] != NULL)
 	{
-		*exit_status = 127;
-		return (127);
+		if (ft_strcmp(args[0], "env") == 0)
+		{
+			cmd_env(environ);
+			return ;
+		}
+		i++;
 	}
-	return (0);
 }

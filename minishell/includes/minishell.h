@@ -6,7 +6,7 @@
 /*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 21:26:12 by kmb               #+#    #+#             */
-/*   Updated: 2024/02/16 12:02:15 by akambou          ###   ########.fr       */
+/*   Updated: 2024/02/16 12:53:47 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void				free_history(t_commandhistory *history);
 char				*find_command(char *command);
 char				*find_command_in_path(char *command, char \
 					*path_copy, int max_length);
-void				execute_builtin_command(char **args, int exit_status);
+void				execute_builtin_command(char **args);
 int					execute_external_command(char **args);
 void				execute_builtin_commandenv(char **args, char **environ);
 /*---------------PARSER--------------------------------------------*/
@@ -109,7 +109,7 @@ void				handle_sigint(int sig);
 void				print_header(void);
 void				execute_child_process(char *cmd_path, char **args);
 void				free_malloced(char *commands[], int is_malloced[], int i);
-int					chose_built_in(char **args, int *exit_status);
+int					chose_built_in(char **args);
 void				print_environment(char **env);
 void				add_to_environment(char **args);
 char				**create_new_environment(int j, char *name, char *value);
