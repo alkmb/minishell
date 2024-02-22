@@ -6,7 +6,7 @@
 /*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 09:09:46 by kmb               #+#    #+#             */
-/*   Updated: 2024/02/05 04:32:17 by akambou          ###   ########.fr       */
+/*   Updated: 2024/02/22 15:58:40 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,11 @@ void	chose_redirection(char **args, int i)
 	{
 		fd = open(args[i + 1], O_WRONLY | O_CREAT | O_APPEND, 0644);
 		dup2(fd, STDOUT_FILENO);
+	}
+	else if (ft_strcmp(args[i], "<<") == 0 && args[i + 1] == NULL)
+	{
+		printf("syntax error near unexpected token 'newline'\n");
+		exit(EXIT_SUCCESS);
 	}
 	else if (ft_strcmp(args[i], "<<") == 0)
 	{
