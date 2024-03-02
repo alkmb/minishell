@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 21:26:12 by kmb               #+#    #+#             */
-/*   Updated: 2024/02/16 12:53:47 by akambou          ###   ########.fr       */
+/*   Updated: 2024/03/02 21:47:54 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ void				execute_builtin_commandenv(char **args, char **environ);
 /*---------------PARSER--------------------------------------------*/
 void				parse_command(char *input, t_commandhistory *history);
 void				chose_command(char *commands[], int n);
+t_parser			initialize_parser(char *commands[], int n);
 /*---------------LEXER---------------------------------*/
 char				**token_pipe_cmd(char *command[], int n);
 /*---------------REDIRECTION---------------------------------*/

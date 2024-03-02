@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 21:51:32 by akambou           #+#    #+#             */
-/*   Updated: 2024/02/16 12:50:04 by akambou          ###   ########.fr       */
+/*   Updated: 2024/03/02 21:26:04 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,10 @@ void	handle_variable_expansion(char **commands, int *j, \
 	if (var_value != NULL)
 	{
 		new_command = malloc((ft_strlen(commands[i]) - \
-		var_name_len + ft_strlen(var_value) + 2) * sizeof(char));
+		var_name_len + ft_strlen(var_value)) * sizeof(char));
 		ft_strlcpy(new_command, commands[i], *j);
 		ft_strlcpy(new_command + *j - var_name_len - 1, \
-		var_value, ft_strlen(var_value) + 2);
-		ft_strlcpy(new_command + *j - var_name_len - 1 + ft_strlen(var_value), \
-		commands[i] + *j, ft_strlen(commands[i] + *j) + 1);
+		var_value, ft_strlen(var_value));
 		free_malloced(commands, is_malloced, i);
 		commands[i] = new_command;
 		is_malloced[i] = 1;

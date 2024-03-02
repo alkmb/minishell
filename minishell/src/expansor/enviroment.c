@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_builtins.c                                   :+:      :+:    :+:   */
+/*   enviroment.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 01:20:03 by akambou           #+#    #+#             */
-/*   Updated: 2024/02/16 09:37:15 by akambou          ###   ########.fr       */
+/*   Updated: 2024/03/02 23:13:53 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ char	**create_new_environment(int j, char *name, char *value)
 		new_environ[k] = environ[k];
 		++k;
 	}
+	free(environ);
 	new_environ[j] = malloc(ft_strlen(name) + ft_strlen(value) + 2);
 	sprintf(new_environ[j], "%s=%s", name, value);
 	new_environ[j + 1] = NULL;

@@ -6,29 +6,33 @@
 #    By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/18 07:48:42 by kmb               #+#    #+#              #
-#    Updated: 2024/02/01 10:40:16 by gprada-t         ###   ########.fr        #
+#    Updated: 2024/03/02 21:59:06 by kmb              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = gcc
-CFLAGS = -fsanitize=address -I includes -lreadline#-Wall -Wextra -Werror -lreadline -I includes
+CFLAGS = -fsanitize=address -I includes -lreadline -MMD -MP
 RM = rm -rf
 
-SRCS = $(wildcard src/*.c)
+SRCS = $(wildcard src/builtins/*.c src/exec/*.c src/expansor/*.c src/main.c src/parsing/*.c src/utils/*.c)
 OBJS = $(patsubst src/%.c,obj/%.o,$(SRCS))
+DEPS = $(OBJS:.o=.d)
 NAME = minishell
-HEADER = includes/*.h
+HEADER = includes/minishell.h
+DEP_FLAGS = -MMD -MP
 
 all: $(NAME)
 
-$(NAME): $(OBJS) $(HEADER) Makefile
+$(NAME): $(OBJS)
 	@make -C libft > /dev/null
-	@$(CC) $(CFLAGS) $(OBJS) libft/libft.a -o $(NAME) > /dev/null
+	@$(CC) $(CFLAGS) $^ libft/libft.a -o $@ > /dev/null
 	@echo "✅✅$(NAME) is ready!✅✅"
 
 obj/%.o: src/%.c
-	@mkdir -p obj
+	@mkdir -p $(@D)
 	@$(CC) $(CFLAGS) -c $< -o $@
+
+-include $(DEPS)
 
 fclean: clean
 	@$(RM) $(NAME) > /dev/null

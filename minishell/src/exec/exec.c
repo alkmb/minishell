@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 09:43:22 by kmb               #+#    #+#             */
-/*   Updated: 2024/02/16 13:41:45 by akambou          ###   ########.fr       */
+/*   Updated: 2024/03/02 23:06:44 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,53 +14,29 @@
 
 int	g_exit_status = 0;
 
-char	*find_command_in_path(char *command, char *path_copy, int max_length)
+void	execute_child_process(char *cmd_path, char **args)
 {
-	char	*dir;
-	char	*cmd_path;
-
-	dir = ft_strtok(path_copy, ":");
-	while (dir != NULL)
+	if (execve(cmd_path, args, environ) == -1)
 	{
-		cmd_path = malloc(max_length);
-		if (cmd_path == NULL)
-		{
-			free(path_copy);
-			return (NULL);
-		}
-		ft_strlcpy(cmd_path, dir, max_length);
-		ft_strlcat(cmd_path, "/", max_length);
-		ft_strlcat(cmd_path, command, max_length);
-		if (access(cmd_path, X_OK) == 0)
-		{
-			free(path_copy);
-			return (cmd_path);
-		}
 		free(cmd_path);
-		dir = ft_strtok(NULL, ":");
+		exit(EXIT_FAILURE);
 	}
-	free(path_copy);
-	return (NULL);
 }
 
-char	*find_command(char *command)
+void	execute_builtin_commandenv(char **args, char **environ)
 {
-	char	*path;
-	char	*path_copy;
-	int		max_length;
+	int	i;
 
-	path = getenv("PATH");
-	path_copy = ft_strdup(path);
-	max_length = ft_strlen(path) + 2 * ft_strlen(command) + 2;
-	if (command[0] == '/' || command[0] == '.')
+	i = 0;
+	while (args[i] != NULL)
 	{
-		if (access(command, X_OK) == 0)
+		if (ft_strcmp(args[0], "env") == 0)
 		{
-			free(path_copy);
-			return (ft_strdup(command));
+			cmd_env(environ);
+			return ;
 		}
+		i++;
 	}
-	return (find_command_in_path(command, path_copy, max_length));
 }
 
 int	execute_external_command(char **args)
@@ -94,7 +70,14 @@ void	execute_builtin_command(char **args)
 {
 	if (args[0] != NULL)
 	{
-		chose_built_in(args);
+		if (ft_strcmp(args[0], "echo") == 0)
+			g_exit_status = cmd_echo(args);
+		else if (ft_strcmp(args[0], "pwd") == 0)
+			g_exit_status = cmd_pwd();
+		else if (ft_strcmp(args[0], "export") == 0)
+			g_exit_status = cmd_export(args);
+		else
+			g_exit_status = 127;
 	}
 	if (g_exit_status != 0)
 	{
@@ -102,22 +85,4 @@ void	execute_builtin_command(char **args)
 		if (g_exit_status != 0)
 			ft_printf("minishell: %s: command not found\n", args[0]);
 	}
-}
-
-int	chose_built_in(char **args)
-{
-	if (ft_strcmp(args[0], "echo") == 0)
-		g_exit_status = cmd_echo(args);
-	else if (ft_strcmp(args[0], "pwd") == 0)
-		g_exit_status = cmd_pwd();
-	else if (ft_strcmp(args[0], "unset") == 0)
-		g_exit_status = cmd_unset(args);
-	else if (ft_strcmp(args[0], "export") == 0)
-		g_exit_status = cmd_export(args);
-	else
-	{
-		g_exit_status = 127;
-		return (127);
-	}
-	return (0);
 }

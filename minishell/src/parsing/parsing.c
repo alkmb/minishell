@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 16:58:05 by kmb               #+#    #+#             */
-/*   Updated: 2024/02/16 11:45:34 by akambou          ###   ########.fr       */
+/*   Updated: 2024/03/02 22:02:11 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,14 @@ void	handle_commands(char **commands, t_expansiondata \
 	}
 	free_malloced_commands(expansionData->commands, \
 		expansionData->is_malloced, expansionData->i);
+}
+
+void	chose_command(char *commands[], int n)
+{
+	if (n < 0)
+		return ;
+	else
+		chose_pipe(commands, n);
 }
 
 void	parse_command(char *input, t_commandhistory *history)

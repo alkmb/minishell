@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 09:09:46 by kmb               #+#    #+#             */
-/*   Updated: 2024/02/22 15:58:40 by akambou          ###   ########.fr       */
+/*   Updated: 2024/03/02 22:23:12 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ void	handle_here_document(char *delimiter)
 
 	input_buffer = NULL;
 	ft_printf("> ");
+	if (!delimiter)
+		return (printf("Error: no delimiter\n"), (void)(0));
 	while (line != NULL)
 	{
 		line = readline("");
@@ -75,11 +77,6 @@ void	chose_redirection(char **args, int i)
 	{
 		fd = open(args[i + 1], O_WRONLY | O_CREAT | O_APPEND, 0644);
 		dup2(fd, STDOUT_FILENO);
-	}
-	else if (ft_strcmp(args[i], "<<") == 0 && args[i + 1] == NULL)
-	{
-		printf("syntax error near unexpected token 'newline'\n");
-		exit(EXIT_SUCCESS);
 	}
 	else if (ft_strcmp(args[i], "<<") == 0)
 	{
