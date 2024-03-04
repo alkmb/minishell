@@ -6,7 +6,7 @@
 /*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 21:26:12 by kmb               #+#    #+#             */
-/*   Updated: 2024/03/02 21:47:54 by kmb              ###   ########.fr       */
+/*   Updated: 2024/03/04 15:15:52 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,8 @@ typedef struct s_command_data {
 
 /*-------------------------------------------------------------*/
 extern char			**environ;
+extern int			g_exit_status;
+extern int			g_last_exit_status;
 /*---------------BUILTINS-------------------------------------------*/
 int					cmd_pwd(void);
 char				*cmd_history(t_commandhistory *history);
@@ -89,12 +91,12 @@ void				free_history(t_commandhistory *history);
 char				*find_command(char *command);
 char				*find_command_in_path(char *command, char \
 					*path_copy, int max_length);
-void				execute_builtin_command(char **args);
+int					execute_builtin_command(char **args);
 int					execute_external_command(char **args);
 void				execute_builtin_commandenv(char **args, char **environ);
 /*---------------PARSER--------------------------------------------*/
-void				parse_command(char *input, t_commandhistory *history);
-void				chose_command(char *commands[], int n);
+int					parse_command(char *input, t_commandhistory *history);
+int					chose_command(char *commands[], int n);
 t_parser			initialize_parser(char *commands[], int n);
 /*---------------LEXER---------------------------------*/
 char				**token_pipe_cmd(char *command[], int n);
@@ -116,7 +118,6 @@ void				add_to_environment(char **args);
 char				**create_new_environment(int j, char *name, char *value);
 int					find_env_var(char **args);
 void				unset_env_var(int index);
-void				chose_command(char *commands[], int n);
 void				initialize_expansion_data(t_expansiondata \
 					*expansionData, \
 					char **commands, int i, int *is_malloced);
@@ -132,8 +133,8 @@ void				free_environment(char **enviroment, int size);
 /*---------------PIPES---------------------------------*/
 void				handle_child_process(int fd_in);
 void				handle_parent_process(int *fd_in, int fd[2]);
-void				chose_pipe(char *commands[], int n);
-void				execute_pipe(int fd[2], char **args);
+int					chose_pipe(char *commands[], int n);
+int					execute_pipe(int fd[2], char **args);
 
 /*---------------VARIABLE EXPANSION---------------------------------*/
 void				handle_variable_expansion(char **commands, int *j, \

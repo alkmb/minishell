@@ -6,7 +6,7 @@
 /*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 16:58:05 by kmb               #+#    #+#             */
-/*   Updated: 2024/03/02 22:02:11 by kmb              ###   ########.fr       */
+/*   Updated: 2024/03/04 15:17:29 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,24 +31,29 @@ void	handle_commands(char **commands, t_expansiondata \
 		expansionData->is_malloced, expansionData->i);
 }
 
-void	chose_command(char *commands[], int n)
+int	chose_command(char *commands[], int n)
 {
+	int	status;
+
 	if (n < 0)
-		return ;
+		return status;
 	else
-		chose_pipe(commands, n);
+		status = chose_pipe(commands, n);
+	return status;
 }
 
-void	parse_command(char *input, t_commandhistory *history)
+int	parse_command(char *input, t_commandhistory *history)
 {
 	int					i;
-	char				*commands[7];
+	char				**commands;
 	char				var_name[1000];
 	int					is_malloced[30];
 	t_expansiondata		expansiondata;
+	int					status;
 
 	i = 0;
 	is_malloced[0] = 0;
+	commands = malloc(30 * sizeof(char *));
 	initialize_expansion_data(&expansiondata, commands, i, is_malloced);
 	add_to_history(history, input);
 	commands[i] = ft_strtok(input, "|");
@@ -58,6 +63,8 @@ void	parse_command(char *input, t_commandhistory *history)
 		i++;
 		commands[i] = ft_strtok(NULL, "|");
 	}
-	chose_command(commands, i - 1);
+	status = chose_command(commands, i - 1);
 	free_malloced_commands(commands, is_malloced, i);
+	free(commands);
+	return status;
 }

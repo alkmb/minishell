@@ -6,7 +6,7 @@
 /*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 02:13:04 by akambou           #+#    #+#             */
-/*   Updated: 2024/03/02 23:06:36 by kmb              ###   ########.fr       */
+/*   Updated: 2024/03/04 15:11:45 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,12 @@ void	handle_builtin_commands(char **args)
 	}
 }
 
-void	chose_pipe(char *commands[], int n)
+int	chose_pipe(char *commands[], int n)
 {
 	int		i;
 	int		fd_in;
 	pid_t	pid;
+	int		status;
 	int		fd[2];
 	char	**args;
 
@@ -67,27 +68,30 @@ void	chose_pipe(char *commands[], int n)
 			handle_child_process(fd_in);
 			if (i != n)
 				dup2(fd[1], STDOUT_FILENO);
-			execute_pipe(fd, args);
+			status = execute_pipe(fd, args);
 		}
 		else
 			handle_parent_process(&fd_in, fd);
 		i++;
 		free_args(args);
 	}
+	return status;
 }
 
-void	execute_pipe(int fd[2], char **args)
+int	execute_pipe(int fd[2], char **args)
 {
 	int	orig_stdin;
 	int	orig_stdout;
+	int	status;
 
 	handle_redirection(args, &orig_stdin, &orig_stdout);
 	close(fd[0]);
 	close(fd[1]);
 	execute_builtin_commandenv(args, environ);
-	execute_builtin_command(args);
+	status = execute_builtin_command(args);
 	dup2(orig_stdin, STDIN_FILENO);
 	dup2(orig_stdout, STDOUT_FILENO);
+	return (status);
 	close(orig_stdin);
 	close(orig_stdout);
 	exit(EXIT_SUCCESS);

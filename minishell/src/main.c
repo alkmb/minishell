@@ -6,11 +6,13 @@
 /*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 09:43:14 by kmb               #+#    #+#             */
-/*   Updated: 2024/03/02 23:17:50 by kmb              ###   ########.fr       */
+/*   Updated: 2024/03/04 15:23:51 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+int g_exit_status = 0;
 
 void	handle_sigint(int sig)
 {
@@ -66,6 +68,7 @@ int	main(int argc, char **argv)
 	char				*input;
 	char				*prompt;
 	t_commandhistory	*history;
+	int					status;
 
 	history = create_history();
 	print_header();
@@ -84,7 +87,9 @@ int	main(int argc, char **argv)
 			ft_printf("%s", cmd_history(history));
 			continue ;
 		}
-		parse_command(input, history);
+		if (ft_strcmp(input, "$?") == 0)
+			printf("status: %d\n", status);
+		status = parse_command(input, history);
 		free(input);
 	}
 	return (0);

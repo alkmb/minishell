@@ -6,13 +6,11 @@
 /*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 09:43:22 by kmb               #+#    #+#             */
-/*   Updated: 2024/03/02 23:06:44 by kmb              ###   ########.fr       */
+/*   Updated: 2024/03/04 15:24:13 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-int	g_exit_status = 0;
 
 void	execute_child_process(char *cmd_path, char **args)
 {
@@ -62,11 +60,10 @@ int	execute_external_command(char **args)
 	else
 		g_exit_status = 127;
 	free(cmd_path);
-	printf("status: %d\n", g_exit_status);
 	return (g_exit_status);
 }
 
-void	execute_builtin_command(char **args)
+int	execute_builtin_command(char **args)
 {
 	if (args[0] != NULL)
 	{
@@ -76,13 +73,13 @@ void	execute_builtin_command(char **args)
 			g_exit_status = cmd_pwd();
 		else if (ft_strcmp(args[0], "export") == 0)
 			g_exit_status = cmd_export(args);
+
 		else
-			g_exit_status = 127;
+		{
+			execute_external_command(args);
+			if (g_exit_status != 0 && ft_strcmp(args[0], "$?") != 0)
+				ft_printf("minishell: %s: command not found\n", args[0]);
+		}
 	}
-	if (g_exit_status != 0)
-	{
-		g_exit_status = execute_external_command(args);
-		if (g_exit_status != 0)
-			ft_printf("minishell: %s: command not found\n", args[0]);
-	}
+	return (g_exit_status);
 }
