@@ -6,24 +6,11 @@
 /*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 09:43:14 by kmb               #+#    #+#             */
-/*   Updated: 2024/03/04 15:23:51 by kmb              ###   ########.fr       */
+/*   Updated: 2024/03/04 21:50:53 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-int g_exit_status = 0;
-
-void	handle_sigint(int sig)
-{
-	ft_printf("%s@minimalianteo$ ", getenv("USER"));
-	if (sig == SIGINT)
-	{
-		ft_printf("\n");
-		rl_on_new_line();
-		rl_redisplay();
-	}
-}
 
 void	print_header(void)
 {
@@ -63,16 +50,25 @@ char	*create_prompt(void)
 	return (prompt);
 }
 
+void	handle_sigint(int sig)
+{
+	if (sig == SIGINT)
+	{
+		ft_printf("\n");
+		rl_on_new_line();
+		rl_redisplay();
+	}
+}
+
 int	main(int argc, char **argv)
 {
 	char				*input;
 	char				*prompt;
 	t_commandhistory	*history;
-	int					status;
 
+	signal(SIGINT, handle_sigint);
 	history = create_history();
 	print_header();
-	signal(SIGINT, handle_sigint);
 	while (1)
 	{
 		prompt = create_prompt();
@@ -87,9 +83,7 @@ int	main(int argc, char **argv)
 			ft_printf("%s", cmd_history(history));
 			continue ;
 		}
-		if (ft_strcmp(input, "$?") == 0)
-			printf("status: %d\n", status);
-		status = parse_command(input, history);
+		parse_command(input, history);
 		free(input);
 	}
 	return (0);

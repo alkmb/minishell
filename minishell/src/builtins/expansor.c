@@ -6,7 +6,7 @@
 /*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 21:51:32 by akambou           #+#    #+#             */
-/*   Updated: 2024/03/02 21:26:04 by kmb              ###   ########.fr       */
+/*   Updated: 2024/03/04 20:56:12 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,12 @@ void	handle_variable_expansion(char **commands, int *j, \
 	int		i;
 	char	*new_command;
 
-	var_name_len = 0;
 	i = 0;
 	(*j)++;
 	var_value = get_var_name_and_value(commands, i, j, var_name);
 	if (var_value != NULL)
 	{
+		var_name_len = ft_strlen(var_name);
 		new_command = malloc((ft_strlen(commands[i]) - \
 		var_name_len + ft_strlen(var_value)) * sizeof(char));
 		ft_strlcpy(new_command, commands[i], *j);
