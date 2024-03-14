@@ -6,7 +6,7 @@
 /*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 01:20:03 by akambou           #+#    #+#             */
-/*   Updated: 2024/03/04 20:49:47 by kmb              ###   ########.fr       */
+/*   Updated: 2024/03/14 03:06:34 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,13 @@ char	**create_new_environment(int j, char *name, char *value)
 	k = 0;
 	while (k < j)
 	{
-		new_environ[k] = environ[k];
+		new_environ[k] = strdup(environ[k]);
 		++k;
 	}
 	new_environ[j] = malloc(ft_strlen(name) + ft_strlen(value) + 2);
-	sprintf(new_environ[j], "%s=%s", name, value);
+	strcpy(new_environ[j], name);
+	strcat(new_environ[j], "=");
+	strcat(new_environ[j], value);
 	new_environ[j + 1] = NULL;
 	return (new_environ);
 }
@@ -86,13 +88,15 @@ int	find_env_var(char **args)
 
 void	unset_env_var(int index)
 {
-	int	j;
+	int		j;
+	char	*temp;
 
+	temp = environ[index];
 	j = index;
 	while (environ[j])
 	{
 		environ[j] = environ[j + 1];
 		j++;
 	}
-	free(environ[j]);
+	free(temp);
 }
