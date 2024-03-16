@@ -47,7 +47,6 @@ void	add_to_environment(char **args)
 	char	*value;
 	int		j;
 	int		i;
-	char	**new_environ;
 
 	i = 1;
 	name = ft_strtok(args[i], "=");

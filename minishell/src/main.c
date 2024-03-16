@@ -61,7 +61,7 @@ void	handle_sigint(int sig)
 	}
 }
 
-int	main(int argc, char **argv)
+int	main(void)
 {
 	char				*input;
 	char				*prompt;

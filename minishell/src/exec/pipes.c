@@ -24,7 +24,7 @@ void	chose_pipe(char *commands[], int n)
 	while (i <= n)
 	{
 		args = token_pipe_cmd(commands, i);
-		handle_builtin_commands(args, environ);
+		handle_builtin_commands(args);
 		pipe(fd);
 		pid = fork();
 		if (pid == 0)
@@ -56,7 +56,7 @@ void	execute_pipe(int fd[2], char **args)
 		!= 0 && ft_strcmp(args[0], "exit") != 0)
 		exit_status = execute_external_command(args);
 	if (ft_strcmp(args[0], "env") == 0)
-		handle_env(args, environ);
+		handle_env(environ);
 	printf("status: %d\n", exit_status);
 	dup2(orig_stdin, STDIN_FILENO);
 	dup2(orig_stdout, STDOUT_FILENO);

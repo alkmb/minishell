@@ -120,11 +120,11 @@ char				**create_new_environment(int j, char *name, char *value);
 int					find_env_var(char **args);
 void				unset_env_var(int index);
 /*---------------HANDLERS---------------------------------*/
-void				handle_builtin_commands(char **args, char **environ);
+void				handle_builtin_commands(char **args);
 void				handle_parent_process(int *fd_in, int *fd);
 void				handle_child_process(int fd_in);
 void				handle_sigint(int sig);
-void				handle_env(char **args, char **environ);
+void				handle_env(char **environ);
 /*---------------INITS---------------------------------*/
 t_parser			initialize_parser(char *commands[], int n);
 void				initialize_expansion_data(t_expansiondata \

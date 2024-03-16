@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 CC = gcc
-CFLAGS = -fsanitize=address -I includes -lreadline -MMD -MP
+CFLAGS = -Wall -Wextra -Werror -fsanitize=address -I includes -lreadline -MMD -MP
 RM = rm -rf
 
 SRCS = $(wildcard src/builtins/*.c src/exec/*.c src/expansor/*.c src/main.c src/parsing/*.c src/utils/*.c)

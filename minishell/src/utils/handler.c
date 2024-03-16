@@ -30,7 +30,7 @@ void	handle_child_process(int fd_in)
 	}
 }
 
-void	handle_env(char **args, char **environ)
+void	handle_env(char **environ)
 {
 	int	i;
 
@@ -42,7 +42,7 @@ void	handle_env(char **args, char **environ)
 	}
 }
 
-void	handle_builtin_commands(char **args, char **environ)
+void	handle_builtin_commands(char **args)
 {
 	if (ft_strcmp(args[0], "cd") == 0)
 		cmd_cd(args);
