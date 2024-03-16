@@ -1,4 +1,4 @@
-#### MiniShell Project
+## MiniShell Project
 
 🐚 This project is a simple shell implementation in C, designed to provide basic shell functionalities. It handles pipes, redirections, signals, command status, and includes seven built-in commands: `pwd`, `cd`, `echo`, `export`, `env`, `unset`, and `exit`. Additionally, it supports variable expansion and parsing of quotes and flags for commands.
 
