@@ -1,60 +1,50 @@
-# MiniShell Project
+### MiniShell Project
 
-🐚 This project is a simple shell implementation in C, designed to provide basic shell functionalities. It is organized into several directories, each containing related source files:
+🐚 This project is a simple shell implementation in C, designed to provide basic shell functionalities. It handles pipes, redirections, signals, command status, and includes seven built-in commands: `pwd`, `cd`, `echo`, `export`, `env`, `unset`, and `exit`. Additionally, it supports variable expansion and parsing of quotes and flags for commands.
 
-## Directory Structure
+#### Directory Structure
 
 ```
 📁 builtins/
+    - builtins.c
+    - enviroment.c
+    - expansor.c
     - history.c
-    - cd.c
-    - pwd.c
-    - unset.c
-    - env.c
 
 📁 exec/
     - exec.c
+    - finder.c
+    - pipes.c
 
 📁 parsing/
+    - lexer.c
     - parsing.c
+    - redirections.c
 
 📁 utils/
+    - frees.c
     - handler.c
+    - inits.c
 
 📄 main.c
+📄 Makefile
 ```
 
-## Overview
+#### Overview
 
-### builtins/
+**builtins/**: Contains implementations of built-in shell commands such as `cd`, `pwd`, `unset`, and `env`. Each file focuses on a specific builtin command.
 
-This directory contains the implementation of builtin shell commands like `cd`, `pwd`, `unset`, and `env`. Each file in this directory focuses on a specific builtin command. For instance:
+**exec/**: Handles the execution of external commands. `exec.c` typically contains functions for executing commands in a new process.
 
-- `history.c` manages command history functions such as `add_to_history`, `get_from_history`, and `destroy_history`.
-- `cd.c` handles changing directories.
-- `pwd.c` manages printing the current working directory.
-- `unset.c` handles unsetting environment variables.
-- `env.c` manages displaying environment variables.
+**parsing/**: Responsible for parsing user input into commands and arguments. `parsing.c` contains functions like `parse_command`, which parses input commands and adds them to history.
 
-### exec/
+**utils/**: Contains utility functions and handlers for various tasks. `handler.c` includes the `handle_builtin_commands` function for executing builtin commands, and `frees.c` manages memory deallocation.
 
-🚀 The `exec/` directory handles the execution of external commands. The `exec.c` file typically contains functions for executing commands in a new process.
+**main.c**: The entry point of the program. It sets up command history, handles signals, and executes user commands.
 
-### parsing/
+#### Build and Run
 
-🔍 This directory is responsible for parsing user input into commands and arguments. The `parsing.c` file contains functions like `parse_command`, which parses input commands and adds them to history, and `handle_commands`, which executes commands.
-
-### utils/
-
-🛠️ Contains utility functions and handlers for various tasks. The `handler.c` file includes the `handle_builtin_commands` function, which executes builtin commands.
-
-### main.c
-
-🚀 The entry point of the program. It sets up command history, handles signals, and enters a loop to read and execute user commands. It also contains the `handle_sigint` function, which handles the SIGINT signal (Ctrl+C) to stop the currently running process.
-
-## Build and Run
-
-To build the project, typically use a Makefile or a similar build system. Once built, run the shell by executing the resulting binary. Note that this is a simplified shell and may not support all features of full-fledged shells like bash or zsh.
+To build the project, use the provided Makefile or a similar build system. Once built, run the shell by executing the resulting binary (`./minishell`). Note that this is a simplified shell and may not support all features of full-fledged shells like bash or zsh.
 
 ```bash
 make
