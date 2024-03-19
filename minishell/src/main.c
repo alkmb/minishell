@@ -57,7 +57,6 @@ void	handle_sigint(int sig)
 	{
 		ft_printf("\n");
 		rl_on_new_line();
-		rl_redisplay();
 	}
 }
 
