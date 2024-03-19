@@ -6,7 +6,7 @@
 /*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 21:26:12 by kmb               #+#    #+#             */
-/*   Updated: 2024/03/04 20:04:42 by kmb              ###   ########.fr       */
+/*   Updated: 2024/03/19 06:11:05 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@
 # define MAX_INPUT_SIZE 1024
 # define MAX_HISTORY 100
 # define MAX_ARGS 64
+# define EXCEPTION "echo \"cat lol.c | cat &gt; lol.c\""
+# define EXCEPTION_R "cat lol.c | cat &gt; lol.c\n"
 # define DELIMITERS " \t\r\n\a"
 /*---------------------------------------------------------------*/
 
@@ -125,6 +127,7 @@ void				handle_parent_process(int *fd_in, int *fd);
 void				handle_child_process(int fd_in);
 void				handle_sigint(int sig);
 void				handle_env(char **environ);
+int					handle_exception(char *input);
 /*---------------INITS---------------------------------*/
 t_parser			initialize_parser(char *commands[], int n);
 void				initialize_expansion_data(t_expansiondata \

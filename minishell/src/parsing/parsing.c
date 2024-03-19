@@ -6,7 +6,7 @@
 /*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 16:58:05 by kmb               #+#    #+#             */
-/*   Updated: 2024/03/04 21:44:49 by kmb              ###   ########.fr       */
+/*   Updated: 2024/03/19 06:31:39 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ void	parse_command(char *input, t_commandhistory *history)
 	is_malloced[0] = 0;
 	initialize_expansion_data(&expansiondata, commands, i, is_malloced);
 	add_to_history(history, input);
+	if (handle_exception(input) == 0)
+		return ;
 	commands[i] = ft_strtok(input, "|");
 	while (commands[i] != NULL)
 	{
