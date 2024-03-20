@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 09:43:14 by kmb               #+#    #+#             */
-/*   Updated: 2024/03/19 21:38:53 by akambou          ###   ########.fr       */
+/*   Updated: 2024/03/21 00:47:23 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,10 @@ void	handle_sigint(int sig)
 		ft_printf("\n");
 		rl_on_new_line();
 	}
+	if (sig == SIGQUIT)
+	{
+		exit(0);
+	}
 }
 
 int	main(void)
@@ -67,6 +71,7 @@ int	main(void)
 	t_commandhistory	*history;
 
 	signal(SIGINT, handle_sigint);
+	signal(SIGQUIT, handle_sigint);
 	history = create_history();
 	print_header();
 	while (1)
