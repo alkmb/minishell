@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 21:26:12 by kmb               #+#    #+#             */
-/*   Updated: 2024/03/19 06:11:05 by kmb              ###   ########.fr       */
+/*   Updated: 2024/03/20 21:35:16 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ typedef struct s_command_data {
 extern char			**environ;
 /*---------------PIPES---------------------------------*/
 void				chose_pipe(char *commands[], int n);
-void				execute_pipe(int fd[2], char **args);
+int					execute_pipe(int fd[2], char **args);
 /*---------------PARSER--------------------------------------------*/
 void				parse_command(char *input, t_commandhistory *history);
 void				chose_command(char *commands[], int n);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 16:58:05 by kmb               #+#    #+#             */
-/*   Updated: 2024/03/19 06:31:39 by kmb              ###   ########.fr       */
+/*   Updated: 2024/03/20 22:27:59 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	handle_commands(char **commands, t_expansiondata \
 	while (commands[expansionData->i][j] != '\0')
 	{
 		if (commands[expansionData->i][j] == '$'
+			&& commands[expansionData->i][j + 1] != '?'
 			&& (is_single_quote(commands[expansionData->i], j) == 0))
 			handle_variable_expansion(commands, &j, \
 				expansionData->is_malloced, var_name);

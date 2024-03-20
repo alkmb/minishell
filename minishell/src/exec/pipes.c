@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 02:13:04 by akambou           #+#    #+#             */
-/*   Updated: 2024/03/19 06:26:16 by kmb              ###   ########.fr       */
+/*   Updated: 2024/03/20 22:28:41 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	chose_pipe(char *commands[], int n)
 	pid_t	pid;
 	int		fd[2];
 	char	**args;
+	int		status;
 
 	initialize_variables(&i, &fd_in);
 	while (i <= n)
@@ -32,16 +33,18 @@ void	chose_pipe(char *commands[], int n)
 			handle_child_process(fd_in);
 			if (i != n)
 				dup2(fd[1], STDOUT_FILENO);
-			execute_pipe(fd, args);
+			status = execute_pipe(fd, args);
 		}
 		else
 			handle_parent_process(&fd_in, fd);
+		if (ft_strcmp(args[0], "status") == 0 )
+			printf("status: %d\n", status);
 		i++;
 		free_args(args);
 	}
 }
 
-void	execute_pipe(int fd[2], char **args)
+int	execute_pipe(int fd[2], char **args)
 {
 	int	orig_stdin;
 	int	orig_stdout;
@@ -53,14 +56,15 @@ void	execute_pipe(int fd[2], char **args)
 	if (ft_strcmp(args[0], "env") != 0 && ft_strcmp(args[0], "cd") != 0 && \
 		ft_strcmp(args[0], "echo") != 0 && ft_strcmp(args[0], "pwd") != 0 && \
 		ft_strcmp(args[0], "export") != 0 && ft_strcmp(args[0], "unset") \
-		!= 0 && ft_strcmp(args[0], "exit") != 0)
+		!= 0 && ft_strcmp(args[0], "exit") != 0 && ft_strcmp(args[0], "status") \
+		!= 0)
 		exit_status = execute_external_command(args);
 	if (ft_strcmp(args[0], "env") == 0)
 		handle_env(environ);
-	printf("status: %d\n", exit_status);
 	dup2(orig_stdin, STDIN_FILENO);
 	dup2(orig_stdout, STDOUT_FILENO);
 	close(orig_stdin);
 	close(orig_stdout);
+	return (exit_status);
 	exit(EXIT_SUCCESS);
 }
