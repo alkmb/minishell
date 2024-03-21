@@ -6,7 +6,7 @@
 /*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 09:43:14 by kmb               #+#    #+#             */
-/*   Updated: 2024/03/21 00:47:23 by kmb              ###   ########.fr       */
+/*   Updated: 2024/03/21 01:44:15 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,16 +51,21 @@ char	*create_prompt(void)
 	return (prompt);
 }
 
+void	handle_sigquit(int sig)
+{
+	if (sig == SIGQUIT)
+	{
+		ft_printf("\b\b  \b\b");
+	}
+}
+
 void	handle_sigint(int sig)
 {
 	if (sig == SIGINT)
 	{
 		ft_printf("\n");
 		rl_on_new_line();
-	}
-	if (sig == SIGQUIT)
-	{
-		exit(0);
+		rl_redisplay();
 	}
 }
 
@@ -71,7 +76,6 @@ int	main(void)
 	t_commandhistory	*history;
 
 	signal(SIGINT, handle_sigint);
-	signal(SIGQUIT, handle_sigint);
 	history = create_history();
 	print_header();
 	while (1)

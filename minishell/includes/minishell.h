@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 21:26:12 by kmb               #+#    #+#             */
-/*   Updated: 2024/03/20 21:35:16 by akambou          ###   ########.fr       */
+/*   Updated: 2024/03/21 01:52:44 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,16 @@ typedef struct s_command_data {
 	int		is_malloced[30];
 }	t_command_data;
 
+typedef struct s_pipe_data {
+	int		i;
+	int		fd_in;
+	pid_t	pid;
+	int		fd[2];
+	char	**args;
+	int		status;
+	int		flag;
+}	t_pipe_data;
+
 /*-------------------------------------------------------------*/
 extern char			**environ;
 /*---------------PIPES---------------------------------*/
@@ -126,6 +136,7 @@ void				handle_builtin_commands(char **args);
 void				handle_parent_process(int *fd_in, int *fd);
 void				handle_child_process(int fd_in);
 void				handle_sigint(int sig);
+void				handle_sigquit(int sig);
 void				handle_env(char **environ);
 int					handle_exception(char *input);
 /*---------------INITS---------------------------------*/
