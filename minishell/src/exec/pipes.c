@@ -6,13 +6,13 @@
 /*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 02:13:04 by akambou           #+#    #+#             */
-/*   Updated: 2024/03/21 01:57:18 by kmb              ###   ########.fr       */
+/*   Updated: 2024/03/21 02:52:49 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	handle_child(t_pipe_data *data, char *commands[], int n)
+int	handle_child(t_pipe_data *data, char *commands[], int n)
 {
 	data->args = token_pipe_cmd(commands, data->i);
 	handle_builtin_commands(data->args);
@@ -23,8 +23,15 @@ void	handle_child(t_pipe_data *data, char *commands[], int n)
 		handle_child_process(data->fd_in);
 		if (data->i != n)
 			dup2(data->fd[1], STDOUT_FILENO);
-		data->status = execute_pipe(data->fd, data->args);
+		data->status = execute_pipe(data->fd, data->args, data->status);
+		printf("status: %d\n", data->status);
+		if (ft_strcmp(data->args[0], "$?") == 0)
+		{
+			ft_printf("status: %d\n", data->status);
+		}
+		exit(data->status);
 	}
+	return (data->status);
 }
 
 void	handle_parent(t_pipe_data *data)
@@ -32,11 +39,6 @@ void	handle_parent(t_pipe_data *data)
 	if (data->pid > 0)
 	{
 		handle_parent_process(&data->fd_in, data->fd);
-		if (ft_strcmp(data->args[0], "$?") == 0)
-		{
-			data->flag = 1;
-			ft_printf("status: %d\n", data->status);
-		}
 		data->i++;
 		free_args(data->args);
 	}
@@ -46,22 +48,18 @@ void	chose_pipe(char *commands[], int n)
 {
 	t_pipe_data	data;
 
-	data.flag = 0;
 	initialize_variables(&data.i, &data.fd_in);
 	while (data.i <= n)
 	{
 		handle_child(&data, commands, n);
 		handle_parent(&data);
-		if (data.flag == 1)
-			break ;
 	}
 }
 
-int	execute_pipe(int fd[2], char **args)
+int	execute_pipe(int fd[2], char **args, int exit_status)
 {
 	int	orig_stdin;
 	int	orig_stdout;
-	int	exit_status;
 
 	if (ft_strcmp(args[0], "cat") == 0)
 		signal(SIGINT, handle_sigquit);
@@ -80,6 +78,5 @@ int	execute_pipe(int fd[2], char **args)
 	dup2(orig_stdout, STDOUT_FILENO);
 	close(orig_stdin);
 	close(orig_stdout);
-	//return (exit_status);
-	exit(exit_status);
+	return (exit_status);
 }

@@ -6,7 +6,7 @@
 /*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 21:26:12 by kmb               #+#    #+#             */
-/*   Updated: 2024/03/21 01:52:44 by kmb              ###   ########.fr       */
+/*   Updated: 2024/03/21 02:18:14 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ typedef struct s_pipe_data {
 extern char			**environ;
 /*---------------PIPES---------------------------------*/
 void				chose_pipe(char *commands[], int n);
-int					execute_pipe(int fd[2], char **args);
+int					execute_pipe(int fd[2], char **args, int status);
 /*---------------PARSER--------------------------------------------*/
 void				parse_command(char *input, t_commandhistory *history);
 void				chose_command(char *commands[], int n);
