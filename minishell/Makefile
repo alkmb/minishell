@@ -3,15 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+         #
+#    By: akambou <akambou@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/18 07:48:42 by kmb               #+#    #+#              #
-#    Updated: 2024/03/02 21:59:06 by kmb              ###   ########.fr        #
+#    Updated: 2024/04/08 01:40:54 by akambou          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -fsanitize=address -I includes -lreadline -MMD -MP
+CFLAGS = -Wall -Wextra -Werror -fsanitize=address -I includes -MMD -MP
+LDFLAGS = -lreadline
 RM = rm -rf
 
 SRCS = $(wildcard src/builtins/*.c src/exec/*.c src/expansor/*.c src/main.c src/parsing/*.c src/utils/*.c)
@@ -25,7 +26,7 @@ all: $(NAME)
 
 $(NAME): $(OBJS)
 	@make -C libft > /dev/null
-	@$(CC) $(CFLAGS) $^ libft/libft.a -o $@ > /dev/null
+	@$(CC) $(CFLAGS) $^ libft/libft.a -o $@ $(LDFLAGS) > /dev/null
 	@echo "✅✅$(NAME) is ready!✅✅"
 
 obj/%.o: src/%.c
@@ -45,5 +46,3 @@ clean:
 	@echo "✅ Done cleaning up!"
 
 re: fclean all
-
-.PHONY: all clean fclean re bonus rebonus

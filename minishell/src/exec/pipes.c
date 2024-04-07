@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 02:13:04 by akambou           #+#    #+#             */
-/*   Updated: 2024/03/21 02:52:49 by kmb              ###   ########.fr       */
+/*   Updated: 2024/04/08 01:33:06 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,7 @@ int	handle_child(t_pipe_data *data, char *commands[], int n)
 		data->status = execute_pipe(data->fd, data->args, data->status);
 		printf("status: %d\n", data->status);
 		if (ft_strcmp(data->args[0], "$?") == 0)
-		{
 			ft_printf("status: %d\n", data->status);
-		}
 		exit(data->status);
 	}
 	return (data->status);
