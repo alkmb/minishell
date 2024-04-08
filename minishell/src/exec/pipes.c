@@ -6,16 +6,16 @@
 /*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 02:13:04 by akambou           #+#    #+#             */
-/*   Updated: 2024/04/08 01:33:06 by akambou          ###   ########.fr       */
+/*   Updated: 2024/04/08 11:07:54 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	handle_child(t_pipe_data *data, char *commands[], int n)
+int	handle_child(t_pipe_data *data, char *commands[], int n, t_commandhistory *history)
 {
 	data->args = token_pipe_cmd(commands, data->i);
-	handle_builtin_commands(data->args);
+	handle_builtin_commands(data->args, history);
 	pipe(data->fd);
 	data->pid = fork();
 	if (data->pid == 0)
@@ -24,10 +24,7 @@ int	handle_child(t_pipe_data *data, char *commands[], int n)
 		if (data->i != n)
 			dup2(data->fd[1], STDOUT_FILENO);
 		data->status = execute_pipe(data->fd, data->args, data->status);
-		printf("status: %d\n", data->status);
-		if (ft_strcmp(data->args[0], "$?") == 0)
-			ft_printf("status: %d\n", data->status);
-		exit(data->status);
+		return (data->status);
 	}
 	return (data->status);
 }
@@ -42,14 +39,16 @@ void	handle_parent(t_pipe_data *data)
 	}
 }
 
-void	chose_pipe(char *commands[], int n)
+void	chose_pipe(char *commands[], int n, t_commandhistory *history)
 {
 	t_pipe_data	data;
 
 	initialize_variables(&data.i, &data.fd_in);
 	while (data.i <= n)
 	{
-		handle_child(&data, commands, n);
+		handle_child(&data, commands, n, history);
+		ft_printf("status: %d\n", data.status);
+		exit(0);
 		handle_parent(&data);
 	}
 }
@@ -68,7 +67,7 @@ int	execute_pipe(int fd[2], char **args, int exit_status)
 		ft_strcmp(args[0], "echo") != 0 && ft_strcmp(args[0], "pwd") != 0 && \
 		ft_strcmp(args[0], "export") != 0 && ft_strcmp(args[0], "unset") \
 		!= 0 && ft_strcmp(args[0], "exit") != 0 && ft_strcmp(args[0], "$?") \
-		!= 0)
+		!= 0 && ft_strcmp(args[0], "history") != 0 )
 		exit_status = execute_external_command(args);
 	if (ft_strcmp(args[0], "env") == 0)
 		handle_env(environ);

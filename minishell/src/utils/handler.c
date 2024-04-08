@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handler.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 19:49:13 by kmb               #+#    #+#             */
-/*   Updated: 2024/03/19 06:23:08 by kmb              ###   ########.fr       */
+/*   Updated: 2024/04/08 11:00:09 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	handle_env(char **environ)
 	}
 }
 
-void	handle_builtin_commands(char **args)
+void	handle_builtin_commands(char **args, t_commandhistory *history)
 {
 	if (ft_strcmp(args[0], "cd") == 0)
 		cmd_cd(args);
@@ -54,6 +54,8 @@ void	handle_builtin_commands(char **args)
 		cmd_export(args);
 	else if (ft_strcmp(args[0], "unset") == 0)
 		cmd_unset(args);
+	else if (ft_strcmp(args[0], "history") == 0)
+		ft_printf("%s", cmd_history(history));
 	else if (ft_strcmp(args[0], "exit") == 0)
 	{
 		ft_printf("exit\n");

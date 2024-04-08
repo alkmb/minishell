@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 07:25:30 by kmb               #+#    #+#             */
-/*   Updated: 2024/03/19 06:27:40 by kmb              ###   ########.fr       */
+/*   Updated: 2024/04/08 09:53:25 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,11 +69,11 @@ void	process_command(t_parser *parser)
 	}
 }
 
-char	**token_pipe_cmd(char *commands[], int n)
+char	**token_pipe_cmd(char	*command[], int i)
 {
 	t_parser	parser;
 
-	parser = initialize_parser(commands, n);
+	parser = initialize_parser(command, i);
 	process_command(&parser);
 	if (parser.char_index != 0)
 	{

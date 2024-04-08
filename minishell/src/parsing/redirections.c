@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 09:09:46 by kmb               #+#    #+#             */
-/*   Updated: 2024/03/02 22:23:12 by kmb              ###   ########.fr       */
+/*   Updated: 2024/04/08 03:12:56 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void	handle_here_document(char *delimiter)
 	char	*input_buffer;
 
 	input_buffer = NULL;
+	line = NULL;
 	ft_printf("> ");
 	if (!delimiter)
 		return (printf("Error: no delimiter\n"), (void)(0));
@@ -63,6 +64,7 @@ void	chose_redirection(char **args, int i)
 {
 	int	fd;
 
+	fd = 0;
 	if (ft_strcmp(args[i], ">") == 0)
 	{
 		fd = open(args[i + 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
@@ -83,7 +85,7 @@ void	chose_redirection(char **args, int i)
 		handle_here_document(args[i + 1]);
 		exit(EXIT_SUCCESS);
 	}
-	if (fd != -1)
+	else if (fd != -1)
 		close(fd);
 }
 

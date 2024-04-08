@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 09:43:14 by kmb               #+#    #+#             */
-/*   Updated: 2024/03/21 01:44:15 by kmb              ###   ########.fr       */
+/*   Updated: 2024/04/08 10:05:44 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,11 +87,6 @@ int	main(void)
 			add_history(input);
 		if (input == NULL)
 			exit(EXIT_FAILURE);
-		if (ft_strcmp(input, "history") == 0)
-		{
-			ft_printf("%s", cmd_history(history));
-			continue ;
-		}
 		parse_command(input, history);
 		free(input);
 	}

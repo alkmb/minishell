@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 09:43:22 by kmb               #+#    #+#             */
-/*   Updated: 2024/03/04 20:01:45 by kmb              ###   ########.fr       */
+/*   Updated: 2024/04/08 09:52:20 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int	execute_external_command(char **args)
 	pid_t	pid;
 	int		exit_status;
 
+	exit_status = 0;
 	cmd_path = find_command(args[0]);
 	if (cmd_path != NULL)
 	{

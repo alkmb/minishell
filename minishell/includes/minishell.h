@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 21:26:12 by kmb               #+#    #+#             */
-/*   Updated: 2024/03/21 02:18:14 by kmb              ###   ########.fr       */
+/*   Updated: 2024/04/08 11:00:47 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,14 +45,6 @@ typedef struct s_commandhistory
 	int		index;
 }	t_commandhistory;
 
-typedef struct s_expansionData
-{
-	char	**commands;
-	int		i;
-	int		*j;
-	int		*is_malloced;
-}	t_expansiondata;
-
 typedef struct s_parser {
 	int		j;
 	int		i;
@@ -66,6 +58,8 @@ typedef struct s_parser {
 }	t_parser;
 
 typedef struct s_command_data {
+	int		i;
+	int		j;
 	char	*commands[7];
 	char	var_name[1000];
 	int		is_malloced[30];
@@ -77,30 +71,29 @@ typedef struct s_pipe_data {
 	pid_t	pid;
 	int		fd[2];
 	char	**args;
+	char	*cmd_path;
 	int		status;
-	int		flag;
+	int		prev_status;
 }	t_pipe_data;
 
 /*-------------------------------------------------------------*/
 extern char			**environ;
 /*---------------PIPES---------------------------------*/
-void				chose_pipe(char *commands[], int n);
-int					execute_pipe(int fd[2], char **args, int status);
+void				chose_pipe(char *commands[], int n, t_commandhistory *history);
+int					execute_pipe(int fd[2], char **args, int exit_status);
 /*---------------PARSER--------------------------------------------*/
 void				parse_command(char *input, t_commandhistory *history);
-void				chose_command(char *commands[], int n);
+void				chose_command(t_command_data *command, t_commandhistory *history);
 /*---------------LEXER---------------------------------*/
-char				**token_pipe_cmd(char *command[], int n);
+char				**token_pipe_cmd(char* command[], int i);
 /*---------------EXECUTIONER-----------------------------------------*/
-void				chose_command(char *commands[], int n);
-void				handle_commands(char **commands, t_expansiondata \
-					*expansionData, char *var_name);
+void				handle_commands(t_command_data *command);
 int					execute_external_command(char **args);
 void				execute_child_process(char *cmd_path, char **args);
 /*---------------FIND COMMAND-----------------------------------------*/
 char				*find_command(char *command);
 char				*find_command_in_path(char *command, char \
-					*path_copy, int max_length);
+					*path_copy, int max_lengt);
 /*---------------REDIRECTION---------------------------------*/
 void				handle_here_document(char *delimiter);
 char				**handle_redirection(char **args, int *orig_stdin, \
@@ -112,6 +105,20 @@ void				handle_variable_expansion(char **commands, int *j, \
 					int *is_malloced, char *var_name);
 char				*get_var_name_and_value(char **commands, int i, \
 					int *j, char *var_name);
+/*---------------ENVIROMENT VARIABLAES--------------------------------*/
+void				add_to_environment(char **args);
+void				print_environment(char **env);
+char				**create_new_environment(int j, char *name, char *value);
+int					find_env_var(char **args);
+void				unset_env_var(int index);
+/*---------------HANDLERS---------------------------------*/
+void				handle_builtin_commands(char **args, t_commandhistory *history);
+void				handle_parent_process(int *fd_in, int *fd);
+void				handle_child_process(int fd_in);
+void				handle_sigint(int sig);
+void				handle_sigquit(int sig);
+void				handle_env(char **environ);
+int					handle_exception(char *input);
 /*---------------BUILTINS-------------------------------------------*/
 int					cmd_pwd(void);
 char				*cmd_history(t_commandhistory *history);
@@ -125,31 +132,14 @@ void				add_to_history(t_commandhistory *history, char *command);
 char				*get_from_history(t_commandhistory *history, int index);
 void				destroy_history(t_commandhistory *history);
 t_commandhistory	*create_history(void);
-/*---------------ENVIROMENT VARIABLAES--------------------------------*/
-void				add_to_environment(char **args);
-void				print_environment(char **env);
-char				**create_new_environment(int j, char *name, char *value);
-int					find_env_var(char **args);
-void				unset_env_var(int index);
-/*---------------HANDLERS---------------------------------*/
-void				handle_builtin_commands(char **args);
-void				handle_parent_process(int *fd_in, int *fd);
-void				handle_child_process(int fd_in);
-void				handle_sigint(int sig);
-void				handle_sigquit(int sig);
-void				handle_env(char **environ);
-int					handle_exception(char *input);
 /*---------------INITS---------------------------------*/
 t_parser			initialize_parser(char *commands[], int n);
-void				initialize_expansion_data(t_expansiondata \
-					*expansionData, \
-					char **commands, int i, int *is_malloced);
+void				initialize_command_data(t_command_data *command);
 void				initialize_variables(int *i, int *fd_in);
 /*---------------FREE---------------------------------*/
 void				free_args(char **args);
 void				free_environment(char **enviroment, int size);
-void				free_malloced(char *commands[], int is_malloced[], int i);
-void				free_malloced_commands(char **commands, \
+void				free_malloced(char **commands, \
 					int *is_malloced, int i);
 /*---------------UTILS-----------------------------------------*/
 void				handle_sigint(int sig);

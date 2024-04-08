@@ -3,34 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   frees.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 21:51:02 by kmb               #+#    #+#             */
-/*   Updated: 2024/03/02 22:26:35 by kmb              ###   ########.fr       */
+/*   Updated: 2024/04/08 06:34:04 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	free_malloced(char *commands[], int is_malloced[], int i)
+void	free_malloced(char *commands[], int *is_malloced, int i)
 {
 	int	j;
 
 	j = 0;
 	while (j <= i)
-	{
-		if (is_malloced[j])
-			free(commands[j]);
-		j++;
-	}
-}
-
-void	free_malloced_commands(char **commands, int *is_malloced, int i)
-{
-	int	j;
-
-	j = 0;
-	while (j < i)
 	{
 		if (is_malloced[j])
 			free(commands[j]);
