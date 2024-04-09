@@ -6,7 +6,7 @@
 /*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 09:43:22 by kmb               #+#    #+#             */
-/*   Updated: 2024/04/09 04:03:13 by akambou          ###   ########.fr       */
+/*   Updated: 2024/04/10 01:37:11 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,9 @@ int	execute_external_command(char **args, t_pipe_data *data)
 			waitpid(pid, &data->status, 0);
 			if (WIFEXITED(data->status))
 				data->status = WEXITSTATUS(data->status);
-			signal(SIGINT, handle_sigint);
 		}
 		else
-		{
-			signal(SIGINT, SIG_DFL); 
 			execute_child_process(cmd_path, args);
-		}
 	}
 	else if (cmd_path == NULL)
 	{
