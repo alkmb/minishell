@@ -6,7 +6,7 @@
 /*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 09:43:14 by kmb               #+#    #+#             */
-/*   Updated: 2024/04/08 10:05:44 by akambou          ###   ########.fr       */
+/*   Updated: 2024/04/09 02:30:43 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,11 +73,13 @@ int	main(void)
 {
 	char				*input;
 	char				*prompt;
+	int					status;
 	t_commandhistory	*history;
 
 	signal(SIGINT, handle_sigint);
 	history = create_history();
 	print_header();
+	status = 0;
 	while (1)
 	{
 		prompt = create_prompt();
@@ -87,7 +89,9 @@ int	main(void)
 			add_history(input);
 		if (input == NULL)
 			exit(EXIT_FAILURE);
-		parse_command(input, history);
+		if (ft_strcmp(input, "$?") == 0)
+			ft_printf("status: %d\n", status);
+		status = parse_command(input, history);
 		free(input);
 	}
 	return (0);

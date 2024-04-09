@@ -6,7 +6,7 @@
 /*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 09:43:22 by kmb               #+#    #+#             */
-/*   Updated: 2024/04/08 09:52:20 by akambou          ###   ########.fr       */
+/*   Updated: 2024/04/09 02:21:03 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,11 @@ void	execute_child_process(char *cmd_path, char **args)
 	}
 }
 
-int	execute_external_command(char **args)
+int	execute_external_command(char **args, t_pipe_data *data)
 {
 	char	*cmd_path;
 	pid_t	pid;
-	int		exit_status;
 
-	exit_status = 0;
 	cmd_path = find_command(args[0]);
 	if (cmd_path != NULL)
 	{
@@ -36,17 +34,17 @@ int	execute_external_command(char **args)
 			return (free(cmd_path), 0);
 		else if (pid > 0)
 		{
-			waitpid(pid, &exit_status, 0);
-			if (WIFEXITED(exit_status))
-				exit_status = WEXITSTATUS(exit_status);
+			waitpid(pid, &data->status, 0);
+			if (WIFEXITED(data->status))
+				data->status = WEXITSTATUS(data->status);
 		}
 		else
 			execute_child_process(cmd_path, args);
 	}
-	else
+	else if (cmd_path == NULL)
 	{
-		exit_status = 127;
+		data->status = 127;
 		ft_printf("minishell: %s: command not found\n", args[0]);
 	}
-	return (free(cmd_path), exit_status);
+	return (free(cmd_path), data->status);
 }

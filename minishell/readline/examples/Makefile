@@ -21,7 +21,7 @@ RL_LIBRARY_VERSION = 8.1
 SHELL = /bin/sh
 RM = rm -f
 
-prefix = /Users/gprada-t
+prefix = /usr/local
 exec_prefix = ${prefix}
 
 datarootdir = ${prefix}/share
@@ -32,7 +32,7 @@ datadir = ${datarootdir}
 
 top_srcdir = ..
 #BUILD_DIR = .
-BUILD_DIR = /Users/gprada-t/readline-8.1
+BUILD_DIR = /Users/akambou/Desktop/Projects/C/4th/minishell/minishell/readline
 installdir = $(datadir)/readline
 
 INSTALL = /usr/bin/install -c

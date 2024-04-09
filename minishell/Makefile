@@ -6,11 +6,9 @@
 #    By: akambou <akambou@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/18 07:48:42 by kmb               #+#    #+#              #
-#    Updated: 2024/04/08 11:11:13 by akambou          ###   ########.fr        #
+#    Updated: 2024/04/08 23:45:12 by akambou          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
-
-
 
 
 # CC = gcc
@@ -64,7 +62,7 @@ RDLNHIST_LIB = $(READLINE)libhistory.a
 LINKEAD_LIB = -ltermcap -lreadline
 MK_RL = make -C $(READLINE)
 
-MAIN = main signals
+MAIN = main
 BUILTINS = builtins enviroment expansor history
 EXEC = exec finder pipes
 PARSING = lexer parsing redirections
@@ -85,15 +83,15 @@ OBJS = $(addprefix obj/, $(notdir $(SRCS:.c=.o)))
 DEPS = $(subst .o,.d,$(OBJS))
 
 
-RL_CONFIG = cd $(READLINE) && ./configure
+RL_CONFIG = cd $(READLINE) && ./configure > /dev/null
 
 
-all: dir conf_rline libs $(NAME)
+all: dir conf_rline libs $(NAME) 
 
-all: $(NAME)
+all: $(NAME) 
 
 conf_rline:
-	if [ ! -f $(READLINE)config.status ]; then $(RL_CONFIG); fi
+	 $(RL_CONFIG); > /dev/null
 
 libs:
 	@make -C libft > /dev/null
@@ -104,24 +102,24 @@ vpath %.c src/builtins src/exec src/parsing src/utils src/
 dir:
 	@mkdir -p obj
 
-$(NAME):: $(OBJS) ./libft/libft.a ./readline/libreadline.a ./readline/libhistory.a
+$(NAME): $(OBJS) ./libft/libft.a ./readline/libreadline.a ./readline/libhistory.a 
 	@make -C libft > /dev/null
 	@make -C readline > /dev/null
-	@$(CC) $(CFLAGS) $^ $(LINKEAD_LIB) -o $(NAME)
+	@$(CC) $(CFLAGS) $^ $(LINKEAD_LIB) -o $(NAME) > /dev/null
 	@echo "✅✅$(NAME) is ready!✅✅"
 
 obj/%.o: %.c
-	$(CC) $(CFLAGS) $(INCL) -c -D READLINE_LIBRARY=1 $< -o $@
+	$(CC) $(CFLAGS) $(INCL) -c -D READLINE_LIBRARY=1 $< -o $@ > /dev/null
 
--include $(DEPS)
+-include $(DEPS) 
 
 fclean: clean
-	@$(RM) $(NAME) > /dev/null
+	@$(RM) $(NAME) 
 	@make fclean -C libft > /dev/null
 	@echo "✅ Done cleaning up executables!"
 
 clean:
-	@$(RM) obj > /dev/null
+	@$(RM) obj 
 	@make clean -C readline > /dev/null
 	@make clean -C libft > /dev/null
 	@echo "✅ Done cleaning up!"

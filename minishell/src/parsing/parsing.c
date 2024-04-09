@@ -6,7 +6,7 @@
 /*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 16:58:05 by kmb               #+#    #+#             */
-/*   Updated: 2024/04/08 10:58:19 by akambou          ###   ########.fr       */
+/*   Updated: 2024/04/09 02:32:47 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,44 +14,44 @@
 
 void	handle_commands(t_command_data *command)
 {
-	int j = 0;
-	
-	while (command->commands[command->i][j] != '\0')
+	while (command->commands[command->i][command->j] != '\0')
 	{
-		if (command->commands[command->i][j] == '$'
-			&& command->commands[command->i][j + 1] != '?'
-			&& (is_single_quote(command->commands[command->i], j) == 0))
-			handle_variable_expansion(command->commands, &j, \
+		if (command->commands[command->i][command->j] == '$'
+			&& command->commands[command->i][command->j + 1] != '?'
+			&& (is_single_quote(command->commands[command->i], \
+			command->j) == 0))
+			handle_variable_expansion(command->commands, &command->j, \
 				command->is_malloced, command->var_name);
 		else
-			j++;
+			command->j++;
 	}
-
 }
 
-void	chose_command(t_command_data *command, t_commandhistory *history)
+int	chose_command(t_command_data *command, t_commandhistory *history)
 {
 	t_pipe_data	data;
 
 	command->i -= 1;
 	if (command->i < 0)
-		return ;
+		return (0);
 	else
 	{
 		initialize_variables(&data.i, &data.fd_in);
-		chose_pipe(command->commands, command->i, history);
-		return ;
+		data.status = chose_pipe(command, &data, history);
+		return (data.status);
 	}
+	return (data.status);
 }
 
-void	parse_command(char *input, t_commandhistory *history)
+int	parse_command(char *input, t_commandhistory *history)
 {
 	t_command_data		command;
+	int					status;
 
 	initialize_command_data(&command);
 	add_to_history(history, input);
 	if (handle_exception(input) == 0)
-		return ;
+		return (0);
 	command.commands[command.i] = ft_strtok(input, "|");
 	while (command.commands[command.i] != NULL)
 	{
@@ -59,5 +59,6 @@ void	parse_command(char *input, t_commandhistory *history)
 		command.i++;
 		command.commands[command.i] = ft_strtok(NULL, "|");
 	}
-	chose_command(&command, history);
+	status = chose_command(&command, history);
+	return (status);
 }

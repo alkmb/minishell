@@ -6,25 +6,32 @@
 /*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 02:13:04 by akambou           #+#    #+#             */
-/*   Updated: 2024/04/08 11:07:54 by akambou          ###   ########.fr       */
+/*   Updated: 2024/04/09 02:31:52 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	handle_child(t_pipe_data *data, char *commands[], int n, t_commandhistory *history)
+int	handle_child(t_pipe_data *data, t_command_data *command, \
+t_commandhistory *history)
 {
-	data->args = token_pipe_cmd(commands, data->i);
+	data->args = token_pipe_cmd(command, data);
 	handle_builtin_commands(data->args, history);
 	pipe(data->fd);
 	data->pid = fork();
 	if (data->pid == 0)
 	{
 		handle_child_process(data->fd_in);
-		if (data->i != n)
+		if (data->i != command->i)
 			dup2(data->fd[1], STDOUT_FILENO);
-		data->status = execute_pipe(data->fd, data->args, data->status);
-		return (data->status);
+		execute_pipe(data->fd, data->args, data);
+		exit(data->status);
+	}
+	else
+	{
+		waitpid(data->pid, &data->status, 0);
+		if (WIFEXITED(data->status))
+			data->status = WEXITSTATUS(data->status);
 	}
 	return (data->status);
 }
@@ -39,41 +46,36 @@ void	handle_parent(t_pipe_data *data)
 	}
 }
 
-void	chose_pipe(char *commands[], int n, t_commandhistory *history)
+int	chose_pipe(t_command_data *command, t_pipe_data *data, \
+t_commandhistory *history)
 {
-	t_pipe_data	data;
-
-	initialize_variables(&data.i, &data.fd_in);
-	while (data.i <= n)
+	while (data->i <= command->i)
 	{
-		handle_child(&data, commands, n, history);
-		ft_printf("status: %d\n", data.status);
-		exit(0);
-		handle_parent(&data);
+		data->status = handle_child(data, command, history);
+		handle_parent(data);
 	}
+	return (data->status);
 }
 
-int	execute_pipe(int fd[2], char **args, int exit_status)
+int	execute_pipe(int fd[2], char **args, t_pipe_data *data)
 {
 	int	orig_stdin;
 	int	orig_stdout;
 
-	if (ft_strcmp(args[0], "cat") == 0)
-		signal(SIGINT, handle_sigquit);
 	handle_redirection(args, &orig_stdin, &orig_stdout);
 	close(fd[0]);
 	close(fd[1]);
 	if (ft_strcmp(args[0], "env") != 0 && ft_strcmp(args[0], "cd") != 0 && \
 		ft_strcmp(args[0], "echo") != 0 && ft_strcmp(args[0], "pwd") != 0 && \
 		ft_strcmp(args[0], "export") != 0 && ft_strcmp(args[0], "unset") \
-		!= 0 && ft_strcmp(args[0], "exit") != 0 && ft_strcmp(args[0], "$?") \
-		!= 0 && ft_strcmp(args[0], "history") != 0 )
-		exit_status = execute_external_command(args);
+		!= 0 && ft_strcmp(args[0], "exit") != 0 && \
+		ft_strcmp(args[0], "history") != 0 && ft_strcmp(args[0], "$?") != 0)
+		execute_external_command(args, data);
 	if (ft_strcmp(args[0], "env") == 0)
 		handle_env(environ);
 	dup2(orig_stdin, STDIN_FILENO);
 	dup2(orig_stdout, STDOUT_FILENO);
 	close(orig_stdin);
 	close(orig_stdout);
-	return (exit_status);
+	return (data->status);
 }

@@ -6,7 +6,7 @@
 /*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 09:09:46 by kmb               #+#    #+#             */
-/*   Updated: 2024/04/08 03:12:56 by akambou          ###   ########.fr       */
+/*   Updated: 2024/04/08 23:44:27 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	check_buffer_size(char **input_buffer, char *line)
 	{
 		current_len = strlen(*input_buffer);
 		new_len = current_len + strlen(line) + 2;
-		*input_buffer = realloc(*input_buffer, new_len);
+		*input_buffer = ft_realloc(*input_buffer, new_len);
 		ft_strlcat(*input_buffer, "\n", new_len);
 		ft_strlcat(*input_buffer, line, new_len);
 	}

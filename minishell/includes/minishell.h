@@ -6,7 +6,7 @@
 /*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 21:26:12 by kmb               #+#    #+#             */
-/*   Updated: 2024/04/08 11:00:47 by akambou          ###   ########.fr       */
+/*   Updated: 2024/04/09 02:30:10 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ typedef struct s_commandhistory
 	int		index;
 }	t_commandhistory;
 
-typedef struct s_parser {
+typedef struct s_parser
+{
 	int		j;
 	int		i;
 	int		is_single_quote;
@@ -57,15 +58,17 @@ typedef struct s_parser {
 	char	*current_token;
 }	t_parser;
 
-typedef struct s_command_data {
+typedef struct s_command_data
+{
 	int		i;
 	int		j;
-	char	*commands[7];
-	char	var_name[1000];
-	int		is_malloced[30];
+	char	*commands[MAX_ARGS];
+	char	var_name[MAX_INPUT_SIZE];
+	int		is_malloced[MAX_ARGS];
 }	t_command_data;
 
-typedef struct s_pipe_data {
+typedef struct s_pipe_data
+{
 	int		i;
 	int		fd_in;
 	pid_t	pid;
@@ -73,22 +76,24 @@ typedef struct s_pipe_data {
 	char	**args;
 	char	*cmd_path;
 	int		status;
-	int		prev_status;
 }	t_pipe_data;
 
 /*-------------------------------------------------------------*/
 extern char			**environ;
 /*---------------PIPES---------------------------------*/
-void				chose_pipe(char *commands[], int n, t_commandhistory *history);
-int					execute_pipe(int fd[2], char **args, int exit_status);
+int					chose_pipe(t_command_data *command, t_pipe_data *data, \
+					t_commandhistory *history);
+int					execute_pipe(int fd[2], char **args, t_pipe_data *data);
 /*---------------PARSER--------------------------------------------*/
-void				parse_command(char *input, t_commandhistory *history);
-void				chose_command(t_command_data *command, t_commandhistory *history);
+int					parse_command(char *input, t_commandhistory *history);
+int					chose_command(t_command_data *command, \
+					t_commandhistory *history);
 /*---------------LEXER---------------------------------*/
-char				**token_pipe_cmd(char* command[], int i);
+char				**token_pipe_cmd(t_command_data *command, \
+					t_pipe_data *data);
 /*---------------EXECUTIONER-----------------------------------------*/
 void				handle_commands(t_command_data *command);
-int					execute_external_command(char **args);
+int					execute_external_command(char **args, t_pipe_data *data);
 void				execute_child_process(char *cmd_path, char **args);
 /*---------------FIND COMMAND-----------------------------------------*/
 char				*find_command(char *command);
@@ -112,7 +117,8 @@ char				**create_new_environment(int j, char *name, char *value);
 int					find_env_var(char **args);
 void				unset_env_var(int index);
 /*---------------HANDLERS---------------------------------*/
-void				handle_builtin_commands(char **args, t_commandhistory *history);
+void				handle_builtin_commands(char **args, \
+					t_commandhistory *history);
 void				handle_parent_process(int *fd_in, int *fd);
 void				handle_child_process(int fd_in);
 void				handle_sigint(int sig);

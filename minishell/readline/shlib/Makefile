@@ -32,7 +32,7 @@ datarootdir = ${prefix}/share
 srcdir = .
 VPATH = ..
 topdir = ..
-BUILD_DIR = /Users/gprada-t/readline-8.1
+BUILD_DIR = /Users/akambou/Desktop/Projects/C/4th/minishell/minishell/readline
 
 INSTALL = /usr/bin/install -c
 INSTALL_PROGRAM = ${INSTALL}
@@ -52,7 +52,7 @@ SHELL = /bin/sh
 host_os = darwin19.6.0
 host_vendor = apple
 
-prefix = /Users/gprada-t
+prefix = /usr/local
 exec_prefix = ${prefix}
 includedir = ${prefix}/include
 bindir = ${exec_prefix}/bin
