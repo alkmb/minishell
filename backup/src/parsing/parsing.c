@@ -6,7 +6,7 @@
 /*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 16:58:05 by kmb               #+#    #+#             */
-/*   Updated: 2024/04/09 04:44:43 by akambou          ###   ########.fr       */
+/*   Updated: 2024/04/09 03:51:50 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,16 @@
 
 void	handle_commands(t_command_data *command)
 {
-	int j = 0;
-	while (command->commands[command->i][j] != '\0')
+	while (command->commands[command->i][command->j] != '\0')
 	{
-		if (command->commands[command->i][j] == '$'
-			&& command->commands[command->i][j + 1] != '?'
+		if (command->commands[command->i][command->j] == '$'
+			&& command->commands[command->i][command->j + 1] != '?'
 			&& (is_single_quote(command->commands[command->i], \
-			j) == 0))
-			handle_variable_expansion(command->commands, &j, \
+			command->j) == 0))
+			handle_variable_expansion(command->commands, &command->j, \
 				command->is_malloced, command->var_name);
 		else
-			j++;
+			command->j++;
 	}
 }
 
