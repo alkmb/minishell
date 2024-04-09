@@ -6,7 +6,7 @@
 #    By: akambou <akambou@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/18 07:48:42 by kmb               #+#    #+#              #
-#    Updated: 2024/04/08 23:45:12 by akambou          ###   ########.fr        #
+#    Updated: 2024/04/09 03:34:38 by akambou          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -83,7 +83,7 @@ OBJS = $(addprefix obj/, $(notdir $(SRCS:.c=.o)))
 DEPS = $(subst .o,.d,$(OBJS))
 
 
-RL_CONFIG = cd $(READLINE) && ./configure > /dev/null
+RL_CONFIG = cd $(READLINE) && ./configure
 
 
 all: dir conf_rline libs $(NAME) 
@@ -91,7 +91,7 @@ all: dir conf_rline libs $(NAME)
 all: $(NAME) 
 
 conf_rline:
-	 $(RL_CONFIG); > /dev/null
+	 $(RL_CONFIG); 
 
 libs:
 	@make -C libft > /dev/null
@@ -105,11 +105,11 @@ dir:
 $(NAME): $(OBJS) ./libft/libft.a ./readline/libreadline.a ./readline/libhistory.a 
 	@make -C libft > /dev/null
 	@make -C readline > /dev/null
-	@$(CC) $(CFLAGS) $^ $(LINKEAD_LIB) -o $(NAME) > /dev/null
+	@$(CC) $(CFLAGS) $^ $(LINKEAD_LIB) -o $(NAME) 
 	@echo "✅✅$(NAME) is ready!✅✅"
 
 obj/%.o: %.c
-	$(CC) $(CFLAGS) $(INCL) -c -D READLINE_LIBRARY=1 $< -o $@ > /dev/null
+	$(CC) $(CFLAGS) $(INCL) -c -D READLINE_LIBRARY=1 $< -o $@ 
 
 -include $(DEPS) 
 

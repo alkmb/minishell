@@ -6,7 +6,7 @@
 /*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 21:26:12 by kmb               #+#    #+#             */
-/*   Updated: 2024/04/09 02:30:10 by akambou          ###   ########.fr       */
+/*   Updated: 2024/04/09 03:23:06 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,5 +150,7 @@ void				free_malloced(char **commands, \
 /*---------------UTILS-----------------------------------------*/
 void				handle_sigint(int sig);
 void				print_header(void);
+
+void	handle_sigintcat(int sig);
 
 #endif

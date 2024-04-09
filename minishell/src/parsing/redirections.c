@@ -6,7 +6,7 @@
 /*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 09:09:46 by kmb               #+#    #+#             */
-/*   Updated: 2024/04/08 23:44:27 by akambou          ###   ########.fr       */
+/*   Updated: 2024/04/09 03:44:23 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,11 @@ void	check_buffer_size(char **input_buffer, char *line)
 	current_len = 0;
 	new_len = 0;
 	if (*input_buffer == NULL)
-		*input_buffer = strdup(line);
+		*input_buffer = ft_strdup(line);
 	else
 	{
-		current_len = strlen(*input_buffer);
-		new_len = current_len + strlen(line) + 2;
+		current_len = ft_strlen(*input_buffer);
+		new_len = current_len + ft_strlen(line) + 2;
 		*input_buffer = ft_realloc(*input_buffer, new_len);
 		ft_strlcat(*input_buffer, "\n", new_len);
 		ft_strlcat(*input_buffer, line, new_len);
@@ -36,8 +36,8 @@ void	handle_here_document(char *delimiter)
 	char	*line;
 	char	*input_buffer;
 
+	line = malloc(sizeof(char) * MAX_INPUT_SIZE);
 	input_buffer = NULL;
-	line = NULL;
 	ft_printf("> ");
 	if (!delimiter)
 		return (printf("Error: no delimiter\n"), (void)(0));
@@ -83,7 +83,7 @@ void	chose_redirection(char **args, int i)
 	else if (ft_strcmp(args[i], "<<") == 0)
 	{
 		handle_here_document(args[i + 1]);
-		exit(EXIT_SUCCESS);
+		exit(1);
 	}
 	else if (fd != -1)
 		close(fd);

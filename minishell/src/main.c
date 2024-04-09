@@ -6,7 +6,7 @@
 /*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 09:43:14 by kmb               #+#    #+#             */
-/*   Updated: 2024/04/09 02:30:43 by akambou          ###   ########.fr       */
+/*   Updated: 2024/04/09 04:08:31 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,21 +51,21 @@ char	*create_prompt(void)
 	return (prompt);
 }
 
-void	handle_sigquit(int sig)
-{
-	if (sig == SIGQUIT)
-	{
-		ft_printf("\b\b  \b\b");
-	}
-}
-
 void	handle_sigint(int sig)
 {
 	if (sig == SIGINT)
 	{
-		ft_printf("\n");
-		rl_on_new_line();
+		printf("\n");
 		rl_redisplay();
+	}
+}
+
+void handle_sigint1(int sig)
+{
+	if (sig == SIGINT)
+	{
+		printf("\n");
+		rl_on_new_line();
 	}
 }
 
@@ -76,12 +76,12 @@ int	main(void)
 	int					status;
 	t_commandhistory	*history;
 
-	signal(SIGINT, handle_sigint);
 	history = create_history();
 	print_header();
 	status = 0;
 	while (1)
 	{
+		signal(SIGINT, handle_sigint1);
 		prompt = create_prompt();
 		input = readline(prompt);
 		free(prompt);
