@@ -6,7 +6,7 @@
 /*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 09:43:14 by kmb               #+#    #+#             */
-/*   Updated: 2024/04/09 04:08:31 by akambou          ###   ########.fr       */
+/*   Updated: 2024/04/09 05:15:59 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,17 +56,8 @@ void	handle_sigint(int sig)
 	if (sig == SIGINT)
 	{
 		printf("\n");
-		rl_redisplay();
 	}
-}
-
-void handle_sigint1(int sig)
-{
-	if (sig == SIGINT)
-	{
-		printf("\n");
-		rl_on_new_line();
-	}
+	printf("akambou@minimalianteo$");
 }
 
 int	main(void)
@@ -76,12 +67,13 @@ int	main(void)
 	int					status;
 	t_commandhistory	*history;
 
+	signal(SIGINT, handle_sigint);
+	signal(SIGQUIT, SIG_IGN);
 	history = create_history();
 	print_header();
 	status = 0;
 	while (1)
 	{
-		signal(SIGINT, handle_sigint1);
 		prompt = create_prompt();
 		input = readline(prompt);
 		free(prompt);
@@ -90,7 +82,7 @@ int	main(void)
 		if (input == NULL)
 			exit(EXIT_FAILURE);
 		if (ft_strcmp(input, "$?") == 0)
-			ft_printf("status: %d\n", status);
+			ft_printf("minimalianteo: %d\n", status);
 		status = parse_command(input, history);
 		free(input);
 	}

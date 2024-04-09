@@ -6,7 +6,7 @@
 /*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 09:09:46 by kmb               #+#    #+#             */
-/*   Updated: 2024/04/09 03:44:23 by akambou          ###   ########.fr       */
+/*   Updated: 2024/04/09 04:42:23 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,17 +30,31 @@ void	check_buffer_size(char **input_buffer, char *line)
 		ft_strlcat(*input_buffer, line, new_len);
 	}
 }
-
+static void	handle_siginthc(int sig)
+{
+	if (sig == SIGINT)
+	{
+		printf("\n");
+		exit(1);
+		// rl_redisplay();
+	}
+	else if (sig == SIGQUIT)
+	{
+		printf("\n");
+		exit(1);
+	}
+}
 void	handle_here_document(char *delimiter)
 {
 	char	*line;
 	char	*input_buffer;
 
-	line = malloc(sizeof(char) * MAX_INPUT_SIZE);
 	input_buffer = NULL;
 	ft_printf("> ");
 	if (!delimiter)
 		return (printf("Error: no delimiter\n"), (void)(0));
+	signal(SIGINT, handle_siginthc);
+	line = readline("");
 	while (line != NULL)
 	{
 		line = readline("");
@@ -82,7 +96,9 @@ void	chose_redirection(char **args, int i)
 	}
 	else if (ft_strcmp(args[i], "<<") == 0)
 	{
+		signal(SIGQUIT, handle_siginthc);
 		handle_here_document(args[i + 1]);
+		ft_crazy_free(args);
 		exit(1);
 	}
 	else if (fd != -1)

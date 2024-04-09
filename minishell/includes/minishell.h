@@ -6,7 +6,7 @@
 /*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 21:26:12 by kmb               #+#    #+#             */
-/*   Updated: 2024/04/09 03:23:06 by akambou          ###   ########.fr       */
+/*   Updated: 2024/04/09 04:57:44 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ typedef struct s_command_data
 {
 	int		i;
 	int		j;
-	char	*commands[MAX_ARGS];
+	char	*commands[100000];
 	char	var_name[MAX_INPUT_SIZE];
 	int		is_malloced[MAX_ARGS];
 }	t_command_data;
@@ -148,9 +148,6 @@ void				free_environment(char **enviroment, int size);
 void				free_malloced(char **commands, \
 					int *is_malloced, int i);
 /*---------------UTILS-----------------------------------------*/
-void				handle_sigint(int sig);
 void				print_header(void);
-
-void	handle_sigintcat(int sig);
 
 #endif

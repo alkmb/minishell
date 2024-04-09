@@ -6,7 +6,7 @@
 /*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 22:20:09 by akambou           #+#    #+#             */
-/*   Updated: 2024/02/05 00:25:46 by akambou          ###   ########.fr       */
+/*   Updated: 2024/04/08 23:47:29 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ double	ft_atof(char *str);
 char	*ft_itoa(int n);
 /*-------------------------------ALLOCS-----------------------------------*/
 void	*ft_calloc(size_t count, size_t size);
+void	*ft_realloc(void *ptr, size_t size);
 char	*ft_crazy_free(char **buffer);
 /*-------------------------------MEMORY-----------------------------------*/
 void	ft_bzero(void *s, size_t n);

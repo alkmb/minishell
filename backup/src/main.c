@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 09:43:14 by kmb               #+#    #+#             */
-/*   Updated: 2024/03/14 12:35:04 by gprada-t         ###   ########.fr       */
+/*   Updated: 2024/04/09 05:15:59 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,21 +55,23 @@ void	handle_sigint(int sig)
 {
 	if (sig == SIGINT)
 	{
-		ft_printf("\n");
-		rl_on_new_line();
-		rl_redisplay();
+		printf("\n");
 	}
+	printf("akambou@minimalianteo$");
 }
 
 int	main(void)
 {
 	char				*input;
 	char				*prompt;
+	int					status;
 	t_commandhistory	*history;
 
 	signal(SIGINT, handle_sigint);
+	signal(SIGQUIT, SIG_IGN);
 	history = create_history();
 	print_header();
+	status = 0;
 	while (1)
 	{
 		prompt = create_prompt();
@@ -79,12 +81,9 @@ int	main(void)
 			add_history(input);
 		if (input == NULL)
 			exit(EXIT_FAILURE);
-		if (ft_strcmp(input, "history") == 0)
-		{
-			ft_printf("%s", cmd_history(history));
-			continue ;
-		}
-		parse_command(input, history);
+		if (ft_strcmp(input, "$?") == 0)
+			ft_printf("minimalianteo: %d\n", status);
+		status = parse_command(input, history);
 		free(input);
 	}
 	return (0);

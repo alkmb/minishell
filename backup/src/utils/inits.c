@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   inits.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 02:14:07 by akambou           #+#    #+#             */
-/*   Updated: 2024/03/02 21:51:09 by kmb              ###   ########.fr       */
+/*   Updated: 2024/04/08 09:40:59 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,11 @@ void	initialize_variables(int *i, int *fd_in)
 	*i = 0;
 }
 
-void	initialize_expansion_data(t_expansiondata *expansionData, \
-char **commands, int i, int *is_malloced)
+void	initialize_command_data(t_command_data *command)
 {
-	expansionData->commands = commands;
-	expansionData->i = i;
-	expansionData->j = 0;
-	expansionData->is_malloced = is_malloced;
+	command->i = 0;
+	command->j = 0;
+	command->is_malloced[0] = 0;
 }
 
 t_parser	initialize_parser(char *commands[], int n)

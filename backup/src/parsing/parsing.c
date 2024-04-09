@@ -3,63 +3,63 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 16:58:05 by kmb               #+#    #+#             */
-/*   Updated: 2024/03/19 06:31:39 by kmb              ###   ########.fr       */
+/*   Updated: 2024/04/09 04:44:43 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	handle_commands(char **commands, t_expansiondata \
-*expansionData, char *var_name)
+void	handle_commands(t_command_data *command)
 {
-	int	j;
-
-	j = 0;
-	while (commands[expansionData->i][j] != '\0')
+	int j = 0;
+	while (command->commands[command->i][j] != '\0')
 	{
-		if (commands[expansionData->i][j] == '$'
-			&& (is_single_quote(commands[expansionData->i], j) == 0))
-			handle_variable_expansion(commands, &j, \
-				expansionData->is_malloced, var_name);
+		if (command->commands[command->i][j] == '$'
+			&& command->commands[command->i][j + 1] != '?'
+			&& (is_single_quote(command->commands[command->i], \
+			j) == 0))
+			handle_variable_expansion(command->commands, &j, \
+				command->is_malloced, command->var_name);
 		else
 			j++;
 	}
-	free_malloced_commands(expansionData->commands, \
-		expansionData->is_malloced, expansionData->i);
 }
 
-void	chose_command(char *commands[], int n)
+int	chose_command(t_command_data *command, t_commandhistory *history)
 {
-	if (n < 0)
-		return ;
+	t_pipe_data	data;
+
+	command->i -= 1;
+	if (command->i < 0)
+		return (0);
 	else
-		chose_pipe(commands, n);
+	{
+		initialize_variables(&data.i, &data.fd_in);
+		data.status = chose_pipe(command, &data, history);
+		return (data.status);
+	}
+	return (data.status);
 }
 
-void	parse_command(char *input, t_commandhistory *history)
+int	parse_command(char *input, t_commandhistory *history)
 {
-	int					i;
-	char				*commands[7];
-	char				var_name[1000];
-	int					is_malloced[30];
-	t_expansiondata		expansiondata;
+	t_command_data		command;
+	int					status;
 
-	i = 0;
-	is_malloced[0] = 0;
-	initialize_expansion_data(&expansiondata, commands, i, is_malloced);
+	initialize_command_data(&command);
 	add_to_history(history, input);
 	if (handle_exception(input) == 0)
-		return ;
-	commands[i] = ft_strtok(input, "|");
-	while (commands[i] != NULL)
+		return (0);
+	command.commands[command.i] = ft_strtok(input, "|");
+	while (command.commands[command.i] != NULL)
 	{
-		handle_commands(commands, &expansiondata, var_name);
-		i++;
-		commands[i] = ft_strtok(NULL, "|");
+		handle_commands(&command);
+		command.i++;
+		command.commands[command.i] = ft_strtok(NULL, "|");
 	}
-	chose_command(commands, i - 1);
-	free_malloced_commands(commands, is_malloced, i);
+	status = chose_command(&command, history);
+	return (status);
 }

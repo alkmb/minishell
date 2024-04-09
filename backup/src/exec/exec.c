@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 09:43:22 by kmb               #+#    #+#             */
-/*   Updated: 2024/03/04 20:01:45 by kmb              ###   ########.fr       */
+/*   Updated: 2024/04/09 04:03:13 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,31 +21,35 @@ void	execute_child_process(char *cmd_path, char **args)
 	}
 }
 
-int	execute_external_command(char **args)
+int	execute_external_command(char **args, t_pipe_data *data)
 {
 	char	*cmd_path;
 	pid_t	pid;
-	int		exit_status;
 
 	cmd_path = find_command(args[0]);
 	if (cmd_path != NULL)
 	{
+		signal(SIGINT, SIG_IGN);
 		pid = fork();
 		if (pid == -1)
 			return (free(cmd_path), 0);
 		else if (pid > 0)
 		{
-			waitpid(pid, &exit_status, 0);
-			if (WIFEXITED(exit_status))
-				exit_status = WEXITSTATUS(exit_status);
+			waitpid(pid, &data->status, 0);
+			if (WIFEXITED(data->status))
+				data->status = WEXITSTATUS(data->status);
+			signal(SIGINT, handle_sigint);
 		}
 		else
+		{
+			signal(SIGINT, SIG_DFL); 
 			execute_child_process(cmd_path, args);
+		}
 	}
-	else
+	else if (cmd_path == NULL)
 	{
-		exit_status = 127;
+		data->status = 127;
 		ft_printf("minishell: %s: command not found\n", args[0]);
 	}
-	return (free(cmd_path), exit_status);
+	return (free(cmd_path), data->status);
 }
