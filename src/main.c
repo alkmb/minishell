@@ -6,7 +6,7 @@
 /*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 09:43:14 by kmb               #+#    #+#             */
-/*   Updated: 2024/04/10 01:23:18 by akambou          ###   ########.fr       */
+/*   Updated: 2024/04/10 02:04:36 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,14 @@ char	*create_prompt(void)
 
 void	handle_sigint(int sig)
 {
+	char	*new_prompt;
+
 	if (sig == SIGINT)
 	{
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		printf("\n");
-		char *new_prompt = create_prompt();
+		new_prompt = create_prompt();
 		rl_set_prompt(new_prompt);
 		free(new_prompt);
 		rl_redisplay();

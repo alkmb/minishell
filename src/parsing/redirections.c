@@ -6,7 +6,7 @@
 /*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 09:09:46 by kmb               #+#    #+#             */
-/*   Updated: 2024/04/09 21:56:35 by akambou          ###   ########.fr       */
+/*   Updated: 2024/04/10 01:57:25 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	check_buffer_size(char **input_buffer, char *line)
 		ft_strlcat(*input_buffer, line, new_len);
 	}
 }
+
 static void	handle_siginthc(int sig)
 {
 	if (sig == SIGINT)
@@ -43,17 +44,17 @@ static void	handle_siginthc(int sig)
 		exit(1);
 	}
 }
+
 void	handle_here_document(char *delimiter)
 {
 	char	*line;
 	char	*input_buffer;
 
-	input_buffer = NULL;
+	signal(SIGINT, handle_siginthc);
 	ft_printf("> ");
 	if (!delimiter)
 		return (printf("Error: no delimiter\n"), (void)(0));
-	signal(SIGINT, handle_siginthc);
-	line = readline("");
+	line = "";
 	while (line != NULL)
 	{
 		line = readline("");
@@ -78,9 +79,12 @@ void	chose_redirection(char **args, int i)
 	int	fd;
 
 	fd = 0;
-	if (ft_strcmp(args[i], ">") == 0)
+	if (ft_strcmp(args[i], ">") == 0 || ft_strcmp(args[i], ">>") == 0)
 	{
-		fd = open(args[i + 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		if (ft_strcmp(args[i], ">") == 0)
+			fd = open(args[i + 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		else
+			fd = open(args[i + 1], O_WRONLY | O_CREAT | O_APPEND, 0644);
 		dup2(fd, STDOUT_FILENO);
 	}
 	else if (ft_strcmp(args[i], "<") == 0)
@@ -88,19 +92,13 @@ void	chose_redirection(char **args, int i)
 		fd = open(args[i + 1], O_RDONLY);
 		dup2(fd, STDIN_FILENO);
 	}
-	else if (ft_strcmp(args[i], ">>") == 0)
-	{
-		fd = open(args[i + 1], O_WRONLY | O_CREAT | O_APPEND, 0644);
-		dup2(fd, STDOUT_FILENO);
-	}
 	else if (ft_strcmp(args[i], "<<") == 0)
 	{
-		signal(SIGQUIT, handle_siginthc);
 		handle_here_document(args[i + 1]);
 		ft_crazy_free(args);
 		exit(1);
 	}
-	else if (fd != -1)
+	else if (!fd)
 		close(fd);
 }
 

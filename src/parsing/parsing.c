@@ -6,7 +6,7 @@
 /*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 16:58:05 by kmb               #+#    #+#             */
-/*   Updated: 2024/04/10 01:27:48 by akambou          ###   ########.fr       */
+/*   Updated: 2024/04/10 02:03:25 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 
 void	handle_commands(t_command_data *command)
 {
-	int j = 0;
+	int	j;
+
+	j = 0;
 	while (command->commands[command->i][j] != '\0')
 	{
 		if (command->commands[command->i][j] == '$'
