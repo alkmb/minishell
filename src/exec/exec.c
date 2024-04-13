@@ -3,49 +3,48 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 09:43:22 by kmb               #+#    #+#             */
-/*   Updated: 2024/04/10 01:37:11 by akambou          ###   ########.fr       */
+/*   Updated: 2024/04/13 01:59:03 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	execute_child_process(char *cmd_path, char **args)
+void	execute_bin(t_shell *shell)
 {
-	if (execve(cmd_path, args, environ) == -1)
+	if (execve(shell->data->cmd_path, shell->data->args, shell->environ) == -1)
 	{
-		free(cmd_path);
+		free(shell->data->cmd_path);
 		exit(EXIT_FAILURE);
 	}
 }
 
-int	execute_external_command(char **args, t_pipe_data *data)
+void	execute_external_command(t_shell *shell)
 {
-	char	*cmd_path;
 	pid_t	pid;
 
-	cmd_path = find_command(args[0]);
-	if (cmd_path != NULL)
+	shell->data->cmd_path = find_command(shell->data->args[0]);
+	if (shell->data->cmd_path != NULL)
 	{
 		signal(SIGINT, SIG_IGN);
 		pid = fork();
 		if (pid == -1)
-			return (free(cmd_path), 0);
+			return (free(shell->data->cmd_path));
 		else if (pid > 0)
 		{
-			waitpid(pid, &data->status, 0);
-			if (WIFEXITED(data->status))
-				data->status = WEXITSTATUS(data->status);
+			waitpid(pid, &shell->data->status, 0);
+			if (WIFEXITED(shell->data->status))
+				shell->data->status = WEXITSTATUS(shell->data->status);
 		}
 		else
-			execute_child_process(cmd_path, args);
+			execute_bin(shell);
 	}
-	else if (cmd_path == NULL)
+	else if (shell->data->cmd_path == NULL)
 	{
-		data->status = 127;
-		ft_printf("minishell: %s: command not found\n", args[0]);
+		shell->data->status = 127;
+		ft_printf("minishell: %s: command not found\n", shell->data->args[0]);
 	}
-	return (free(cmd_path), data->status);
+	free(shell->data->cmd_path);
 }

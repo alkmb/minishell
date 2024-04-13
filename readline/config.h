@@ -160,7 +160,7 @@
 #define HAVE_LANGINFO_H 1
 
 /* Define if you have the <libaudit.h> header file.  */
-/* #undef HAVE_LIBAUDIT_H */
+#define HAVE_LIBAUDIT_H 1
 
 /* Define if you have the <limits.h> header file.  */
 #define HAVE_LIMITS_H 1
@@ -223,7 +223,7 @@
 #define HAVE_TERMCAP_H 1
 
 /* Define if you have the <termio.h> header file.  */
-/* #undef HAVE_TERMIO_H */
+#define HAVE_TERMIO_H 1
 
 /* Define if you have the <termios.h> header file.  */
 #define HAVE_TERMIOS_H 1
@@ -255,18 +255,18 @@
 #define HAVE_LANGINFO_CODESET 1
 
 /* Define if you have <linux/audit.h> and it defines AUDIT_USER_TTY */
-#define HAVE_DECL_AUDIT_USER_TTY 0
+#define HAVE_DECL_AUDIT_USER_TTY 1
 
 /* Definitions pulled in from aclocal.m4. */
 #define VOID_SIGHANDLER 1
 
-/* #undef GWINSZ_IN_SYS_IOCTL */
+#define GWINSZ_IN_SYS_IOCTL 1
 
 #define STRUCT_WINSIZE_IN_SYS_IOCTL 1
 
 /* #undef STRUCT_WINSIZE_IN_TERMIOS */
 
-#define TIOCSTAT_IN_SYS_IOCTL 1
+/* #undef TIOCSTAT_IN_SYS_IOCTL */
 
 #define FIONREAD_IN_SYS_IOCTL 1
 
@@ -290,7 +290,7 @@
 
 #define HAVE_POSIX_SIGSETJMP 1
 
-#define CTYPE_NON_ASCII 1
+/* #undef CTYPE_NON_ASCII */
 
 /* modify settings or make new ones based on what autoconf tells us. */
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 07:25:30 by kmb               #+#    #+#             */
-/*   Updated: 2024/04/09 00:59:32 by akambou          ###   ########.fr       */
+/*   Updated: 2024/04/13 01:13:39 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,18 +69,16 @@ void	process_command(t_parser *parser)
 	}
 }
 
-char	**token_pipe_cmd(t_command_data *command, t_pipe_data *data)
+char	**token_pipe_cmd(t_shell *shell)
 {
-	t_parser	parser;
-
-	parser = initialize_parser(command->commands, data->i);
-	process_command(&parser);
-	if (parser.char_index != 0)
+	initialize_parser(shell);
+	process_command(shell->parser);
+	if (shell->parser->char_index != 0)
 	{
-		parser.current_token[parser.char_index] = '\0';
-		parser.args[parser.i++] = ft_strdup(parser.current_token);
+		shell->parser->current_token[shell->parser->char_index] = '\0';
+		shell->parser->args[shell->parser->i++] = ft_strdup(shell->parser->current_token);
 	}
-	parser.args[parser.i] = NULL;
-	free(parser.current_token);
-	return (parser.args);
+	shell->parser->args[shell->parser->i] = NULL;
+	free(shell->parser->current_token);
+	return (shell->parser->args);
 }

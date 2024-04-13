@@ -3,65 +3,85 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 16:58:05 by kmb               #+#    #+#             */
-/*   Updated: 2024/04/10 02:03:25 by akambou          ###   ########.fr       */
+/*   Updated: 2024/04/13 00:16:51 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+char	*get_var_name_and_value(t_command_data *command)
+{
+	command->var_name_len = 0;
+	while (ft_isalnum(command->commands[command->i][command->j]) 
+	|| command->commands[command->i][command->j] == '_')
+		command->var_name[command->var_name_len++] = command->commands[command->i][(command->j)++];
+	command->var_name[command->var_name_len] = '\0';
+	return (getenv(command->var_name));
+}
+
+void	handle_variable_expansion(t_command_data *command)
+{
+	command->i = 0;
+	command->j++;
+	command->var_value = get_var_name_and_value(command);
+	if (command->var_value != NULL)
+	{
+		command->var_name_len = ft_strlen(command->var_name);
+		command->new_command = malloc((ft_strlen(command->commands[command->i]) - \
+		command->var_name_len + ft_strlen(command->var_value)) * sizeof(char));
+		ft_strlcpy(command->new_command, command->commands[command->i], command->j);
+		ft_strlcpy(command->new_command + command->j - command->var_name_len - 1, \
+		command->var_value, ft_strlen(command->var_value));
+		free_malloced(command->commands, command->is_malloced, command->i);
+		command->commands[command->i] = command->new_command;
+		command->is_malloced[command->i] = 1;
+	}
+	else
+		return ;
+}
+
 void	handle_commands(t_command_data *command)
 {
-	int	j;
-
-	j = 0;
-	while (command->commands[command->i][j] != '\0')
+	command->j = 0;
+	while (command->commands[command->i][command->j] != '\0')
 	{
-		if (command->commands[command->i][j] == '$'
-			&& command->commands[command->i][j + 1] != '?'
+		if (command->commands[command->i][command->j] == '$'
+			&& command->commands[command->i][command->j + 1] != '?'
 			&& (is_single_quote(command->commands[command->i], \
-			j) == 0))
-			handle_variable_expansion(command->commands, &j, \
-				command->is_malloced, command->var_name);
+			command->j) == 0))
+			handle_variable_expansion(command);
 		else
-			j++;
+			command->j++;
 	}
 }
 
-int	chose_command(t_command_data *command, t_commandhistory *history)
+void	chose_command(t_shell *shell)
 {
-	t_pipe_data	data;
-
-	command->i -= 1;
-	if (command->i < 0)
-		return (0);
+	shell->command->i -= 1;
+	if (shell->command->i < 0)
+		return ;
 	else
 	{
-		initialize_variables(&data.i, &data.fd_in);
-		data.status = chose_pipe(command, &data, history);
-		return (data.status);
+		shell->data->i = 0;
+		shell->data->fd_in = 0;
+		chose_pipe(shell);
 	}
-	return (data.status);
 }
 
-int	parse_command(char *input, t_commandhistory *history)
+void	parse_command(t_shell *shell)
 {
-	t_command_data		command;
-	int					status;
-
-	initialize_command_data(&command);
-	add__history(history, input);
-	if (handle_exception(input) == 0)
-		return (0);
-	command.commands[command.i] = ft_strtok(input, "|");
-	while (command.commands[command.i] != NULL)
+	//add__history(history, input);
+	if (handle_exception(shell->input) == 0)
+		return ;
+	shell->command->commands[shell->command->i] = ft_strtok(shell->input, "|");
+	while (shell->command->commands[shell->command->i] != NULL)
 	{
-		handle_commands(&command);
-		command.i++;
-		command.commands[command.i] = ft_strtok(NULL, "|");
+		handle_commands(shell->command);
+		shell->command->i++;
+		shell->command->commands[shell->command->i] = ft_strtok(NULL, "|");
 	}
-	status = chose_command(&command, history);
-	return (status);
+	chose_command(shell);
 }

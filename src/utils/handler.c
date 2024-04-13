@@ -3,32 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   handler.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 19:49:13 by kmb               #+#    #+#             */
-/*   Updated: 2024/04/08 11:00:09 by akambou          ###   ########.fr       */
+/*   Updated: 2024/04/13 01:48:23 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-void	handle_parent_process(int *fd_in, int *fd)
-{
-	wait(NULL);
-	if (*fd_in != 0)
-		close(*fd_in);
-	*fd_in = fd[0];
-	close(fd[1]);
-}
-
-void	handle_child_process(int fd_in)
-{
-	if (fd_in != 0)
-	{
-		dup2(fd_in, STDIN_FILENO);
-		close(fd_in);
-	}
-}
 
 void	handle_env(char **environ)
 {
@@ -42,21 +24,23 @@ void	handle_env(char **environ)
 	}
 }
 
-void	handle_builtin_commands(char **args, t_commandhistory *history)
+void	builtin_cmds(t_shell *shell)
 {
-	if (ft_strcmp(args[0], "cd") == 0)
-		cmd_cd(args);
-	if (ft_strcmp(args[0], "echo") == 0)
-		cmd_echo(args);
-	else if (ft_strcmp(args[0], "pwd") == 0)
+	if (ft_strcmp(shell->data->args[0], "cd") == 0)
+		cmd_cd(shell);
+	if (ft_strcmp(shell->data->args[0], "echo") == 0)
+		cmd_echo(shell);
+	else if (ft_strcmp(shell->data->args[0], "pwd") == 0)
 		cmd_pwd();
-	else if (ft_strcmp(args[0], "export") == 0)
-		cmd_export(args);
-	else if (ft_strcmp(args[0], "unset") == 0)
-		cmd_unset(args);
-	else if (ft_strcmp(args[0], "history") == 0)
-		ft_printf("%s", cmd_history(history));
-	else if (ft_strcmp(args[0], "exit") == 0)
+	else if (ft_strcmp(shell->data->args[0], "export") == 0)
+		cmd_export(shell);
+	else if (ft_strcmp(shell->data->args[0], "unset") == 0)
+		cmd_unset(shell);
+	else if (ft_strcmp(shell->data->args[0], "history") == 0)
+		ft_printf("%s", cmd_history(shell->history));
+	else if (ft_strcmp(shell->data->args[0], "status") == 0)
+		ft_printf("status: %d\n", shell->status);
+	else if (ft_strcmp(shell->data->args[0], "exit") == 0)
 	{
 		ft_printf("exit\n");
 		exit(EXIT_SUCCESS);
