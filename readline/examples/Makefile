@@ -32,7 +32,7 @@ datadir = ${datarootdir}
 
 top_srcdir = ..
 #BUILD_DIR = .
-BUILD_DIR = /home/kmb/Desktop/Campus/42_C/4th/minishell/readline
+BUILD_DIR = /Users/gprada-t/42GPRADAT/Cursus/Circle_4/minishell/readline
 installdir = $(datadir)/readline
 
 INSTALL = /usr/bin/install -c
@@ -63,7 +63,7 @@ ASAN_XLDFLAGS = -fsanitize=address
 READLINE_LIB = ../libreadline.a
 HISTORY_LIB = ../libhistory.a
 
-TERMCAP_LIB = -ltinfo
+TERMCAP_LIB = -ltermcap
 
 .c.o:
 	${RM} $@

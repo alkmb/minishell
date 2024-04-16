@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
+/*   By: gprada-t <gprada-t@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 09:09:46 by kmb               #+#    #+#             */
-/*   Updated: 2024/04/10 01:57:25 by akambou          ###   ########.fr       */
+/*   Updated: 2024/04/16 21:44:59 by gprada-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@ static void	handle_siginthc(int sig)
 	}
 	else if (sig == SIGQUIT)
 	{
-		printf("\n");
-		exit(1);
+		printf("\b\b  \b\b");
+		fflush(stdout);
 	}
 }
 
@@ -51,13 +51,17 @@ void	handle_here_document(char *delimiter)
 	char	*input_buffer;
 
 	signal(SIGINT, handle_siginthc);
+	signal(SIGQUIT, handle_siginthc);
 	ft_printf("> ");
 	if (!delimiter)
 		return (printf("Error: no delimiter\n"), (void)(0));
 	line = "";
-	while (line != NULL)
+	signal(SIGQUIT, SIG_IGN);
+	while (1)
 	{
 		line = readline("");
+		if (!line)
+			exit(1);
 		if (ft_strcmp(line, delimiter) == 0)
 		{
 			free(line);

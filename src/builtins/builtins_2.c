@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: gprada-t <gprada-t@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 21:51:32 by akambou           #+#    #+#             */
-/*   Updated: 2024/04/13 02:14:21 by kmb              ###   ########.fr       */
+/*   Updated: 2024/04/17 00:38:03 by gprada-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,6 @@ void	cmd_env(t_shell *shell)
 int	cmd_export(t_shell *shell)
 {
 	int		i;
-	char	*name;
-	char	*value;
 
 	i = 1;
 	if (shell->data->args[i] == NULL)
