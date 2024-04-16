@@ -6,7 +6,7 @@
 /*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 16:58:05 by kmb               #+#    #+#             */
-/*   Updated: 2024/04/17 00:57:16 by akambou          ###   ########.fr       */
+/*   Updated: 2024/04/17 01:53:24 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,10 @@
 char	*get_var_name_and_value(t_command_data *command)
 {
 	command->var_name_len = 0;
-	while (ft_isalnum(command->commands[command->i][command->j]) 
+	while (ft_isalnum(command->commands[command->i][command->j])
 	|| command->commands[command->i][command->j] == '_')
-		command->var_name[command->var_name_len++] = command->commands[command->i][(command->j)++];
+		command->var_name[command->var_name_len++] = \
+		command->commands[command->i][(command->j)++];
 	command->var_name[command->var_name_len] = '\0';
 	return (getenv(command->var_name));
 }
@@ -26,26 +27,33 @@ void	handle_variable_expansion(t_command_data *command)
 {
 	command->j++;
 	command->var_value = get_var_name_and_value(command);
-	if (command->var_value != NULL && ft_strlen(command->var_value) >= ft_strlen(command->var_name))
+	if (command->var_value != NULL && ft_strlen(command->var_value) >= \
+	ft_strlen(command->var_name))
 	{
 		command->var_name_len = ft_strlen(command->var_name);
-		command->new_command = malloc((ft_strlen(command->commands[command->i]) - \
-		command->var_name_len + ft_strlen(command->var_value)) * sizeof(char));
-		ft_strlcpy(command->new_command, command->commands[command->i], command->j);
-		ft_strlcpy(command->new_command + command->j - command->var_name_len - 1, \
+		command->new_command = malloc((ft_strlen(command->commands[command->i]) \
+		- command->var_name_len + ft_strlen(command->var_value)) \
+		* sizeof(char));
+		ft_strlcpy(command->new_command, \
+		command->commands[command->i], command->j);
+		ft_strlcpy(command->new_command + command->j - \
+		command->var_name_len - 1, \
 		command->var_value, ft_strlen(command->var_value));
-		free_malloced(command->commands, command->is_malloced ,command->i);
+		free_malloced(command->commands, command->is_malloced, command->i);
 		command->commands[command->i] = command->new_command;
 		command->is_malloced[command->i] = 1;
 	}
-	else if (command->var_value != NULL && ft_strlen(command->var_value) < ft_strlen(command->var_name))
+	else if (command->var_value != NULL && ft_strlen(command->var_value) \
+	< ft_strlen(command->var_name))
 	{
 		command->var_name_len = ft_strlen(command->var_name);
 		command->new_command = ft_strdup(command->commands[command->i]);
-		ft_strlcpy(command->new_command, command->commands[command->i], command->j - command->var_name_len);
-		ft_strlcpy(command->new_command + command->j - command->var_name_len - 1, \
+		ft_strlcpy(command->new_command, command->commands[command->i], \
+		command->j - command->var_name_len);
+		ft_strlcpy(command->new_command + command->j - \
+		command->var_name_len - 1, \
 		command->var_value, ft_strlen(command->var_value) + 1);
-		free_malloced(command->commands, command->is_malloced ,command->i);
+		free_malloced(command->commands, command->is_malloced, command->i);
 		command->commands[command->i] = command->new_command;
 		command->is_malloced[command->i] = 1;
 	}

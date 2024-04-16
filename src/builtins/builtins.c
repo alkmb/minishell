@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gprada-t <gprada-t@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 23:12:49 by kmb               #+#    #+#             */
-/*   Updated: 2024/04/16 21:29:14 by gprada-t         ###   ########.fr       */
+/*   Updated: 2024/04/17 01:41:16 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ int	cmd_echo(t_shell *shell)
 
 	newline = 0;
 	i = 1;
-	if (shell->data->args[i] != NULL && ft_strcmp(shell->data->args[i], "-n") == 0)
+	if (shell->data->args[i] != NULL
+		&& ft_strcmp(shell->data->args[i], "-n") == 0)
 	{
 		newline = 1;
 		i++;
@@ -49,9 +50,11 @@ int	cmd_cd(t_shell *shell)
 	{
 		if (shell->data->args[1][0] == '~')
 		{
-			path = malloc(ft_strlen(getenv("HOME")) + strlen(shell->data->args[1]));
+			path = malloc(ft_strlen(getenv("HOME")) \
+			+ strlen(shell->data->args[1]));
 			ft_strlcpy(path, getenv("HOME"), 5);
-			ft_strlcat(path, shell->data->args[1] + 1, ft_strlen(getenv("HOME")) \
+			ft_strlcat(path, shell->data->args[1] + 1, \
+			ft_strlen(getenv("HOME")) \
 			+ ft_strlen(shell->data->args[1]) + 1);
 		}
 		else

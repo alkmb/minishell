@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 07:25:30 by kmb               #+#    #+#             */
-/*   Updated: 2024/04/13 01:13:39 by kmb              ###   ########.fr       */
+/*   Updated: 2024/04/17 01:43:27 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,8 @@ char	**token_pipe_cmd(t_shell *shell)
 	if (shell->parser->char_index != 0)
 	{
 		shell->parser->current_token[shell->parser->char_index] = '\0';
-		shell->parser->args[shell->parser->i++] = ft_strdup(shell->parser->current_token);
+		shell->parser->args[shell->parser->i++] = \
+		ft_strdup(shell->parser->current_token);
 	}
 	shell->parser->args[shell->parser->i] = NULL;
 	free(shell->parser->current_token);

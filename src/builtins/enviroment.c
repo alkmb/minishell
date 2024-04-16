@@ -6,7 +6,7 @@
 /*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 01:20:03 by akambou           #+#    #+#             */
-/*   Updated: 2024/04/17 00:53:10 by akambou          ###   ########.fr       */
+/*   Updated: 2024/04/17 01:41:49 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int	find_env_var(t_shell *shell)
 
 	i = 0;
 	while (shell->environ[i])
-	{	
+	{
 		env_var = ft_strdup(shell->environ[i]);
 		name = ft_strtok(env_var, "=");
 		if (ft_strcmp(name, shell->data->args[1]) == 0)

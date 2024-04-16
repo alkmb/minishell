@@ -6,7 +6,7 @@
 /*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 09:09:46 by kmb               #+#    #+#             */
-/*   Updated: 2024/04/17 00:51:50 by akambou          ###   ########.fr       */
+/*   Updated: 2024/04/17 01:49:47 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,10 +84,10 @@ void	chose_redirection(char **args, int i)
 
 	fd = 0;
 	if (args[i] == NULL || args[i + 1] == NULL)
-    {
-        printf("Error: syntax error\n");
-        exit(1);
-    }
+	{
+		printf("Error: syntax error\n");
+		exit(1);
+	}
 	if (ft_strcmp(args[i], ">") == 0 || ft_strcmp(args[i], ">>") == 0)
 	{
 		if (ft_strcmp(args[i], ">") == 0)

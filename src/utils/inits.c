@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   inits.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 02:14:07 by akambou           #+#    #+#             */
-/*   Updated: 2024/04/13 02:12:04 by kmb              ###   ########.fr       */
+/*   Updated: 2024/04/17 01:51:02 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,11 @@ void	initialize_parser(t_shell *shell)
 	shell->parser->command = shell->command->commands[shell->data->i];
 	shell->parser->current_token = malloc(1000 * sizeof(char));
 }
+
 void	initialize_shell(t_shell *shell)
 {
 	extern char	**environ;
-	
+
 	shell->input = NULL;
 	shell->prompt = NULL;
 	shell->status = 0;
