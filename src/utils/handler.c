@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handler.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 19:49:13 by kmb               #+#    #+#             */
-/*   Updated: 2024/04/16 02:21:50 by kmb              ###   ########.fr       */
+/*   Updated: 2024/04/17 00:58:30 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,14 @@ int	handle_exception(char *input)
 		while (input[i] == ' ')
 			i++;
 		if (i == len)
-		{
 			return (0);
-		}
+	}
+	else if (ft_strncmp(input, "|", 1) == 0)
+	{
+		while (input[i] == '|')
+			i++;
+		if (i == len)
+			return (0);
 	}
 	return (1);
 }

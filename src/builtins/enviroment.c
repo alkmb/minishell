@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   enviroment.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 01:20:03 by akambou           #+#    #+#             */
-/*   Updated: 2024/04/13 02:22:53 by kmb              ###   ########.fr       */
+/*   Updated: 2024/04/17 00:53:10 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,17 @@ void	add_to_environment(t_shell *shell)
 			j++;
 		i++;
 	}
-	shell->environ = create_new_environment(shell, j, name, value);
+	i = 0;
+	while (ft_isalpha(name[i]) || name[i] == '_')
+		i++;
+	if (name[i] != '\0')
+	{
+		ft_printf("minishell: export: `%s': not a valid identifier\n", name);
+		shell->status = 1;
+		return ;
+	}
+	else
+		shell->environ = create_new_environment(shell, j, name, value);
 }
 
 int	find_env_var(t_shell *shell)
