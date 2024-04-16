@@ -6,7 +6,7 @@
 /*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 23:12:49 by kmb               #+#    #+#             */
-/*   Updated: 2024/04/13 01:56:22 by kmb              ###   ########.fr       */
+/*   Updated: 2024/04/16 02:29:23 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,16 @@ int	cmd_echo(t_shell *shell)
 		newline = 1;
 		i++;
 	}
-	while (shell->data->args[i] != NULL && ft_strncmp(shell->data->args[0], "echo $?", 8) != 0)
+	while (shell->data->args[i] != NULL)
 	{
-		ft_printf("%s", shell->data->args[i]);
-		if (shell->data->args[i + 1] != NULL)
-			ft_printf(" ");
+		if (ft_strcmp(shell->data->args[i], "$?") == 0)
+			ft_printf("%d", shell->status);
+		else
+		{
+			ft_printf("%s", shell->data->args[i]);
+			if (shell->data->args[i + 1] != NULL)
+				ft_printf(" ");
+		}
 		i++;
 	}
 	if (!newline && ft_strcmp(shell->data->args[0], "$?") != 0)

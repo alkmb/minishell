@@ -6,7 +6,7 @@
 /*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 02:13:04 by akambou           #+#    #+#             */
-/*   Updated: 2024/04/13 02:17:22 by kmb              ###   ########.fr       */
+/*   Updated: 2024/04/16 02:30:11 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,11 +72,8 @@ void	execute_pipe(t_shell *shell)
 	if (ft_strcmp(shell->data->args[0], "env") != 0 && ft_strcmp(shell->data->args[0], "cd") != 0 && \
 		ft_strcmp(shell->data->args[0], "echo") != 0 && ft_strcmp(shell->data->args[0], "pwd") != 0 && \
 		ft_strcmp(shell->data->args[0], "export") != 0 && ft_strcmp(shell->data->args[0], "unset") \
-		!= 0 && ft_strcmp(shell->data->args[0], "exit") != 0 && \
-		ft_strcmp(shell->data->args[0], "history") != 0 && ft_strcmp(shell->data->args[0], "$?") != 0)
+		!= 0 && ft_strcmp(shell->data->args[0], "exit") != 0 && ft_strcmp(shell->data->args[0], "history") != 0)
 		execute_external_command(shell);
-	if (ft_strcmp(shell->data->args[0], "env") == 0)
-		handle_env(shell->environ);
 	dup2(orig_stdin, STDIN_FILENO);
 	dup2(orig_stdout, STDOUT_FILENO);
 	close(orig_stdin);

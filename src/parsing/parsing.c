@@ -6,7 +6,7 @@
 /*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 16:58:05 by kmb               #+#    #+#             */
-/*   Updated: 2024/04/13 00:16:51 by kmb              ###   ########.fr       */
+/*   Updated: 2024/04/16 02:39:11 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,23 +24,32 @@ char	*get_var_name_and_value(t_command_data *command)
 
 void	handle_variable_expansion(t_command_data *command)
 {
-	command->i = 0;
 	command->j++;
 	command->var_value = get_var_name_and_value(command);
-	if (command->var_value != NULL)
+	if (command->var_value != NULL && ft_strlen(command->var_value) >= ft_strlen(command->var_name))
 	{
-		command->var_name_len = ft_strlen(command->var_name);
+		command->var_name_len = ft_strlen(command->var_name) + 1;
 		command->new_command = malloc((ft_strlen(command->commands[command->i]) - \
 		command->var_name_len + ft_strlen(command->var_value)) * sizeof(char));
 		ft_strlcpy(command->new_command, command->commands[command->i], command->j);
 		ft_strlcpy(command->new_command + command->j - command->var_name_len - 1, \
 		command->var_value, ft_strlen(command->var_value));
-		free_malloced(command->commands, command->is_malloced, command->i);
+		free_malloced(command->commands, command->is_malloced ,command->i);
 		command->commands[command->i] = command->new_command;
 		command->is_malloced[command->i] = 1;
 	}
-	else
-		return ;
+	else if (command->var_value != NULL && ft_strlen(command->var_value) < ft_strlen(command->var_name))
+	{
+		command->var_name_len = ft_strlen(command->var_name) + 1;
+		command->new_command = ft_strdup(command->commands[command->i]);
+		ft_strlcpy(command->new_command, command->commands[command->i], command->j - command->var_name_len);
+		ft_strlcpy(command->new_command + command->j - command->var_name_len - 1, \
+		command->var_value, ft_strlen(command->var_value) + 1);
+		free_malloced(command->commands, command->is_malloced ,command->i);
+		command->commands[command->i] = command->new_command;
+		command->is_malloced[command->i] = 1;
+	}
+	return ;
 }
 
 void	handle_commands(t_command_data *command)
@@ -73,7 +82,7 @@ void	chose_command(t_shell *shell)
 
 void	parse_command(t_shell *shell)
 {
-	//add__history(history, input);
+	add__history(shell->history, shell->input);
 	if (handle_exception(shell->input) == 0)
 		return ;
 	shell->command->commands[shell->command->i] = ft_strtok(shell->input, "|");
