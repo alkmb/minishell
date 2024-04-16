@@ -6,7 +6,7 @@
 /*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 22:25:19 by kmb               #+#    #+#             */
-/*   Updated: 2024/04/12 22:25:42 by kmb              ###   ########.fr       */
+/*   Updated: 2024/04/16 02:52:47 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,16 +54,20 @@ char	*create_prompt(void)
 
 void	handle_sigint(int sig)
 {
-	char	*new_prompt;
+	static char	*new_prompt = NULL;
 
 	if (sig == SIGINT)
 	{
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		printf("\n");
+		if (new_prompt != NULL)
+		{
+			free(new_prompt);
+			new_prompt = NULL;
+		}
 		new_prompt = create_prompt();
 		rl_set_prompt(new_prompt);
-		free(new_prompt);
 		rl_redisplay();
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 16:58:05 by kmb               #+#    #+#             */
-/*   Updated: 2024/04/16 02:39:11 by kmb              ###   ########.fr       */
+/*   Updated: 2024/04/16 03:01:49 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	handle_variable_expansion(t_command_data *command)
 	command->var_value = get_var_name_and_value(command);
 	if (command->var_value != NULL && ft_strlen(command->var_value) >= ft_strlen(command->var_name))
 	{
-		command->var_name_len = ft_strlen(command->var_name) + 1;
+		command->var_name_len = ft_strlen(command->var_name);
 		command->new_command = malloc((ft_strlen(command->commands[command->i]) - \
 		command->var_name_len + ft_strlen(command->var_value)) * sizeof(char));
 		ft_strlcpy(command->new_command, command->commands[command->i], command->j);
@@ -40,7 +40,7 @@ void	handle_variable_expansion(t_command_data *command)
 	}
 	else if (command->var_value != NULL && ft_strlen(command->var_value) < ft_strlen(command->var_name))
 	{
-		command->var_name_len = ft_strlen(command->var_name) + 1;
+		command->var_name_len = ft_strlen(command->var_name);
 		command->new_command = ft_strdup(command->commands[command->i]);
 		ft_strlcpy(command->new_command, command->commands[command->i], command->j - command->var_name_len);
 		ft_strlcpy(command->new_command + command->j - command->var_name_len - 1, \
