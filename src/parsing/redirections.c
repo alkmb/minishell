@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
+/*   By: gprada-t <gprada-t@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 09:09:46 by kmb               #+#    #+#             */
-/*   Updated: 2024/04/17 01:49:47 by akambou          ###   ########.fr       */
+/*   Updated: 2024/04/17 09:38:21 by gprada-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,51 +31,13 @@ void	check_buffer_size(char **input_buffer, char *line)
 	}
 }
 
-static void	handle_siginthc(int sig)
+static void	redirect_or_append(char **args, int i, int *fd)
 {
-	if (sig == SIGINT)
-	{
-		printf("\n");
-		exit(1);
-	}
-	else if (sig == SIGQUIT)
-	{
-		printf("\b\b  \b\b");
-		fflush(stdout);
-	}
-}
-
-void	handle_here_document(char *delimiter)
-{
-	char	*line;
-	char	*input_buffer;
-
-	signal(SIGINT, handle_siginthc);
-	signal(SIGQUIT, handle_siginthc);
-	ft_printf("> ");
-	if (!delimiter)
-		return (printf("Error: no delimiter\n"), (void)(0));
-	line = "";
-	signal(SIGQUIT, SIG_IGN);
-	while (1)
-	{
-		line = readline("");
-		if (!line)
-			exit(1);
-		if (ft_strcmp(line, delimiter) == 0)
-		{
-			free(line);
-			break ;
-		}
-		check_buffer_size(&input_buffer, line);
-		free(line);
-		ft_printf("> ");
-	}
-	if (input_buffer != NULL)
-	{
-		ft_printf("Here document content:\n%s\n", input_buffer);
-		free(input_buffer);
-	}
+	if (ft_strcmp(args[i], ">") == 0)
+		*fd = open(args[i + 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	else
+		*fd = open(args[i + 1], O_WRONLY | O_CREAT | O_APPEND, 0644);
+	dup2(*fd, STDOUT_FILENO);
 }
 
 void	chose_redirection(char **args, int i)
@@ -90,11 +52,7 @@ void	chose_redirection(char **args, int i)
 	}
 	if (ft_strcmp(args[i], ">") == 0 || ft_strcmp(args[i], ">>") == 0)
 	{
-		if (ft_strcmp(args[i], ">") == 0)
-			fd = open(args[i + 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		else
-			fd = open(args[i + 1], O_WRONLY | O_CREAT | O_APPEND, 0644);
-		dup2(fd, STDOUT_FILENO);
+		redirect_or_append(args, i, &fd);
 	}
 	else if (ft_strcmp(args[i], "<") == 0)
 	{

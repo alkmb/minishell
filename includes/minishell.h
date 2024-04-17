@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
+/*   By: gprada-t <gprada-t@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 21:26:12 by kmb               #+#    #+#             */
-/*   Updated: 2024/04/17 01:55:40 by akambou          ###   ########.fr       */
+/*   Updated: 2024/04/17 16:16:12 by gprada-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ typedef struct s_commandhistory
 	int					index;
 }	t_commandhistory;
 
-typedef struct	s_parser
+typedef struct s_parser
 {
 	int					j;
 	int					i;
@@ -63,10 +63,10 @@ typedef struct s_command_data
 	int					i;
 	int					j;
 	int					var_name_len;
-	char 				*var_value;
+	char				*var_value;
 	char				var_name[MAX_INPUT_SIZE];
 	char				*commands[100000];
-	char 				*new_command;
+	char				*new_command;
 	int					is_malloced[MAX_ARGS];
 }	t_command_data;
 
@@ -107,6 +107,8 @@ void				parse_command(t_shell *shell);
 void				chose_command(t_shell *shell);
 char				*get_var_name_and_value(t_command_data *command);
 void				handle_variable_expansion(t_command_data *command);
+void				check_buffer_size(char **input_buffer, char *line);
+void				chose_command(t_shell *shell);
 /*---------------LEXER---------------------------------*/
 char				**token_pipe_cmd(t_shell *shell);
 /*---------------HANDLERS---------------------------------*/
@@ -144,7 +146,7 @@ t_commandhistory	*create_history(void);
 void				initialize_parser(t_shell *shell);
 void				initialize_command(t_command_data *command);
 void				initialize_shell(t_shell *shell);
-void 				initialize_environment(t_shell *shell);
+void				initialize_environment(t_shell *shell);
 /*---------------FREE---------------------------------*/
 void				free_args(char **args);
 void				free_environment(char **enviroment, int size);

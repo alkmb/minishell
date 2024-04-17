@@ -6,52 +6,9 @@
 #    By: gprada-t <gprada-t@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/18 07:48:42 by kmb               #+#    #+#              #
-#    Updated: 2024/04/16 21:17:42 by gprada-t         ###   ########.fr        #
+#    Updated: 2024/04/17 16:11:01 by gprada-t         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
-
-# CC = gcc -std=c11
-# CFLAGS = -fsanitize=address -I includes -MMD -MP
-# LDFLAGS = -lreadline
-# RM = rm -rf
-
-# SRCS = $(wildcard src/builtins/*.c src/exec/*.c src/expansor/*.c src/main.c src/parsing/*.c src/utils/*.c)
-# OBJS = $(patsubst src/%.c,obj/%.o,$(SRCS))
-# DEPS = $(OBJS:.o=.d)
-# NAME = minishell
-# HEADER = includes/minishell.h
-# DEP_FLAGS = -MMD -MP
-# READLINE_SRCS = $(wildcard ../readline/*.c)
-# READLINE_OBJS = $(READLINE_SRCS:.c=.o)
-
-# all: $(NAME)
-
-# $(NAME): $(OBJS) $(READLINE_OBJS)
-# 	@make -C libft > /dev/null
-# 	@$(CC) $(CFLAGS) $^ libft/libft.a -o $@ $(LDFLAGS) > /dev/null
-# 	@echo "✅✅$(NAME) is ready!✅✅"
-
-# obj/%.o: src/%.c
-# 	@mkdir -p $(@D)
-# 	@$(CC) $(CFLAGS) -c $< -o $@
-
-# ../readline/%.o: ../readline/%.c
-# 	@$(CC) $(CFLAGS) -c $< -o $@
-
-# -include $(DEPS)
-
-# fclean: clean
-# 	@$(RM) $(NAME) > /dev/null
-# 	@make fclean -C libft > /dev/null
-# 	@echo "✅ Done cleaning up executables!"
-
-# clean:
-# 	@$(RM) obj > /dev/null
-# 	@$(RM) $(READLINE_OBJS) > /dev/null
-# 	@make clean -C libft  > /dev/null
-# 	@echo "✅ Done cleaning up!"
-
-# re: fclean all
 
 NAME = minishell
 
@@ -68,9 +25,9 @@ LINKEAD_LIB = -ltermcap -lreadline
 MK_RL = make -C $(READLINE)
 
 MAIN = main
-BUILTINS = builtins builtins_2 enviroment history
+BUILTINS = builtins builtins_2 new_environ enviroment history
 EXEC = exec finder pipes
-PARSING = lexer parsing redirections
+PARSING = heredoc lexer parsing redirections
 UTILS = frees handler inits utils
 
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
+/*   By: gprada-t <gprada-t@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 07:25:30 by kmb               #+#    #+#             */
-/*   Updated: 2024/04/17 01:43:27 by akambou          ###   ########.fr       */
+/*   Updated: 2024/04/17 09:43:36 by gprada-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,4 +82,17 @@ char	**token_pipe_cmd(t_shell *shell)
 	shell->parser->args[shell->parser->i] = NULL;
 	free(shell->parser->current_token);
 	return (shell->parser->args);
+}
+
+void	chose_command(t_shell *shell)
+{
+	shell->command->i -= 1;
+	if (shell->command->i < 0)
+		return ;
+	else
+	{
+		shell->data->i = 0;
+		shell->data->fd_in = 0;
+		chose_pipe(shell);
+	}
 }
