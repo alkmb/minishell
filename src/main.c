@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: gprada-t <gprada-t@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 09:43:14 by kmb               #+#    #+#             */
-/*   Updated: 2024/04/16 02:50:49 by kmb              ###   ########.fr       */
+/*   Updated: 2024/04/25 09:53:50 by gprada-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int	main(void)
 	t_shell				shell;
 
 	initialize_shell(&shell);
+	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, handle_sigint);
 	shell.history = create_history();
 	print_header();

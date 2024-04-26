@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
+/*   By: gprada-t <gprada-t@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 22:25:19 by kmb               #+#    #+#             */
-/*   Updated: 2024/04/17 01:50:24 by akambou          ###   ########.fr       */
+/*   Updated: 2024/04/25 10:54:53 by gprada-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,22 +51,42 @@ char	*create_prompt(void)
 	return (prompt);
 }
 
+void	handle_sigquit(int sig)
+{
+	if (sig == SIGQUIT)
+	{
+		write(2, "Quit 3\n", 7);
+		exit(130);
+	}
+}
+
 void	handle_sigint(int sig)
 {
-	static char	*new_prompt = NULL;
-
 	if (sig == SIGINT)
 	{
+		write(1, "\n", 1);
 		rl_on_new_line();
 		rl_replace_line("", 0);
-		printf("\n");
-		if (new_prompt != NULL)
-		{
-			free(new_prompt);
-			new_prompt = NULL;
-		}
-		new_prompt = create_prompt();
-		rl_set_prompt(new_prompt);
 		rl_redisplay();
 	}
 }
+
+// void	handle_sigint(int sig)
+// {
+// 	static char	*new_prompt = NULL;
+
+// 	if (sig == SIGINT)
+// 	{
+// 		rl_on_new_line();
+// 		rl_replace_line("", 0);
+// 		printf("\n");
+// 		if (new_prompt != NULL)
+// 		{
+// 			free(new_prompt);
+// 			new_prompt = NULL;
+// 		}
+// 		new_prompt = create_prompt();
+// 		rl_set_prompt(new_prompt);
+// 		rl_redisplay();
+// 	}
+// }

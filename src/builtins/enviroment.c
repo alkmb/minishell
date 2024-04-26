@@ -6,7 +6,7 @@
 /*   By: gprada-t <gprada-t@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 01:20:03 by akambou           #+#    #+#             */
-/*   Updated: 2024/04/17 16:10:44 by gprada-t         ###   ########.fr       */
+/*   Updated: 2024/04/26 11:14:47 by gprada-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,17 @@ void	unset_env_var(t_shell *shell, int index)
 	int		j;
 	char	*tmp;
 
+	if (index == -1)
+		return ;
 	j = index;
 	tmp = shell->environ[j];
+	if (!tmp)
+		return ;
 	while (shell->environ[j])
 	{
 		shell->environ[j] = shell->environ[j + 1];
 		j++;
 	}
-	free(tmp);
+	shell->environ[j] = tmp;
+	tmp = NULL;
 }

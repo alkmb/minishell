@@ -6,7 +6,7 @@
 /*   By: gprada-t <gprada-t@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 21:26:12 by kmb               #+#    #+#             */
-/*   Updated: 2024/04/17 16:16:12 by gprada-t         ###   ########.fr       */
+/*   Updated: 2024/04/25 10:03:20 by gprada-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,7 @@ void				free_malloced(char *commands[], int *is_malloced, int i);
 void				print_header(void);
 char				*create_prompt(void);
 void				handle_sigint(int sig);
+void				handle_sigquit(int sig);
 int					handle_exception(char *input);
 int					is_single_quote(char *str, int index);
 

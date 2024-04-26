@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: gprada-t <gprada-t@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 09:43:22 by kmb               #+#    #+#             */
-/*   Updated: 2024/04/16 02:22:40 by kmb              ###   ########.fr       */
+/*   Updated: 2024/04/25 11:01:09 by gprada-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,14 @@ void	execute_bin(t_shell *shell)
 	}
 }
 
+void	print_command_not_found(t_shell *shell)
+{
+	shell->data->status = 127;
+	write (2, "minishell: ", 11);
+	write(2, shell->data->args[0], ft_strlen(shell->data->args[0]));
+	write(2, ": command not found\n", 20);
+}
+
 void	execute_external_command(t_shell *shell)
 {
 	pid_t	pid;
@@ -63,7 +71,8 @@ void	execute_external_command(t_shell *shell)
 	shell->data->cmd_path = find_command(shell->data->args[0]);
 	if (shell->data->cmd_path != NULL)
 	{
-		signal(SIGINT, SIG_IGN);
+		signal(SIGINT, handle_sigint);
+		signal(SIGQUIT, handle_sigquit);
 		pid = fork();
 		if (pid == -1)
 			return (free(shell->data->cmd_path));
@@ -77,9 +86,6 @@ void	execute_external_command(t_shell *shell)
 			execute_bin(shell);
 	}
 	else if (shell->data->cmd_path == NULL)
-	{
-		shell->data->status = 127;
-		ft_printf("minishell: %s: command not found\n", shell->data->args[0]);
-	}
+		print_command_not_found(shell);
 	free(shell->data->cmd_path);
 }

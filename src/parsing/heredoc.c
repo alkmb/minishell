@@ -6,7 +6,7 @@
 /*   By: gprada-t <gprada-t@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 09:37:53 by gprada-t          #+#    #+#             */
-/*   Updated: 2024/04/17 09:38:15 by gprada-t         ###   ########.fr       */
+/*   Updated: 2024/04/25 10:55:04 by gprada-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,6 @@ static void	handle_siginthc(int sig)
 	{
 		printf("\n");
 		exit(1);
-	}
-	else if (sig == SIGQUIT)
-	{
-		printf("\b\b  \b\b");
-		fflush(stdout);
 	}
 }
 
@@ -41,12 +36,11 @@ void	handle_here_document(char *delimiter)
 	char	*input_buffer;
 
 	signal(SIGINT, handle_siginthc);
-	signal(SIGQUIT, handle_siginthc);
+	signal(SIGQUIT, SIG_IGN);
 	ft_printf("> ");
 	if (!delimiter)
 		return (printf("Error: no delimiter\n"), (void)(0));
 	line = "";
-	signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
 		line = readline("");

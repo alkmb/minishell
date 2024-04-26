@@ -31,7 +31,7 @@ PACKAGE_TARNAME = readline
 srcdir = .
 
 top_srcdir = .
-BUILD_DIR = /Users/gprada-t/42GPRADAT/Cursus/Circle_4/minishell/readline
+BUILD_DIR = /Users/gprada-t/minishell/readline
 
 INSTALL = /usr/bin/install -c
 INSTALL_PROGRAM = ${INSTALL}

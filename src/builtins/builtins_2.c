@@ -6,7 +6,7 @@
 /*   By: gprada-t <gprada-t@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 21:51:32 by akambou           #+#    #+#             */
-/*   Updated: 2024/04/17 09:57:08 by gprada-t         ###   ########.fr       */
+/*   Updated: 2024/04/25 12:16:39 by gprada-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,14 +45,16 @@ void	cmd_env(t_shell *shell)
 int	cmd_export(t_shell *shell)
 {
 	int		i;
+	int		j;
 
 	i = 1;
 	if (shell->data->args[i] == NULL)
 	{
-		while (shell->environ != NULL)
+		j = 0;
+		while (shell->environ[j] != NULL)
 		{
-			ft_printf("declare -x %s\n", shell->environ);
-			shell->environ++;
+			printf("declare -x %s\n", shell->environ[j]);
+			j++;
 		}
 		return (0);
 	}
