@@ -1,25 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   enviroment.c                                       :+:      :+:    :+:   */
+/*   search.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 01:20:03 by akambou           #+#    #+#             */
-/*   Updated: 2024/05/05 17:36:15 by kmb              ###   ########.fr       */
+/*   Updated: 2024/05/05 18:48:01 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-void	print_environment(char **env)
-{
-	while (*env != NULL)
-	{
-		ft_printf("declare -x %s\n", *env);
-		env++;
-	}
-}
 
 int	find_env_var(t_shell *shell)
 {

@@ -6,7 +6,7 @@
 /*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 23:12:49 by kmb               #+#    #+#             */
-/*   Updated: 2024/04/27 01:38:05 by kmb              ###   ########.fr       */
+/*   Updated: 2024/05/05 18:21:37 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	print_echo(t_shell *shell, int i)
 {
-	char	*name;
 	char	*value;
 	int		index;
 
@@ -37,17 +36,19 @@ void	print_echo(t_shell *shell, int i)
 int	cmd_echo(t_shell *shell)
 {
 	int	i;
+	int	j;
 	int	newline;
 
 	newline = 0;
 	i = 1;
+	j = 0;
 	if (shell->data->args[i] != NULL
-		&& ft_strcmp(shell->data->args[i], "-n") == 0)
+		&& ft_strncmp(shell->data->args[i], "-n", 2) == 0)
 	{
 		newline = 1;
 		i++;
 	}
-	while (shell->data->args[i] != NULL)
+	while (shell->data->args[i] != NULL && j == 0)
 	{
 		print_echo(shell, i);
 		i++;

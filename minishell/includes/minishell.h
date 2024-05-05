@@ -6,7 +6,7 @@
 /*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 21:26:12 by kmb               #+#    #+#             */
-/*   Updated: 2024/05/05 17:03:17 by kmb              ###   ########.fr       */
+/*   Updated: 2024/05/05 18:50:44 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,24 +96,44 @@ typedef struct s_shell
 }	t_shell;
 
 /*-------------------------------------------------------------*/
+/*---------------SIGNALS---------------------------------*/
+void				handle_sigint(int sig);
+void				handle_sigquit(int sig);
+/*---------------PARSER--------------------------------------------*/
+void				parse_command(t_shell *shell);
+void				chose_command(t_shell *shell);
+void				chose_command(t_shell *shell);
+/*---------------VARIABLE EXPANSION---------------------------------*/
+char				*get_var_name_and_value(t_command_data *command);
+void				handle_variable_expansion(t_command_data *command);
+void				check_buffer_size(char **input_buffer, char *line);
+/*---------------REDIRECTION---------------------------------*/
+char				**handle_redirection(char **args, int *orig_stdin, \
+					int *orig_stdout);
+void				chose_redirection(char **args, int i);
+/*---------------LEXER---------------------------------*/
+char				**token_pipe_cmd(t_shell *shell);
+void				handle_here_document(char *delimiter);
 /*---------------PIPES---------------------------------*/
 void				chose_pipe(t_shell *shell);
 void				execute_pipe(t_shell *shell);
 void				handle_commands(t_command_data *command);
+/*---------------EXECUTION---------------------------------*/
 void				execute_external_command(t_shell *shell);
 void				execute_bin(t_shell *shell);
 void				builtin_cmds(t_shell *shell);
-/*---------------PARSER--------------------------------------------*/
-void				parse_command(t_shell *shell);
-void				chose_command(t_shell *shell);
-char				*get_var_name_and_value(t_command_data *command);
-void				handle_variable_expansion(t_command_data *command);
-void				check_buffer_size(char **input_buffer, char *line);
-void				chose_command(t_shell *shell);
-/*---------------LEXER---------------------------------*/
-char				**token_pipe_cmd(t_shell *shell);
-/*---------------HANDLERS---------------------------------*/
-void				handle_env(char **environ);
+/*---------------FIND COMMAND-----------------------------------------*/
+char				*find_command(t_shell *shell, char *command);
+char 				*get_env_value(char *key, char **environ);
+char				*find_command_in_path(char *command, char \
+					*path_copy, int max_lengt);
+/*---------------ENVIROMENT SEARCH--------------------------------*/
+int					find_env_var(t_shell *shell);
+void				unset_env_var(t_shell *shell, int index);
+/*---------------ENVIRONMENT CHANGE---------------------------------*/
+void				add_to_environment(t_shell *shell);
+char				**create_new_environment(t_shell *shell, int j, \
+					char *name, char *value);
 /*---------------BUILTINS-------------------------------------------*/
 int					cmd_pwd(void);
 char				*cmd_history(t_commandhistory *history);
@@ -122,24 +142,8 @@ int					cmd_echo(t_shell *shell);
 int					cmd_unset(t_shell *shell);
 void				cmd_env(t_shell *shell);
 int					cmd_export(t_shell *shell);
-/*---------------FIND COMMAND-----------------------------------------*/
-char				*find_command(t_shell *shell, char *command);
-char 				*get_env_value(char *key, char **environ);
-char				*find_command_in_path(char *command, char \
-					*path_copy, int max_lengt);
-/*---------------REDIRECTION---------------------------------*/
-void				handle_here_document(char *delimiter);
-char				**handle_redirection(char **args, int *orig_stdin, \
-					int *orig_stdout);
-void				chose_redirection(char **args, int i);
-/*---------------ENVIROMENT VARIABLAES--------------------------------*/
-void				add_to_environment(t_shell *shell);
-void				print_environment(char **env);
-char				**create_new_environment(t_shell *shell, int j, \
-					char *name, char *value);
-int					find_env_var(t_shell *shell);
-void				unset_env_var(t_shell *shell, int index);
-/*---------------HISTORY FUNCTIONS-------------------------------------*/
+void				handle_env(char **environ);
+/*---------------HISTORY-------------------------------------*/
 void				add__history(t_commandhistory *history, char *command);
 char				*get_from_history(t_commandhistory *history, int index);
 void				destroy_history(t_commandhistory *history);
@@ -148,7 +152,6 @@ t_commandhistory	*create_history(void);
 void				initialize_parser(t_shell *shell);
 void				initialize_command(t_command_data *command);
 void				initialize_shell(t_shell *shell);
-void				initialize_environment(t_shell *shell);
 /*---------------FREE---------------------------------*/
 void				free_args(char **args);
 void				free_environment(char **enviroment, int size);
@@ -156,8 +159,6 @@ void				free_malloced(char *commands[], int *is_malloced, int i);
 /*---------------UTILS-----------------------------------------*/
 void				print_header(void);
 char				*create_prompt(void);
-void				handle_sigint(int sig);
-void				handle_sigquit(int sig);
 int					handle_exception(char *input);
 int 				handle_repetition(char *input);
 int					is_single_quote(char *str, int index);

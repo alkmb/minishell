@@ -92,11 +92,11 @@
 
 
 CC = gcc -std=c11
-CFLAGS = -fsanitize=address -I includes -MMD -MP
+CFLAGS = -Wall -Wextra -Werror -fsanitize=address -I includes -MMD -MP
 LDFLAGS = -lreadline
 RM = rm -rf
 
-SRCS = $(wildcard src/builtins/*.c src/exec/*.c src/expansor/*.c src/main.c src/parsing/*.c src/utils/*.c)
+SRCS = $(wildcard src/builtins/*.c src/exec/*.c src/lexer/*.c src/main.c src/parsing/*.c src/utils/*.c src/enviroment/*.c)
 OBJS = $(patsubst src/%.c,obj/%.o,$(SRCS))
 DEPS = $(OBJS:.o=.d)
 NAME = minishell

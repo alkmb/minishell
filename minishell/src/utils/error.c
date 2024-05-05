@@ -6,7 +6,7 @@
 /*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 19:49:13 by kmb               #+#    #+#             */
-/*   Updated: 2024/05/05 17:42:29 by kmb              ###   ########.fr       */
+/*   Updated: 2024/05/05 17:55:59 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,11 @@ int	handle_repetition(char *input)
 		if (i == len)
 			return (0);
 	}
+	return (1);
 }
 
 int	handle_exception(char *input)
 {
-	int	i;
-
-	i = 0;
 	if (ft_strcmp(input, EXCEPTION) == 0)
 	{
 		printf(EXCEPTION_R);

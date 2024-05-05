@@ -6,7 +6,7 @@
 /*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 16:58:05 by kmb               #+#    #+#             */
-/*   Updated: 2024/05/05 14:11:25 by kmb              ###   ########.fr       */
+/*   Updated: 2024/05/05 18:21:52 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ void	handle_variable_expansion1(t_command_data *command)
 	ft_strlcpy(command->new_command + command->j - \
 	command->var_name_len - 1, \
 	command->var_value, ft_strlen(command->var_value));
-	free_malloced(command->commands, command->is_malloced, command->i);
+	if (command->is_malloced[command->i])
+		free(command->commands[command->i]);
 	command->commands[command->i] = command->new_command;
 	command->is_malloced[command->i] = 1;
 }
