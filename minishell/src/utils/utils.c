@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gprada-t <gprada-t@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 22:25:19 by kmb               #+#    #+#             */
-/*   Updated: 2024/04/25 10:54:53 by gprada-t         ###   ########.fr       */
+/*   Updated: 2024/05/05 14:47:17 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,18 @@ char	*create_prompt(void)
 {
 	char	*username;
 	char	*prompt;
+	char	cwd[1024];
 
 	username = getenv("USER");
 	if (username == NULL)
 		username = "unknown";
-	prompt = malloc(ft_strlen(username) + ft_strlen("@minimalianteo$ ") + 1);
-	ft_strlcpy(prompt, username, ft_strlen(username)+ 1);
-	ft_strlcat(prompt, "@minimalianteo$ ", ft_strlen(username) \
-	+ ft_strlen("@minimalianteo$ ") + 1);
+	if (getcwd(cwd, sizeof(cwd)) == NULL)
+		ft_strlcpy(cwd, "unknown", sizeof(cwd));
+	prompt = malloc(ft_strlen(username) + ft_strlen("@") + ft_strlen(cwd) + ft_strlen("$ ") + 1);
+	ft_strlcpy(prompt, username, ft_strlen(username) + 1);
+	ft_strlcat(prompt, "@", ft_strlen(prompt) + ft_strlen("@") + 1);
+	ft_strlcat(prompt, cwd, ft_strlen(prompt) + ft_strlen(cwd) + 1);
+	ft_strlcat(prompt, "$ ", ft_strlen(prompt) + ft_strlen("$ ") + 1);
 	return (prompt);
 }
 

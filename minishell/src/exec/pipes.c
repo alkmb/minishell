@@ -6,7 +6,7 @@
 /*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 02:13:04 by akambou           #+#    #+#             */
-/*   Updated: 2024/04/27 02:00:16 by kmb              ###   ########.fr       */
+/*   Updated: 2024/05/05 14:36:25 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ void	handle_child(t_shell *shell)
 {
 	shell->data->args = token_pipe_cmd(shell);
 	builtin_cmds(shell);
+	if (ft_strcmp(shell->data->args[0], "exit") == 0)
+		exit(shell->status);
 	pipe(shell->data->fd);
 	shell->data->pid = fork();
 	if (shell->data->pid == 0)

@@ -34,7 +34,7 @@ NORMINETTE OK
 
 7th part (Double quotes) OK
 
-8th part (Single quopes) all OK except !!SEGFAULT with '|||' and it doesent detect it as a CHARACTER!!
+8th part (Single quopes) OK
 
 9th part (env) OK
 

@@ -6,7 +6,7 @@
 /*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 09:43:22 by kmb               #+#    #+#             */
-/*   Updated: 2024/04/27 02:00:00 by kmb              ###   ########.fr       */
+/*   Updated: 2024/05/05 14:28:52 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,6 @@ void	builtin_cmds(t_shell *shell)
 		cmd_unset(shell);
 	else if (ft_strcmp(shell->data->args[0], "history") == 0)
 		ft_printf("%s", cmd_history(shell->history));
-	else if (ft_strcmp(shell->data->args[0], "exit") == 0)
-	{
-		ft_printf("exit\n");
-		exit(EXIT_SUCCESS);
-	}
 }
 
 void	execute_bin(t_shell *shell)

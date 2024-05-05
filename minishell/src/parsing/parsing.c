@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gprada-t <gprada-t@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 16:58:05 by kmb               #+#    #+#             */
-/*   Updated: 2024/04/17 09:43:57 by gprada-t         ###   ########.fr       */
+/*   Updated: 2024/05/05 14:11:25 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,8 @@ void	parse_command(t_shell *shell)
 {
 	add__history(shell->history, shell->input);
 	if (handle_exception(shell->input) == 0)
+		return ;
+	if (handle_repetition(shell->input) == 0)
 		return ;
 	shell->command->commands[shell->command->i] = ft_strtok(shell->input, "|");
 	while (shell->command->commands[shell->command->i] != NULL)

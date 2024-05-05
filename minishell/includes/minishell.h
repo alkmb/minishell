@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gprada-t <gprada-t@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 21:26:12 by kmb               #+#    #+#             */
-/*   Updated: 2024/04/25 10:03:20 by gprada-t         ###   ########.fr       */
+/*   Updated: 2024/05/05 14:39:25 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,6 +157,7 @@ char				*create_prompt(void);
 void				handle_sigint(int sig);
 void				handle_sigquit(int sig);
 int					handle_exception(char *input);
+int 				handle_repetition(char *input);
 int					is_single_quote(char *str, int index);
 
 #endif
