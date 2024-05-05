@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   enviroment.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gprada-t <gprada-t@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 01:20:03 by akambou           #+#    #+#             */
-/*   Updated: 2024/04/26 11:14:47 by gprada-t         ###   ########.fr       */
+/*   Updated: 2024/05/05 17:36:15 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,5 +60,8 @@ void	unset_env_var(t_shell *shell, int index)
 		j++;
 	}
 	shell->environ[j] = tmp;
+	shell->new_environ = malloc(sizeof(char *) * j);
+	shell ->new_environ = ft_memcpy(shell->new_environ, \
+	shell->environ, sizeof(char *) * j);
 	tmp = NULL;
 }

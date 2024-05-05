@@ -6,14 +6,14 @@
 /*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 21:26:12 by kmb               #+#    #+#             */
-/*   Updated: 2024/05/05 14:39:25 by kmb              ###   ########.fr       */
+/*   Updated: 2024/05/05 17:03:17 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "../libft/includes/libft.h"
+# include "../libs/libft/includes/libft.h"
 
 /*-----------------------------------------INCLUDES------------------*/
 # include <fcntl.h>
@@ -26,8 +26,8 @@
 # include <signal.h>
 # include <errno.h>
 # include <string.h>
-# include "../readline/readline.h"
-# include "../readline/history.h"
+# include "../libs/readline/readline.h"
+# include "../libs/readline/history.h"
 /*------------------------------------------------------------------------*/
 /*-----------------------------------------DEFINES-----------------------*/
 # define MAX_INPUT_SIZE 1024
@@ -84,6 +84,7 @@ typedef struct s_pipe_data
 typedef struct s_shell
 {
 	char				**environ;
+	char				**new_environ;
 	char				*input;
 	char				*prompt;
 	int					status;
@@ -122,19 +123,20 @@ int					cmd_unset(t_shell *shell);
 void				cmd_env(t_shell *shell);
 int					cmd_export(t_shell *shell);
 /*---------------FIND COMMAND-----------------------------------------*/
-char				*find_command(char *command);
+char				*find_command(t_shell *shell, char *command);
+char 				*get_env_value(char *key, char **environ);
 char				*find_command_in_path(char *command, char \
-				*path_copy, int max_lengt);
+					*path_copy, int max_lengt);
 /*---------------REDIRECTION---------------------------------*/
 void				handle_here_document(char *delimiter);
 char				**handle_redirection(char **args, int *orig_stdin, \
-				int *orig_stdout);
+					int *orig_stdout);
 void				chose_redirection(char **args, int i);
 /*---------------ENVIROMENT VARIABLAES--------------------------------*/
 void				add_to_environment(t_shell *shell);
 void				print_environment(char **env);
 char				**create_new_environment(t_shell *shell, int j, \
-				char *name, char *value);
+					char *name, char *value);
 int					find_env_var(t_shell *shell);
 void				unset_env_var(t_shell *shell, int index);
 /*---------------HISTORY FUNCTIONS-------------------------------------*/

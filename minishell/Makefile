@@ -108,8 +108,8 @@ READLINE_OBJS = $(READLINE_SRCS:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OBJS) $(READLINE_OBJS)
-	@make -C libft > /dev/null
-	@$(CC) $(CFLAGS) $^ libft/libft.a -o $@ $(LDFLAGS) > /dev/null
+	@make -C libs/libft > /dev/null
+	@$(CC) $(CFLAGS) $^ libs/libft/libft.a -o $@ $(LDFLAGS) > /dev/null
 	@echo "✅✅$(NAME) is ready!✅✅"
 
 obj/%.o: src/%.c
@@ -123,13 +123,13 @@ obj/%.o: src/%.c
 
 fclean: clean
 	@$(RM) $(NAME) > /dev/null
-	@make fclean -C libft > /dev/null
+	@make fclean -C libs/libft > /dev/null
 	@echo "✅ Done cleaning up executables!"
 
 clean:
 	@$(RM) obj > /dev/null
 	@$(RM) $(READLINE_OBJS) > /dev/null
-	@make clean -C libft  > /dev/null
+	@make clean -C libs/libft  > /dev/null
 	@echo "✅ Done cleaning up!"
 
 re: fclean all

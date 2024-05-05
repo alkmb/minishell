@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   finder.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 22:25:01 by kmb               #+#    #+#             */
-/*   Updated: 2024/04/10 00:58:36 by akambou          ###   ########.fr       */
+/*   Updated: 2024/05/05 17:39:00 by kmb              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,30 @@ char	*find_command_in_path(char *command, char *path_copy, int max_length)
 	return (NULL);
 }
 
-char	*find_command(char *command)
+char	*get_env_value(char *key, char **environ)
+{
+	int	i;
+	int	key_len;
+
+	key_len = ft_strlen(key);
+	i = 0;
+	while (environ[i] != NULL)
+	{
+		if (ft_strncmp(environ[i], key, key_len) == 0
+			&& environ[i][key_len] == '=')
+			return (&environ[i][key_len + 1]);
+		i++;
+	}
+	return (NULL);
+}
+
+char	*find_command(t_shell *shell, char *command)
 {
 	char	*path;
 	char	*path_copy;
 	int		max_length;
 
-	path = getenv("PATH");
+	path = get_env_value("PATH", shell->environ);
 	if (path == NULL)
 		return (NULL);
 	path_copy = ft_strdup(path);
