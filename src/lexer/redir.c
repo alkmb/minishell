@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   redirections.c                                     :+:      :+:    :+:   */
+/*   redir.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gprada-t <gprada-t@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 09:09:46 by kmb               #+#    #+#             */
-/*   Updated: 2024/04/17 09:38:21 by gprada-t         ###   ########.fr       */
+/*   Updated: 2024/05/09 19:15:09 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	chose_redirection(char **args, int i)
 		fd = open(args[i + 1], O_RDONLY);
 		dup2(fd, STDIN_FILENO);
 	}
-	else if (ft_strcmp(args[i], "<<") == 0)
+	else if (ft_strcmp(args[i], "<<") == 0 && args[i + 1] != NULL)
 	{
 		handle_here_document(args[i + 1]);
 		ft_crazy_free(args);
