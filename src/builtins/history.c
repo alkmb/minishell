@@ -18,7 +18,7 @@ t_commandhistory	*create_history(void)
 	int					i;
 
 	i = 0;
-	history = malloc((sizeof(t_commandhistory) - 1));
+	history = malloc((sizeof(t_commandhistory)));
 	history->index = 0;
 	while (i < MAX_HISTORY - 1)
 	{
