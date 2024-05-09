@@ -1,25 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   heredoc.c                                          :+:      :+:    :+:   */
+/*   hdoc.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gprada-t <gprada-t@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 09:37:53 by gprada-t          #+#    #+#             */
-/*   Updated: 2024/04/25 10:55:04 by gprada-t         ###   ########.fr       */
+/*   Updated: 2024/05/09 19:24:15 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-static void	handle_siginthc(int sig)
-{
-	if (sig == SIGINT)
-	{
-		printf("\n");
-		exit(1);
-	}
-}
 
 static void	print_heredoc(char *input_buffer)
 {
@@ -35,7 +26,7 @@ void	handle_here_document(char *delimiter)
 	char	*line;
 	char	*input_buffer;
 
-	signal(SIGINT, handle_siginthc);
+	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_IGN);
 	ft_printf("> ");
 	if (!delimiter)

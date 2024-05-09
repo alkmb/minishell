@@ -6,7 +6,7 @@
 /*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 09:43:22 by kmb               #+#    #+#             */
-/*   Updated: 2024/05/09 19:00:47 by akambou          ###   ########.fr       */
+/*   Updated: 2024/05/09 19:26:46 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	execute_external_command(t_shell *shell)
 	shell->data->cmd_path = find_command(shell, shell->data->args[0]);
 	if (shell->data->cmd_path != NULL)
 	{
-		signal(SIGINT, handle_sigint);
+		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, handle_sigquit);
 		pid = fork();
 		if (pid == -1)
