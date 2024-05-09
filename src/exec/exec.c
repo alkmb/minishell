@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmb <kmb@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: akambou <akambou@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 09:43:22 by kmb               #+#    #+#             */
-/*   Updated: 2024/05/05 17:36:30 by kmb              ###   ########.fr       */
+/*   Updated: 2024/05/09 19:00:47 by akambou          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,9 @@ void	builtin_cmds(t_shell *shell)
 void	execute_bin(t_shell *shell)
 {
 	if (execve(shell->data->cmd_path, shell->data->args, \
-	shell->new_environ) == -1)
+	shell->environ) == -1)
 	{
+		printf("minishell: %s: %s\n", shell->data->args[0], strerror(errno));
 		free(shell->data->cmd_path);
 		exit(EXIT_FAILURE);
 	}

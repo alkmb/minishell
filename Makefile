@@ -106,7 +106,7 @@ INCL = -I ./includes/
 READLINE = ./libs/readline/
 READLINE_LIB = $(READLINE)libreadline.a
 RDLNHIST_LIB = $(READLINE)libhistory.a
-LINKEAD_LIB =  -lreadline
+LINKEAD_LIB =  -L$(READLINE) -lreadline -lncurses -lhistory
 LIBFT = libs/libft/libft.a
 
 MAIN = main

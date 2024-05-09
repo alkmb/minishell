@@ -31,7 +31,7 @@ PACKAGE_TARNAME = readline
 srcdir = .
 
 top_srcdir = .
-BUILD_DIR = /home/akambou/Desktop/Code/Campus/minishell/libs/readline
+BUILD_DIR = /Users/akambou/projects/minishell/libs/readline
 
 INSTALL = /usr/bin/install -c
 INSTALL_PROGRAM = ${INSTALL}
@@ -81,7 +81,7 @@ CPPFLAGS =
 DEFS = -DHAVE_CONFIG_H 
 LOCAL_DEFS = 
 
-TERMCAP_LIB = -ltinfo
+TERMCAP_LIB = -ltermcap
 
 # For libraries which include headers from other libraries.
 INCLUDES = -I. -I$(srcdir)
